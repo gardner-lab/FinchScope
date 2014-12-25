@@ -1,4 +1,4 @@
 FreedomScope
 ============
 
-Finchscope is an open source, dual channel, lightweight (<2g) miniature microscope for neural imaging. 
+Finchscope is an open source, dual channel, lightweight microscope for neural imaging. 
