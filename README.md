@@ -6,7 +6,7 @@ The FreedomScope project aims to develop a modular in-vivo ABA (awake, behaving 
 
 The project is in-development. 
 
-## Components
+####Components: 
 ###Finchscope
 The Finchscope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
 
