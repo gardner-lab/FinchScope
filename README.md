@@ -1,7 +1,15 @@
-#FreedomScope
+#FreedomScope Project
 ============
 
 ##Overview
-Finchscope is an open source, dual channel, lightweight microscope for neural imaging. 
+The FreedomScope project aims to develop a modular in-vivo optophysiology rig, with a transparent aquisition and analysis pipeline
 
-The project employs modular and scaleable designs, allowing custumizeable imaging rig assembly. 
+## Components
+#Finchscope
+The Finchscope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
+
+#ActiveCom
+The ActiveCom is a low noise, electrical active(driven by a motor, and sensor) commutator 
+
+
+
