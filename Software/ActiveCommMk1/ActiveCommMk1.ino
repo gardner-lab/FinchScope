@@ -3,18 +3,18 @@
 // 01.13.15
 // WALIII
 
-// Hall sensor controlled active commutator
-// Inspired by: http://web.mit.edu/fee/Public/Publications/FeeLeonardo2001.pdf
+// Hall sensor controlled actove commutator
+// Inspired 
 // 
-
-
-
+//
 #include <Servo.h> 
  
 Servo myservo;  
+ 
 int pos = 90;    
 const int analogInPin = A8;  
 int sensorValue = 0;        // value read from the pot
+int setpoint = 510;
 
 void setup() {
   // initialize serial communications at 9600 bps:
@@ -28,22 +28,22 @@ void loop() {
   sensorValue = analogRead(analogInPin);            
  
   Serial.print("sensor = " );                       
-  Serial.print(sensorValue);      
+  Serial.println(sensorValue);      
 
   
-  if(sensorValue> 510){
+  if(sensorValue> setpoint+10){
       pos = pos+5;
   myservo.write(pos);
   delay(15);
 }
 
-  if(sensorValue < 490){
+  if(sensorValue < setpoint-10){
     pos = pos-5;
     myservo.write(pos);
     delay(15);
 }
 
-if(sensorValue > 490 && sensorValue <510){
+if(sensorValue > setpoint-10 && sensorValue < setpoint+10){
 pos = 90;
    myservo.write(pos);
 }
