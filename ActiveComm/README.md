@@ -1,5 +1,5 @@
 
-###ActiveCom
+###ActiveComm
 The ActiveCom is a low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
 
 
