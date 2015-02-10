@@ -11,6 +11,9 @@ function varargout = FinchScopeMk2(varargin)
 % >> imaqhwingo % for the camera
 % >> 
 %
+%
+%
+%
 
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
@@ -55,17 +58,19 @@ a.pinMode(13,'output');
 % since the connection to the camera will already have
 % been established.
 handles.video = videoinput('winvideo', 2, 'UYVY_720x480');% Convert the input images to grayscale.
-
+handles.audio = audiorecorder(44100, 16, 2,2);
 %%Color Control
 cmap = jet(100);
 [~,idx] = sortrows(rgb2hsv(cmap), -1);  %# sort by Hue
 
 C=gray(64);
 
-
+% Set Video Properties
 set(handles.video,'TimerPeriod', 0.05,'TimerFcn',{@supportFscope,handles});
 triggerconfig(handles.video,'manual');
 handles.video.FramesPerTrigger = Inf; % Capture frames until we manually stop it
+
+
 
 % Update handles structure
 guidata(hObject, handles);
@@ -78,6 +83,8 @@ function supportFscope(gunk,junk,handles)
 global clips;
 
 im=getsnapshot(handles.video);
+im = im(:,:,1,:); % color displayed on HUD. 1 = green 2 = blue 3 = red.
+
 % adaptive histogram equalization
 %grayscale=rgb2gray(im); % converting based on luminance
 grayscale=mean(im,3);
@@ -89,7 +96,7 @@ grayscale=round(grayscale.*64); % spans 0 to 64
 %finalim=ind2rgb(indimage,bone(64));
 %image(finalim,'parent',handles.cameraAxes);
 image(grayscale);
-colormap(bone(64));
+colormap(gray(64));
 
 
 
@@ -143,16 +150,22 @@ if strcmp(get(handles.startAcquisition,'String'),'Start Acquisition')
     % Camera is not acquiring. Change button string and start acquisition.
     set(handles.startAcquisition,'String','Stop Acquisition');
     trigger(handles.video);
+    record(handles.audio);
 else
     % Camera is acquiring. Stop acquisition, save video data,
     % and change button string.
     stop(handles.video);
+    stop(handles.audio);
     disp('Saving captured video...');
+    global a;
+a.digitalWrite(13, 0) % turn off LED to prevent bleaching.
     
     newfilename = datestr(clock,30);
     videodata = getdata(handles.video);
-    save(newfilename, 'videodata');
-    disp('Video saved to file');
+    audiodata = getaudiodata(handles.audio);
+    save(newfilename, 'videodata','audiodata');
+    %save('audiodata_test', 'audiodata');
+    disp('Audio/Video saved to file');
     
     start(handles.video); % Restart the camera
     set(handles.startAcquisition,'String','Start Acquisition');
@@ -162,6 +175,9 @@ end
 function myCameraGUI_CloseRequestFcn(hObject, eventdata, handles)
 delete(hObject);
 delete(imaqfind);
+close all;
+clear all;
+
 
 
 % --- Executes on button press in pushbutton5.
@@ -178,7 +194,7 @@ function pushbutton6_Callback(hObject, eventdata, handles)
 global a;
 global b
 b = 0;
-a.digitalWrite(13, 0); % led on pin 4
+a.digitalWrite(13, 0); % led on pin 13
 a.digitalWrite(4,0);
 
 % --- Executes on slider movement.
@@ -191,7 +207,7 @@ set(hObject, 'Max', maxNumberOfImages);
 set(hObject, 'SliderStep', [1/maxNumberOfImages , 10/maxNumberOfImages ]);
 global b
 b = round(get(hObject,'Value'))
-a.analogWrite(13, b); % led on pin 4
+a.analogWrite(13, b); % led on pin 13
 
 
 function slider1_CreateFcn(hObject, eventdata, handles)
@@ -283,3 +299,5 @@ function edit3_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
