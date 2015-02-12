@@ -62,14 +62,15 @@ handles.audio = audiorecorder(44100, 16, 2,2);
 %%Color Control
 cmap = jet(100);
 [~,idx] = sortrows(rgb2hsv(cmap), -1);  %# sort by Hue
-
 C=gray(64);
 
 % Set Video Properties
 set(handles.video,'TimerPeriod', 0.05,'TimerFcn',{@supportFscope,handles});
 triggerconfig(handles.video,'manual');
 handles.video.FramesPerTrigger = Inf; % Capture frames until we manually stop it
-
+% initialize channel
+global channel
+channel = 1;
 
 
 % Update handles structure
@@ -80,10 +81,11 @@ uiwait(handles.myCameraGUI);
 
 function supportFscope(gunk,junk,handles)
 
+global channel
 global clips;
 
 im=getsnapshot(handles.video);
-im = im(:,:,1,:); % color displayed on HUD. 1 = green 2 = blue 3 = red.
+im = im(:,:,channel,:); % color displayed on HUD. 1 = green 2 = blue 3 = red.
 
 % adaptive histogram equalization
 %grayscale=rgb2gray(im); % converting based on luminance
@@ -161,7 +163,7 @@ else
 a.digitalWrite(13, 0) % turn off LED to prevent bleaching.
     
     newfilename = datestr(clock,30);
-    videodata = getdata(handles.video);
+    videodata= getdata(handles.video,handles.video.FramesAvailable,'uint16');
     audiodata = getaudiodata(handles.audio);
     save(newfilename, 'videodata','audiodata');
     %save('audiodata_test', 'audiodata');
@@ -188,6 +190,16 @@ a.digitalWrite(4,1);
 
 % --- Executes on button press in checkbox1.
 function checkbox1_Callback(hObject, eventdata, handles)
+global channel;
+if (get(hObject,'Value') == get(hObject,'Max'))
+	display('Red Channel on');
+    
+   channel = 2;
+else
+	display('Green Channel on');
+    channel = 1;
+end
+
 
 function pushbutton6_Callback(hObject, eventdata, handles)
 
@@ -206,7 +218,8 @@ set(hObject, 'Min', 1);
 set(hObject, 'Max', maxNumberOfImages);
 set(hObject, 'SliderStep', [1/maxNumberOfImages , 10/maxNumberOfImages ]);
 global b
-b = round(get(hObject,'Value'))
+b = round(get(hObject,'Value'));
+LEDpower = b/255*100 % display LED power
 a.analogWrite(13, b); % led on pin 13
 
 
