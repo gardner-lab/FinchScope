@@ -14,7 +14,7 @@ Servo myservo;
 int pos = 90;    
 const int analogInPin = A0;  
 int sensorValue = 0;        // value read from the pot
-int setpoint = 510;
+int setpoint = 512;
 
 void setup() {
   // initialize serial communications at 9600 bps:
