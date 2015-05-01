@@ -1,33 +1,12 @@
-function varargout = ThinFilms(varargin)
-% THINFILMS M-file for ThinFilms.fig
-%      THINFILMS, by itself, creates a new THINFILMS or raises the existing
-%      singleton*.
-%
-%      H = THINFILMS returns the handle to a new THINFILMS or the handle to
-%      the existing singleton*.
-%
-%      THINFILMS('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in THINFILMS.M with the given input arguments.
-%
-%      THINFILMS('Property','Value',...) creates a new THINFILMS or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before ThinFilms_OpeningFunction gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to ThinFilms_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-% Last Modified by GUIDE v2.5 06-Oct-2009 21:35:46
+function varargout = FEEDBACk_3(varargin)
 
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @ThinFilms_OpeningFcn, ...
-                   'gui_OutputFcn',  @ThinFilms_OutputFcn, ...
+                   'gui_OpeningFcn', @FEEDBACk_3_OpeningFcn, ...
+                   'gui_OutputFcn',  @FEEDBACk_3_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -41,32 +20,34 @@ else
 end
 % End initialization code - DO NOT EDIT
 
-
 end
 
 
 
-% --- Executes just before ThinFilms is made visible.
-function ThinFilms_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before FEEDBACk_3 is made visible.
+function FEEDBACk_3_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 handles.mask = 'off';
 handles.StartPlot = 'off';
-global IntData
+
 clear plswork;
 global plswork;
 plswork = arduino('COM3');
-plswork.pinMode(4,'output');
-plswork.pinMode(11,'output');
+plswork.pinMode(9,'output')
+plswork.pinMode(4,'input')
 
-
+plswork.pinMode(13,'output');
+global IntData
+global condition
 global counterA
 global threshCross
-global time
-time = 2;
+global counter
+condition = 1;
+counter = 1;
+
 threshCross(1,1) = 0;
 threshCross(1,2) = 0;
 counterA = 1;
-
 
 IntData=[];
     % reset and start up video capture
@@ -82,7 +63,7 @@ try
     vid = videoinput('winvideo',1);
     handles.vid=vid;
     set(handles.vidFormat, 'String', inf.SupportedFormats);
-    
+
     selNr=get(handles.vidFormat, 'Value');
     selList=get(handles.vidFormat,'String');
     %set(vid.VideoFormat, 'String', selList(selNr));
@@ -91,8 +72,10 @@ catch
     disp 'no video input'
     handles.vid=0;
 end
-    src = getselectedsource(vid);
-        
+ src = getselectedsource(vid);
+ %AUDIO on
+handles.audio =audiorecorder(44100, 8, 1, 0);
+
    %     src.BacklightCompensation  = 'off'; % new
    %     src.Exposuremode = 'manual';
         %src.WhiteBalanceMode = 'manual'; %new
@@ -102,7 +85,7 @@ end
     vid.FramesPerTrigger = 1;
     vid.TriggerRepeat = Inf;
     vid.FrameGrabInterval = 1;
-        vid.ReturnedColorSpace = 'grayscale';
+
         %%%src.ColorEnable = 'off';
     %set up an images to put pictures in
     vidRes = get(vid, 'VideoResolution');
@@ -128,7 +111,7 @@ end
 end
 
 % --- Outputs from this function are returned to the command line.
-function varargout = ThinFilms_OutputFcn(hObject, eventdata, handles) 
+function varargout = FEEDBACk_3_OutputFcn(hObject, eventdata, handles) 
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
@@ -138,8 +121,8 @@ end
 
 % --- Executes when user attempts to close figure1.
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
-global aviobj;
-global threshCross
+global b
+
 
 % delete objects
 try
@@ -147,17 +130,14 @@ try
     stop(vid)
     delete(vid)
     clear vid
-    clear threshCross
-threshCross(1,1) = 0;
-threshCross(1,2) = 0;
+ b = 0;
+ 
     delete(instrfind({'Port'},{'COM3'}))
-     aviobj = close(aviobj);
+     handles.aviobj = close(handles.aviobj);
 end
 
 % Finally, close the figure
-
 delete(hObject);
-clear all;
 
 end
 
@@ -284,10 +264,11 @@ function StartLive_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 %handles.output = hObject;
-global fps
+
 vidFormat = get(handles.vidFormat, 'String');
 vid = handles.vid;
 src = getselectedsource(vid);
+
 fps=str2num(get(handles.framesPerSecond, 'String'));
 
 
@@ -327,11 +308,10 @@ end % Start buttonpress function
     % gets fired after the object is deleted on cleanup
    vid=handles.vid;
    global IntData
+   global II
     try
         % get the latest frame and clear the buffer
-        global II
-   II = getdata(vid,1);
-
+        II = getdata(vid,1);
         handles.size=size(II);
         flushdata(vid);
         %I=rgb2gray(I);
@@ -363,39 +343,48 @@ end % Start buttonpress function
      
     end %function imaqcallback
 
-    
-
-    
-    
-    
-    function PlotIntensity(hObject, handles, TotalInt,II)
+     function PlotIntensity(hObject, handles, TotalInt,II)
     %handles=guihandles(hObject, handles)
     global IntData;
-    global fps
-    global aviobj;
     global threshCross;
-    global t;
-    global plswork 
-    
+    global counterA; 
+    global plswork;
+    global b;
+    global newfilename
+
+
     guidata(hObject, handles);
-    if strcmp(handles.StartPlot,'on')==1
-         %J=make_3channel_img(I);
-        global counterA  
-         %aviobj = addframe(aviobj, J);   
-         if get(handles.VidRec_button, 'value') == 1
-         aviobj = addframe(aviobj, II);  
+%%%LED TRIGGGER%%%%
+
+    
+if strcmp(handles.StartPlot,'on')==1
+ 
+
+    %=======[SONG DETECTION]==========%  
+        if plswork.analogRead(0)>500 % only do below stuff if TTL_1 is on, i.e. song is detected
+    
+plswork.analogWrite(13,b) % turn LED on, to set leval, 'b'
+ guidata(hObject, handles);
+         if get(handles.VidRec_button, 'value') == 1 % if video recording radio  button is on
+         %aviobj = addframe(aviobj, II);    
+         REC_ON(hObject, handles);
+        
          end
-        t=size(IntData,1)+1;
-           IntData(t,1)=t/fps; %x axis scaling
+    t=size(IntData,1)+1;
+           IntData(t,1)=t/30; %x axis scaling
            IntData(t,2)=TotalInt; %Pixel values
            plot(handles.axes3,IntData(:,1),IntData(:,2),'b',threshCross(:,1),threshCross(:,2),'r*');
            hold on
      
-         
-    guidata(hObject, handles);
-  
-     if TotalInt>60 %%%feedback paradigm
+    if get(handles.dataRec, 'value')==1 % If data (thresh information) recording button is on
+   % fprintf(handles.fid, '%f , %f \n',IntData(t,:));
+    end
+    
+ 
+%================[ FEEDBACK BLOCK ]================%
+%% if plswork.analogRead(1)>400; % only do below stuff if TTL_2 is on, i.e. syllable is detected     
 
+if TotalInt>80 %%%feedback paradigm, if avg ROI is over the thresholded amount125
     counterA = counterA+1;
     counterAA = num2str(counterA);
     disp 'threshold crossed'
@@ -404,21 +393,97 @@ end % Start buttonpress function
      threshCross(counterA,2) = IntData(t,2);
       counterA = counterA+1;
       
- STIM;
+ STIM; % STIM TTL output, in a function
          guidata(hObject, handles);
-    end
-    if get(handles.dataRec, 'value')==1 
-    fprintf(handles.fid, '%f , %f \n',IntData(t,:));
-    end
-       
-    else
+
+end
+%       end
+%===================================================%    
+        else
+     plswork.analogWrite(13,0)
+REC_OFF(hObject,handles)
         IntData =[];
         threshCross = [];
         threshCross(1,1) = 0;
         threshCross(1,2) = 0;
+        
+        end
+else
+    
+        IntData =[];
+        threshCross = [];
+        threshCross(1,1) = 0;
+        threshCross(1,2) = 0;
+ 
+        
+
+end
+
+       guidata(hObject, handles);
     end
     
-    end
+    
+   function STIM()
+ 
+    global plswork;
+
+ plswork.digitalWrite(9,1) % stim TTL ON
+ t2 = timer;
+t2.StartDelay = 0.2;
+t2.TimerFcn = @(myTimerObj, thisEvent)plswork.digitalWrite(9,0); % stim TTL OFF
+start(t2)
+
+ end  
+    
+ function REC_ON(hObject, handles)
+  guidata(hObject,handles);
+ global condition
+ global aviobj
+ global newfilename
+
+     if condition ==1;
+         newfilename = datestr(clock,30);
+  stop(handles.vid);
+    handles.vid.LoggingMode = 'Disk&Memory';
+    aviobj = VideoWriter(newfilename);
+    handles.vid.DiskLogger= aviobj;
+  guidata(hObject, handles);
+record(handles.audio);
+start(handles.vid)
+record(handles.audio)
+
+condition = 2;
+     end
+      guidata(hObject,handles); 
+ end
+ 
+ function REC_OFF(hObject, handles)
+   guidata(hObject,handles);
+ global condition
+ global aviobj
+ global newfilename
+ global IntData
+ global threshCross
+ 
+ if condition ==2;
+stop(handles.vid);
+stop(handles.audio);
+threshdata = threshCross;
+ROIdat= IntData;
+audiodata = getaudiodata(handles.audio);
+save(newfilename,'audiodata','threshdata','ROIdat','-v7.3');
+close(handles.vid.DiskLogger);
+delete(aviobj);
+clear aviobj;
+clear handles.audio
+handles.audio =audiorecorder(44100, 16, 1, 0);
+
+ condition = 1;
+ start(handles.vid)
+   guidata(hObject,handles);
+ end
+ end
+ 
     
     % make a uint8 image from img
 function out = make_uint8_img(img)
@@ -441,23 +506,7 @@ function out = make_3channel_img(img)
         out = img;
     end
 end
-    %%%%%STIM%%%%%
- function STIM()
-   
-    global plswork;
-
- plswork.digitalWrite(11,1) % turn off LED to prevent bleaching.
- t2 = timer;
-t2.StartDelay = 0.2;
-t2.TimerFcn = @(myTimerObj, thisEvent)plswork.digitalWrite(11,0);
-start(t2)
-
- end
-
-
-
-
-
+    
     % Provide standard routine to set the mask for later  calculation of
     % intensity
     function out = SetMask (hObject, handles)
@@ -482,32 +531,25 @@ start(t2)
     
 % --- Executes on button press in StopLive_button.
 function StopLive_button_Callback(hObject, eventdata, handles)
-% hObject    handle to StopLive_button (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+global plswork
 
  set(handles.StopLive_button, 'Enable', 'off');
  set(handles.StartLive_button, 'Enable', 'on');
- 
+plswork.analogWrite(13, 0);
+  
  % video is open
     %delete(handles.vid);
     %clear handles.vid;
-    global threshCross
-    
     stop(handles.vid);
     handles.hIm1 = image( zeros(handles.size(1), handles.size(2), 1),'parent',handles.axes1);
     guidata(hObject, handles);
-        clear threshCross
-threshCross(1,1) = 0;
-threshCross(1,2) = 0;
-    
     %return
 end
 
 
 % --- Executes on button press in clearPlot.
 function clearPlot_Callback(hObject, eventdata, handles)
-% hObject    handle to clearPlot (see GCBO)
+% hObject    handle to clearPlot (see GCBO)f
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 axes(handles.axes3);
@@ -520,7 +562,8 @@ function StartPlot_button_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global IntData;
-global aviobj;
+global plswork;
+
 if strcmp(handles.mask, 'off')==1
     disp('no mask selected');
     return
@@ -559,17 +602,11 @@ if strcmp(handles.StartPlot, 'off')==1
     video_codec_fourcc = char(selList(selNr));
     
     if get(handles.VidRec_button, 'value') == 1
-    aviobj = avifile(video_filename, 'compression', video_codec_fourcc, 'fps', video_fps, 'quality', video_codec_quality);
-    aviobj.Colormap=gray(256); % This needs to be used with RLE en iYUV 
+
+   
+%     
     end
 
-    %%% Use these lines possibly as alternative to the writeavifile
-    %%% routine. I tried, but actually there seems to be no difference in
-    %%% the speed of saving images...
-    %stop(handles.vid);
-    %handles.vid.LoggingMode = 'Disk&Memory';
-    %handles.vid.DiskLogger= aviobj;
-    
     StartLive_button_Callback(hObject, eventdata, handles);
 else
     set(handles.StartPlot_button, 'String', 'Start Plot');
@@ -580,7 +617,7 @@ else
          fclose(handles.fid);
      end
     if get(handles.VidRec_button, 'value') == 1
-    aviobj = close(aviobj);
+% delete(aviobj);
     end
 end
     
@@ -993,3 +1030,62 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 end
 
+
+
+% --- Executes on slider movement.
+function slider1_Callback(hObject, eventdata, handles)
+
+global plswork;
+maxNumberOfImages = 255;
+set(hObject, 'Min', 1);
+set(hObject, 'Max', maxNumberOfImages);
+set(hObject, 'SliderStep', [1/maxNumberOfImages , 10/maxNumberOfImages ]);
+global b
+b = round(get(hObject,'Value'));
+LEDpower = b/255*100 % display LED power
+plswork.analogWrite(13, b); % led on pin 13
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function slider1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+end
+
+
+% RECORD (without feedback)
+function pushbutton10_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global condition
+global plswork
+% Start/Stop acquisition
+if strcmp(get(handles.pushbutton10,'String'),'Start Acquisition')
+    % Camera is not acquiring. Change button string and start acquisition.
+    set(handles.pushbutton10,'String','Stop Acquisition');
+
+    condition = 1;
+REC_ON(hObject, handles)
+
+else
+    REC_OFF(hObject, handles)
+plswork.analogWrite(13, 0);
+ set(handles.pushbutton10,'String','Start Acquisition');
+end
+end
+
+
+%SNAPSHOT
+function pushbutton11_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+end
