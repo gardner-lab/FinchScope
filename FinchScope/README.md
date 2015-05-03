@@ -12,6 +12,8 @@ The Finchscope is a lightweight (<2g)  microscope for biological imaging.
 ###DAQ
 The DAQ converts/syncs audioIN and video, and controls light levals
 
+Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
+
 
 ##INSTALATION
 1. Download ArduinoIO (http://www.mathworks.com/matlabcentral/fileexchange/32374-matlab-support-for-arduino--aka-arduinoio-package-)
