@@ -2,15 +2,18 @@
 ============
 
 ##Overview
-Freedom Scope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
 
-The project is in beta, 
 
-####Components: 
-###Finchscope
-The Finchscope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
+The project is now in beta. 
 
-###INSTALATION
+#### Hardware Components: 
+###Scope
+The Finchscope is a lightweight (<2g)  microscope for biological imaging. 
+###DAQ
+The DAQ converts/syncs audioIN and video, and controls light levals
+
+
+##INSTALATION
 1. Download ArduinoIO (http://www.mathworks.com/matlabcentral/fileexchange/32374-matlab-support-for-arduino--aka-arduinoio-package-)
      -install in path, running setup does this 
 2. Download driver from diamond video vc500 website, install.
