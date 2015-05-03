@@ -1,17 +1,22 @@
-#FreedomScope Project
+#FreedomScope 
 ============
 
 ##Overview
-The FreedomScope project aims to develop a modular in-vivo ABA (awake, behaving animal) optophysiology rig, with a transparent aquisition and analysis pipeline.
+Freedom Scope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
 
-The project is in-development. 
+The project is in beta, 
 
 ####Components: 
 ###Finchscope
 The Finchscope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging. 
 
-###ActiveCom
-The ActiveCom is a low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
+###INSTALATION
+1. Download ArduinoIO
+     -install in path, running setup does this 
+2. Download driver from diamond video vc500 website, install.
+3. (For matlab 2014a and later) download imaq tool from www.mathworks.com/help/imaq/installing-the-support-packages-for-image-acquisition-toolbox-adaptors.html
+4. Download latest software from github, change COM port to match arduino host controller 
+
 
 
 
