@@ -31,22 +31,22 @@ void loop() {
   Serial.println(sensorValue);      
 
   
-  if(sensorValue> setpoint+10){
+  if(sensorValue> setpoint+15){
       pos = pos-5;
   myservo.write(pos);
   delay(15);
 }
 
-  if(sensorValue < setpoint-10){
+  if(sensorValue < setpoint-15){
     pos = pos+5;
     myservo.write(pos);
     delay(15);
 }
 
-if(sensorValue > setpoint-10 && sensorValue < setpoint+10){
+if(sensorValue > setpoint-15 && sensorValue < setpoint+15){
 pos = 90;
    myservo.write(pos);
 }
 
-  delay(200);                     
+  delay(50);                     
 }
