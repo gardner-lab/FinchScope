@@ -4,7 +4,7 @@
 ##Overview
 The FreedomScope project aims to develop a modular in-vivo ABA (awake, behaving animal) optophysiology rig, with a transparent aquisition and analysis pipeline.
 
-The project is in-development. 
+The project is now active 
 
 ####Components: 
 ###Finchscope
