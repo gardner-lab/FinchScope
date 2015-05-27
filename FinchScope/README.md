@@ -9,7 +9,7 @@ The project is now in beta.
 #### Hardware Components: 
 ###FreedomScope
 The FreedomScope is a lightweight (<2g)  microscope for biological imaging. 
-###DAQ
+###DAQbox
 The DAQ converts/syncs audioIN and video, and controls light levals
 
 Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
