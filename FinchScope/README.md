@@ -17,6 +17,7 @@ Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAi
 
 ##INSTALATION
 1. Download Framgrabber driver for diamond video vc500 website, install.
+ https://drive.google.com/a/bu.edu/file/d/0BzJpJtLDKSH9VzZHMDJSb05BX0U/view?usp=sharing
 2. (For matlab 2014a and later) download image aquisition toolbox, and arduinoIO toolbox using SupportPackageInstaller: www.mathworks.com/help/imaq/installing-the-support-packages-for-image-acquisition-toolbox-adaptors.html
 3. Download latest software from github, change COM port to match arduino host controller 
 
