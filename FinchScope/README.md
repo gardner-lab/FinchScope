@@ -14,6 +14,8 @@ The DAQ converts/syncs audioIN and video, and controls light levals
 
 Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
 
+Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models 
+
 
 ##INSTALATION
 1. Download Framgrabber driver for diamond video vc500 website, install.
