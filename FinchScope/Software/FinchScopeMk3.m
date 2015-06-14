@@ -61,7 +61,7 @@ condition = 1
 % since the connection to the camera will already have
 % been established.
 handles.video = videoinput('winvideo', 1, 'UYVY_720x480');% Convert the input images to grayscale.
-handles.audio =audiorecorder(44100, 16, 1, 2);
+%handles.audio =audiorecorder(44100, 16, 1, 2);
 src= getselectedsource(handles.video);
 set(src, 'AnalogVideoFormat', 'ntsc_m'); % set analog video input to NTSC
 
@@ -248,7 +248,7 @@ close(handles.video.DiskLogger);
 delete(aviobj);
 clear aviobj;
 clear handles.audio
-handles.audio = audiorecorder(44100, 16, 1, 0);
+%handles.audio = audiorecorder(44100, 16, 1, 0);
 
  condition = 1
  start(handles.video)
