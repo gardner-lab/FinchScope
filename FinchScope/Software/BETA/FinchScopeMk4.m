@@ -41,35 +41,29 @@ function FinchScopeMk4_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for finchscopemk4
 handles.output = hObject;
 handles.test = 0;
+handles.TrigState = 'off';
 % Update handles structure
 guidata(hObject, handles);
 clear a;
 global a;
-global clips;
-global lims;
 global condition;
 global test
+global contrast
+contrast = 65000;
 test = 0;
-clips=[0 255]; % initialize
-lims=[10 90];
-a = arduino('COM7');
+handles.COMavailabe = instrhwinfo('serial');
+ActiveComPort = char(handles.COMavailabe.SerialPorts(1))
+a = arduino(num2str(ActiveComPort));
 a.pinMode(4,'output');
 a.pinMode(13,'output');
 a.pinMode(9,'output')
-condition = 1
-% Create video object
-% Putting the object into manual trigger mode and then
-% starting the object will make GETSNAPSHOT return faster
-% since the connection to the camera will already have
-% been established.
+condition = 1;
+
+
 handles.video = videoinput('winvideo', 2, 'UYVY_720x480');% Convert the input images to grayscale.
 handles.audio =audiorecorder(44100, 16, 1, 2);
 src= getselectedsource(handles.video);
 set(src, 'AnalogVideoFormat', 'ntsc_m'); % set analog video input to NTSC
-
-%%Color Control
-
-% Set Video Properties
 
     handles.video.FramesPerTrigger = 1;
     handles.video.TriggerRepeat = Inf;
@@ -77,7 +71,7 @@ set(src, 'AnalogVideoFormat', 'ntsc_m'); % set analog video input to NTSC
     handles.vidRes = get(handles.video, 'VideoResolution');
     handles.nBands = get(handles.video, 'NumberOfBands');
     handles.hIm1 = image( zeros(handles.vidRes(2), handles.vidRes(1), handles.nBands),'parent',handles.cameraAxes);
-    
+    handles.video.ReturnedColorSpace = 'grayscale';
 % initialize channel
 global channel
 channel = 1;
@@ -120,22 +114,12 @@ if strcmp(get(handles.startStopCamera,'String'),'Start Camera')
  
     set(handles.startAcquisition,'Enable','on');
     set(handles.captureImage,'Enable','on');  
-    video = handles.video;
-    test= handles.test
     try
-    % Use the timer to process input frames
 
-%    video.TimerPeriod = 1/30; % try updating 15 times/second.
-%    video.TimerFcn = {@imaqcallback, hObject, handles};
-   
-   
-  
-    % Alternative is to use the FramesAcquiredFcn if we need to ensure
-    % that we process every frame.
     handles.video.FramesPerTrigger = 1;
     handles.video.TriggerRepeat = Inf;
     handles.video.FramesAcquiredFcnCount=1;
-    handles. video.FramesAcquiredFcn = {@imaqcallback,hObject, handles};
+    handles.video.FramesAcquiredFcn = {@imaqcallback,hObject, handles};
    start(handles.video); 
        
 catch
@@ -163,18 +147,20 @@ end
     % gets fired after the object is deleted on cleanup
 global test
 global a
+global contrast
 video=handles.video;
 
   
 % get the latest frame and clear the buffer
-
-set(video,'ReturnedColorSpace','rgb');
+%TIFF
         II = getdata(video,1,'uint8');
+    
         handles.size=size(II);
+        
         flushdata(video);
         %I=rgb2gray(I);
     set(handles.hIm1,'cdata',II);
-            
+            colormap(bone(contrast)); % for 16 bit range
 
   if test == 1
   %ROI_1 calculation
@@ -193,8 +179,8 @@ set(video,'ReturnedColorSpace','rgb');
        TotalInt2 = sum(sum(A2))/handles.maxInt2;
        
        Difference = TotalInt-TotalInt2;
-       
-      if TotalInt > 150 %STIMULATION
+       Difference = round(((Difference)/(65535))*1000); % scale between 1 and 1000
+      if Difference > 150 %STIMULATION
           disp 'feedback on'
             a.digitalWrite(9,1) % stim TTL ON
             t2 = timer;
@@ -204,8 +190,14 @@ set(video,'ReturnedColorSpace','rgb');
       end
       
     set(handles.edit11,'String', num2str(Difference));
-    
+  end
+
+ % Triggering   
+ if get(handles.radiobutton3, 'value') == 1 % if video recording radio  button is on
+
+     Triggering(hObject,handles)
  end
+ 
        guidata(hObject, handles);
     end
 
@@ -220,14 +212,23 @@ end
 
 % --- Executes on button press in startAcquisition.
 function startAcquisition_Callback(hObject, eventdata, handles)
+
+% Start/Stop acquisition
+if strcmp(get(handles.startAcquisition,'String'),'Start Acquisition')
+REC_ON(hObject,handles);
+else
+    % Camera is acquiring. Stop acquisition, save video data,
+    % and change button string.
+REC_OFF(hObject,handles);
+end
+end
+
+function REC_ON(hObject,handles)
 global channel;
-global a;
 global newfilename;
 global aviobj
 global condition
-% Start/Stop acquisition
-if strcmp(get(handles.startAcquisition,'String'),'Start Acquisition')
-    % Camera is not acquiring. Change button string and start acquisition.
+ % Camera is not acquiring. Change button string and start acquisition.
     set(handles.startAcquisition,'String','Stop Acquisition');
    
     if channel == 2; 
@@ -246,10 +247,15 @@ start(handles.video)
 condition = 2
  % make sure that durring REC_OFF, it dosnt actually stop until after some aquisition.
    end
-else
-    % Camera is acquiring. Stop acquisition, save video data,
-    % and change button string.
- 
+
+end
+
+function  REC_OFF(hObject,handles)
+global channel;
+global a;
+global newfilename;
+global aviobj
+global condition  
 if condition == 2;
      stop(handles.video);
    if channel == 2; 
@@ -267,7 +273,7 @@ clear aviobj;
 clear handles.audio
 handles.audio = audiorecorder(44100, 16, 1, 0);
 
- condition = 1
+ condition = 1;
  start(handles.video)
    guidata(hObject,handles); 
 end  
@@ -275,7 +281,27 @@ end
     set(handles.startAcquisition,'String','Start Acquisition');
 
 end
+
+
+%% TRIGGERING
+function Triggering(hObject,handles)
+global a
+global b
+
+if b ==0
+    b = 1;
 end
+if a.analogRead(0)>500 % only do below stuff if TTL_1 is on, i.e. song is detected
+a.analogWrite(13,b) % turn LED on, to set leval, 'b'
+REC_ON(hObject,handles)
+disp 'song detected'
+else
+REC_OFF(hObject,handles)
+end
+
+end
+
+
 %% CLOSE FSCOPE
 % --- Executes when user attempts to close FinchScopeMk4.
 function myCameraGUI_CloseRequestFcn(hObject, eventdata, handles)
@@ -377,8 +403,14 @@ end
 
 % --- Executes on button press in radiobutton3.
 function radiobutton3_Callback(hObject, eventdata, handles)
-
-
+if handles.TrigState == 'off'
+  disp 'Triggering ON'
+  handles.TrigState = 'on';
+else
+    handles.TrigState = 'off';
+    disp 'Triggering OFF'
+end
+ guidata(hObject,handles); 
 end
 
 %% MODE SELECTION
@@ -631,7 +663,7 @@ handles = guidata(hObject);
     circle_mask = zeros([handles.shape(3) handles.shape(4)]); 
     circle_mask(find(Z <= Zmdl)) = 1;   
     
-    out=uint8(circle_mask); 
+    out=uint16(circle_mask); 
 
  disp 'ROI 1 set'
 
@@ -655,7 +687,7 @@ handles = guidata(hObject);
     circle_mask2 = zeros([handles.shape2(3) handles.shape2(4)]); 
     circle_mask2(find(Z2 <= Zmdl2)) = 1;   
     
-    out=uint8(circle_mask2); 
+    out=uint16(circle_mask2); 
 
  disp 'ROI 2 set'
 
@@ -666,6 +698,26 @@ handles = guidata(hObject);
     end
 
 
+% --- Executes on slider movement.
+function slider4_Callback(hObject, eventdata, handles)
 
+global contrast;
+maxContrast = 65535;
+set(hObject, 'Min', 1);
+set(hObject, 'Max', maxContrast);
+set(hObject, 'SliderStep', [1/maxContrast , 10/maxContrast ]);
 
+contrast = round(get(hObject,'Value'));
+end
 
+% --- Executes during object creation, after setting all properties.
+function slider4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+end
