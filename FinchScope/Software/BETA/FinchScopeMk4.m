@@ -115,11 +115,27 @@ if strcmp(get(handles.startStopCamera,'String'),'Start Camera')
     set(handles.startAcquisition,'Enable','on');
     set(handles.captureImage,'Enable','on');  
     try
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
 
     handles.video.FramesPerTrigger = 1;
     handles.video.TriggerRepeat = Inf;
     handles.video.FramesAcquiredFcnCount=1;
     handles.video.FramesAcquiredFcn = {@imaqcallback,hObject, handles};
+=======
+    % Use the timer to process input frames
+>>>>>>> origin/master
+
+    handles.video.FramesPerTrigger = 1;
+    handles.video.TriggerRepeat = Inf;
+    handles.video.FramesAcquiredFcnCount=1;
+<<<<<<< HEAD
+    handles.video.FramesAcquiredFcn = {@imaqcallback,hObject, handles};
+=======
+    handles. video.FramesAcquiredFcn = {@imaqcallback,hObject, handles};
+>>>>>>> origin/master
+>>>>>>> origin/master
    start(handles.video); 
        
 catch
@@ -152,15 +168,35 @@ video=handles.video;
 
   
 % get the latest frame and clear the buffer
+<<<<<<< HEAD
 %TIFF
         II = getdata(video,1,'uint8');
     
+=======
+<<<<<<< HEAD
+%TIFF
+        II = getdata(video,1,'uint16');
+    
+=======
+
+set(video,'ReturnedColorSpace','rgb');
+        II = getdata(video,1,'uint8');
+>>>>>>> origin/master
+>>>>>>> origin/master
         handles.size=size(II);
         
         flushdata(video);
         %I=rgb2gray(I);
     set(handles.hIm1,'cdata',II);
+<<<<<<< HEAD
             colormap(bone(contrast)); % for 16 bit range
+=======
+<<<<<<< HEAD
+            colormap(bone(contrast)); % for 16 bit range
+=======
+            
+>>>>>>> origin/master
+>>>>>>> origin/master
 
   if test == 1
   %ROI_1 calculation
@@ -179,8 +215,18 @@ video=handles.video;
        TotalInt2 = sum(sum(A2))/handles.maxInt2;
        
        Difference = TotalInt-TotalInt2;
+<<<<<<< HEAD
        Difference = round(((Difference)/(65535))*1000); % scale between 1 and 1000
       if Difference > 150 %STIMULATION
+=======
+<<<<<<< HEAD
+       Difference = round(((Difference)/(65535))*1000); % scale between 1 and 1000
+      if Difference > 150 %STIMULATION
+=======
+       
+      if TotalInt > 150 %STIMULATION
+>>>>>>> origin/master
+>>>>>>> origin/master
           disp 'feedback on'
             a.digitalWrite(9,1) % stim TTL ON
             t2 = timer;
@@ -190,12 +236,22 @@ video=handles.video;
       end
       
     set(handles.edit11,'String', num2str(Difference));
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
   end
 
  % Triggering   
  if get(handles.radiobutton3, 'value') == 1 % if video recording radio  button is on
 
      Triggering(hObject,handles)
+<<<<<<< HEAD
+=======
+=======
+    
+>>>>>>> origin/master
+>>>>>>> origin/master
  end
  
        guidata(hObject, handles);
@@ -297,10 +353,17 @@ REC_ON(hObject,handles)
 disp 'song detected'
 else
 REC_OFF(hObject,handles)
+<<<<<<< HEAD
 end
 
 end
 
+=======
+end
+
+end
+
+>>>>>>> origin/master
 
 %% CLOSE FSCOPE
 % --- Executes when user attempts to close FinchScopeMk4.
@@ -687,7 +750,15 @@ handles = guidata(hObject);
     circle_mask2 = zeros([handles.shape2(3) handles.shape2(4)]); 
     circle_mask2(find(Z2 <= Zmdl2)) = 1;   
     
+<<<<<<< HEAD
     out=uint16(circle_mask2); 
+=======
+<<<<<<< HEAD
+    out=uint16(circle_mask2); 
+=======
+    out=uint8(circle_mask2); 
+>>>>>>> origin/master
+>>>>>>> origin/master
 
  disp 'ROI 2 set'
 
