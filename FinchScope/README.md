@@ -27,9 +27,11 @@ Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pe
 
 #####NEW Software (MAC 10.7 or later):
 ![ScreenShot](FS01.jpg)
-figure: Brightfield imagiing 
+Figure: Brightfield imagiing 
+
+
 ![ScreenShot](FS02.jpg)
-figure: Single channel fluorescence imaging, at cellular resolution 
+Figure: Single channel fluorescence imaging, at cellular resolution. Real Time ROI information for BMI experiments.
 
 
 
