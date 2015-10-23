@@ -31,7 +31,7 @@ Figure: Brightfield imagiing
 
 
 ![ScreenShot](FS02.jpg)
-Figure: Single channel fluorescence imaging, at cellular resolution. Real Time ROI information for BMI experiments.
+Figure: Single channel fluorescence imaging, at cellular resolution. Low-Latency ROI information for BMI experiments.
 
 
 
