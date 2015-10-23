@@ -1,7 +1,7 @@
 
 ###ActiveComm
 The ActiveComm is a simple low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
-
+![ScreenShot](ActiveComm.jpg)
 
 Parts List:
 https://docs.google.com/a/bu.edu/spreadsheets/d/18mCksBi6qS9Ah4pYq2-t6xsRfTHRStpMuj2Iyy4ihCQ/edit?usp=sharing
