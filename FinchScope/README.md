@@ -10,7 +10,11 @@ The project is now in beta.
 
 #### Hardware Components: 
 ###FreedomScope
-The FreedomScope is a lightweight (<2g)  microscope for biological imaging. 
+The FreedomScope is a lightweight (<2g)  microscope for biological imaging.
+
+Parts List:
+https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
+
 ###DAQbox
 The DAQ converts/syncs audioIN and video, and controls light levals
 
@@ -27,6 +31,13 @@ figure: Brightfield imagiing
 ![ScreenShot](FS02.jpg)
 figure: Single channel fluorescence imaging, at cellular resolution 
 
+
+
+## TUTORIALS
+coming soon!
+
+
+#Contact:
 email bliberti@bu.edu
 
 
