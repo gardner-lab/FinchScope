@@ -8,24 +8,14 @@ function FS_BatchDff2(DIR, varargin)
 mat_dir='DFF_MOVIES';
 counter = 1;
 
-
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
-
-
 mkdir(mat_dir);
-
-
-
 
 
 outlier_flag=0;
 if nargin<1 | isempty(DIR), DIR=pwd; end
-
 mov_listing=dir(fullfile(DIR,'*.mat'));
 mov_listing={mov_listing(:).name};
-
-
-
 filenames=mov_listing;
 
 
@@ -37,16 +27,14 @@ fprintf(1,['Progress:  ' blanks(nblanks)]);
 for i=1:length(mov_listing)
 
     [path,file,ext]=fileparts(filenames{i});
-
-    
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 
 	load(fullfile(DIR,mov_listing{i}),'video');
-	
+
     %create DFF
     figure, set(gcf, 'Color','white')
- axis tight
-set(gca, 'nextplot','replacechildren', 'Visible','off');
+      axis tight
+      set(gca, 'nextplot','replacechildren', 'Visible','off');
 
 %# create AVI object
 
@@ -75,21 +63,19 @@ h=fspecial('disk',50);
 bground=imfilter(test,h);
 % bground=smooth3(bground,[1 1 5]);
 test=test-bground;
-
-
 h=fspecial('disk',1);
 test2=imfilter(test,h);
 
 %%%%%
-LinKat =  cat(1,test2(:,1,10)); % initilaize linkat
+% Scale videos by pixel value intensities
+LinKat =  cat(1,test2(:,1,10));
 for i = 2:size(test2,2)
 Lin = cat(1,test2(:,i,size(test2,3)));
 LinKat = cat(1,LinKat,Lin);
 end
-
-
-H = prctile(LinKat,95)+20; % take the pixel value equal to the 70th percentile value
-L = prctile(LinKat,40);
+H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
+L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
+%%%%%
 
 test2=imresize(test2,4);
 
@@ -123,16 +109,18 @@ TotalX2{counter} = X;
 end
 fprintf(1,'\n');
 %%
-
+%% Register Images
 % [optimizer, metric] = imregconfig('multimodal');
 % for g = 1:size(TotalX,3)
 %     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
 % end
-%  
+
 
 
 FrameInfo2 = max(TotalX,[],3);
 imwrite(FrameInfo2,'Dff_composite','png')
+
+%% Save Data from aggregate
 % Test = TotalX2;
 %mov_data = video.frames;
 %im_resize = 1;
