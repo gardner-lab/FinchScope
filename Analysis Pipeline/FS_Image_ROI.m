@@ -1,13 +1,17 @@
-function [ROI STATS]=fb_image_roi(IMAGE,varargin)
-%fb_select_roi selects an arbitrary number of roi's for plotting
-%
-%
-%
-%
+function [ROI STATS]=FS_image_ROI(IMAGE,varargin)
+% FS_image_ROI.m
+
+% FS_Image_ROI takes in image, and allows user ot selet ROIs, outputs a file to
+% run through and extract ROIS frim data.
+
+%   Created: 2015/08/02
+%   By: WALIII
+%   Updated: 2015/11/18
+%   By: WALIII
+
 
 
 % select file to load
-
 nparams=length(varargin);
 baseline=2; % 0 for mean, 1 for median, 2 for trimmed mean
 filt_rad=12; % gauss filter radius
@@ -103,7 +107,7 @@ while 1>0
 	h=wait(h_ellipse);
 
 	% convert the ROI into all pixels inside the polygon
-	
+
 	if isempty(h), break; end
 
 	% if any element of h is outside the plotting window, enter delete mode
@@ -113,8 +117,8 @@ while 1>0
 		% loop through idx, any matches result in deleting that roi
 		% is a centroid inside the ellipse?
 
-		if length(centroid)>0	
-		
+		if length(centroid)>0
+
 			del=inpolygon(centroid(:,1),centroid(:,2),h(:,1),h(:,2));
 			idx=find(del);
 
@@ -132,11 +136,11 @@ while 1>0
 	end
 
 	if any(h(:,1)>columns) | any(h(:,2)>rows) | any(h(:)<0)
-	
+
 		% placing the ellipse on the border changes delete mode
 
 		if del_flag
-			disp('Exiting delete mode');			
+			disp('Exiting delete mode');
 		else
 			disp('Entering delete mode');
 		end
@@ -166,11 +170,11 @@ while 1>0
 	diameter(end+1)=max(dist);
 
 	set(0,'CurrentFigure',slider_fig);
-	
+
 	ellipses{end+1}=h;
 	pl_ellipses(end+1)=plot(h(:,1),h(:,2),'-','linewidth',1.5,'color',[1 1 0]);
 
-	% what's inside of the ROI?  this could also be used to normalize fluorescene per 
+	% what's inside of the ROI?  this could also be used to normalize fluorescene per
 	% Svoboda et al. (take an annulus surrounding the ROI)
 
 	counter=counter+1; % increment the colormap

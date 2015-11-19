@@ -1,4 +1,13 @@
 function [audio_ts, audio, video_ts, video] = extractmedia(fl)
+  % extractmedia.m
+
+  % function to assit parsing data from FreedomScopes
+  %   Created: 2015/09/20
+  %   By: Nathan Perkins
+
+
+
+
 
 % get path
 [folder, ~, ~] = fileparts(mfilename('fullpath'));
@@ -51,4 +60,3 @@ if length(video_ts) ~= length(video)
 end
 
 end
-

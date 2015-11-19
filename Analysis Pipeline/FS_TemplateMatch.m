@@ -1,9 +1,9 @@
 function FS_TemplateMatch(TEMPLATE,varargin)
-%fb_template_match allows the user to select a template, and then attempts to find
+%FS_TemplateMatch allows the user to select a song template, and then attempts to find
 %matches to the template through a running Euclidean distance score (similar to SAP)
 %
 %	fb_template_match(TEMPLATE,varargin)
-%	
+%
 %	TEMPLATE
 %	template (vector, default: empty, user selects via GUI)
 %
@@ -92,7 +92,7 @@ if isempty(out_dir)
 	out_dir=fullfile(pwd,'extraction');
 end
 
-	
+
 % collect all directories in the phrase directory
 % have we already extracted a template?
 
@@ -175,7 +175,7 @@ if exist(fullfile(out_dir,'cluster_data.mat'),'file')
 	disp('Looks like you have computed the scores before...');
 
 	while isempty(response)
-		response=input('Would you like to (r)ecompute or (s)kip to clustering?  ','s');	
+		response=input('Would you like to (r)ecompute or (s)kip to clustering?  ','s');
 		switch (lower(response))
 			case 'r'
 				skip=0;
@@ -193,7 +193,7 @@ if ~skip
 
 	mat_files=dir('*.mat');
 	mat_files={mat_files(:).name};
-	
+
 	disp('Computing features for the sound files...');
 
 	mat_file_features(fullfile(sound_dir,'syllable_data'),mat_files);
@@ -213,7 +213,7 @@ if extract_sounds
 		disp('Looks like you have clustered the data before..');
 
 		while isempty(response)
-			response=input('Would you like to (r)ecluster or (s)kip?  ','s');	
+			response=input('Would you like to (r)ecluster or (s)kip?  ','s');
 			switch (lower(response))
 				case 'r'
 					skip=0;
@@ -244,7 +244,7 @@ if extract_sounds
 		disp('Looks like you have extracted the data before..');
 
 		while isempty(response)
-			response=input('Would you like to (r)eextract or (s)kip?  ','s');	
+			response=input('Would you like to (r)eextract or (s)kip?  ','s');
 			switch (lower(response))
 				case 'r'
 					skip=0;
@@ -258,10 +258,10 @@ if extract_sounds
 
 
 	if ~skip
-		
+
 		[mic_data2 vid_times mic_data mov_data used_filenames]=...
 			extract_hits(sorted_syllable,filenames,act_templatesize,round(fs*padding));
-	
+
 		% each rising edge indicates a new frame, map onto time from onset
 
 		extract_movies(mic_data2, vid_times, mic_data,mov_data,used_filenames,out_dir,im_resize,movie_fs,fs,min_f,max_f)%extract_movies(out_dir,im_resize,movie_fs,mic_data,fs,min_f,max_f);
@@ -293,7 +293,7 @@ par_save = @(FILE,features) save([FILE],'features');
 
 parfor i=1:length(MAT_FILES)
 
-	input_file=MAT_FILES{i};	
+	input_file=MAT_FILES{i};
 	output_file=fullfile(DIR,[ MAT_FILES{i}(1:end-4) '_score.mat']);
 
 	if exist(output_file,'file'), continue; end
@@ -355,7 +355,7 @@ parfor i=1:length(file_listing)
 
 	for j=1:length(target)
 		score_temp{j}=[];
-		
+
 		for k=1:targetlength-TEMPLATESIZE
 			score_temp{j}=[score_temp{j} sum(sum(abs(target{j}(:,k:k+TEMPLATESIZE)-TEMPLATE{j})))];
 		end
@@ -392,7 +392,7 @@ parfor i=1:length(file_listing)
 		variableCellArray{i}=temp_mat;
 		peakLocation{i}=[];
 		raw_scores{i}=raw_mat;
-		continue; 
+		continue;
 	end
 
 	curvature=gradient(gradient(product_score));
@@ -472,7 +472,7 @@ for i=1:length(SELECTED_PEAKS)
 		endpoint=endpoint+PADDING(2);
 
 		if length(data.audio.data)>endpoint && startpoint>0%if length(data.mic_data)>endpoint && startpoint>0
-			counter=counter+1;			
+			counter=counter+1;
 		end
 	end
 end
@@ -515,31 +515,31 @@ for i=1:length(SELECTED_PEAKS)
 
         startpoint_video=round((startpoint/48e3)*30);
         endpoint_video=round((endpoint/48e3)*30);
-        
+
         nframes=length(video.frames);
 
 		if length(audio.data)>endpoint && startpoint>0 ...
                 && nframes>endpoint_video && startpoint_video>0
-            
-          
-            
+
+
+
             idx1=startpoint/48000; %time in seconds
             idx2=endpoint/48000;
-            
+
             [~,loc1]= min(abs(video.times-idx1)); %what is the closest time in frames, using time index
             [~,loc2]= min(abs(video.times-idx2));
-            
-            
+
+
             startT = loc1;
             endT = loc2;
-            
-          
+
+
             VID_TIMES{trial} = video.times(startT:endT);
-            
+
             MOV_DATA{trial}=video.frames(startT:endT);
 			MIC_DATA(:,trial)=audio.data(startpoint:endpoint); % this is just the audio data
             MIC_DATA2(:,trial)= (startpoint:endpoint); % these are the actual index values of the mic data
-            
+
 			USED_FILENAMES{end+1}=FILENAMES{i};
 
 			trial=trial+1;
@@ -557,7 +557,7 @@ function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,O
 %function extract_movies(RISE_DATA,FALL_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,MIC_DATA,FS,MIN_F,MAX_F)
 
 if exist(fullfile(OUT_DIR,'mov'),'dir')
-	rmdir(fullfile(OUT_DIR,'mov'),'s'); 
+	rmdir(fullfile(OUT_DIR,'mov'),'s');
 end
 
 if exist(fullfile(OUT_DIR,'gif'),'dir')
@@ -575,9 +575,9 @@ disp('Saving movie and audio data');
 fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 for i=1:length(USED_FILENAMES)
-	
+
 	fprintf(1,formatstring,round((i/length(USED_FILENAMES))*100));
-	
+
 	[path,file,ext]=fileparts(USED_FILENAMES{i});
 
 	% movie filename one directory down
@@ -585,13 +585,13 @@ for i=1:length(USED_FILENAMES)
 	%mov_filename=fullfile('..',[file '.mov']);
 data2=load((file),'video');
 % 	image_info=imfinfo(mov_filename);
-% 	
+%
 
 % 	frame_idx=RISE_DATA(RISE_DATA(:,i)>0,i);
-% 
+%
 % 	frame_idx=find(RISE_DATA(:,i)>0);
 % 	frame_val=RISE_DATA(frame_idx,i);
-% 
+%
 % 	first_frame=frame_val(1);
 % 	last_frame=frame_val(end);
 
@@ -613,11 +613,11 @@ mov_idx=first_frame:last_frame;
 	counter=1;
 % 	for j=first_frame:last_frame
 % 		imdata=MOV_DATA(j);
-% 		
+%
 % 		if ~isempty(IM_RESIZE)
 % 			imdata=imresize(imdata,IM_RESIZE);
 % 		end
-% 		
+%
 % 		mov_data(:,:,counter)=imdata;
 % 		counter=counter+1;
 % 	end
@@ -630,14 +630,14 @@ mov_idx=first_frame:last_frame;
 	% frame_idx is used to determine the closest point in time for the onset
 	% of a given frame
 	%
-	
+
 	mic_data(:,1)=MIC_DATA(:,i);
     mic_data(:,2)=MIC_DATA2(:,i);
     mov_data= MOV_DATA{i};
    vid_times = VID_TIMES{i};
 	fs=FS;
 	movie_fs=MOVIE_FS;
-	
+
 	if isempty(IM_RESIZE)
 		im_resize=1;
 	else
