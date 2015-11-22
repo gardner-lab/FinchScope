@@ -6,7 +6,7 @@
 
 The project is now in beta.
 
-![ScreenShot](Figure 1-5-2.jpg)
+![ScreenShot](FS_IMAGE.jpg)
 
 #### Hardware Components:
 ###FreedomScope
