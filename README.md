@@ -6,7 +6,7 @@ The FreedomScope project aims to develop a modular in-vivo ABA (awake, behaving 
 
 The project is now active
 
-![ScreenShot](ActiveCommutatorSchematic.png)
+![ScreenShot](ACS2.png)
 
 
 
