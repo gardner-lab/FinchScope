@@ -1,7 +1,7 @@
-#FreedomScope
+# FreedomScope
 ============
-
-##Overview
+![ScreenShot](TRACES.png)
+## Overview
 
 
 The project is now in beta.
@@ -9,13 +9,13 @@ The project is now in beta.
 ![ScreenShot](FS_IMAGE.jpg)
 
 #### Hardware Components:
-###FreedomScope
+### FreedomScope
 The FreedomScope is a lightweight (<2g) 3D printed microscope for biological imaging, specifically designed for fluorescence calcium imaging in Zebra Finches and other small animals.
 
 Parts List:
 https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
 
-###DAQbox
+### DAQ BOX
 The DAQ converts/syncs audioIN and video, and controls light levals
 
 Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
@@ -23,7 +23,7 @@ Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAi
 Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models
 
 
-##SOFTWARE
+## SOFTWARE
 
 #####NEW Software (MAC 10.7 or later):
 ![ScreenShot](FS01.jpg)
