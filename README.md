@@ -16,5 +16,5 @@ The project is now active- but documentation is still sparse on some things.
 ###Finchscope
 The FinchScope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging- Designed specifically for monitoring the neural activity (via genetically encoded calcium indicators) of zebra finches while they sing their courtship songs.
 
-###ActiveCom
+###ActiveComm
 The ActiveCom is a low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
