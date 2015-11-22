@@ -1,6 +1,5 @@
 # FreedomScope
 ============
-![ScreenShot](TRACES.png)
 ## Overview
 
 

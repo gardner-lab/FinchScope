@@ -8,6 +8,8 @@ The project is now active- but documentation is still sparse on some things.
 
 ![ScreenShot](ACS3.png)
 
+![ScreenShot](TRACES.png)
+
 
 
 ####Components:
