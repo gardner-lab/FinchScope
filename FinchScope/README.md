@@ -14,10 +14,16 @@ The FreedomScope is a lightweight (<2g) 3D printed microscope for biological ima
 Parts List:
 https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
 
+Detailed Assembly Schematic:
+https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
+
 ### DAQ BOX
-The DAQ converts/syncs audioIN and video, and controls light levals
+The DAQ converts/syncs audioIN and video, Triggers in/out, and also controls LED power levels
 
 Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
+
+Detailed Assembly Schematic:
+https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
 
 Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models
 
