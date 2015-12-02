@@ -8,12 +8,22 @@ The ActiveComm is a simple low noise active(driven by a motor and sensor) commut
 Parts List:
 https://docs.google.com/a/bu.edu/spreadsheets/d/18mCksBi6qS9Ah4pYq2-t6xsRfTHRStpMuj2Iyy4ihCQ/edit?usp=sharing
 
-Schematics
 
-(1): https://docs.google.com/a/bu.edu/drawings/d/1YxSafQaIYxEDBTFbJCvKYJh-I-m52XN8J2makgpTJ8w/edit?usp=sharing
 
-(2):
 
+## Assembly
+
+ Get 3D printed files, these can be ordered through 3D hubs, local hackerspace/makespace, or local university service.
+ Boston University has mid/low-resolution 3D printing  on site.
+
+
+Schematic:
+![ScreenShot](schematic.png)
+
+
+Assembled Commutators:
+![ScreenShot](IMG_1856.jpg)
+![ScreenShot](IMG_1862.jpg)
 
 
 Inspiration:
