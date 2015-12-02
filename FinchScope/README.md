@@ -3,7 +3,7 @@
 ## Overview
 
 
-The project is now in beta.
+The project is now in beta- works in our lab, and started some collaborations, but might still have some bugs...
 
 ![ScreenShot](FS_IMAGE.jpg)
 
