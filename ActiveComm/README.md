@@ -22,10 +22,10 @@ Schematic:
 
 
 Assembled Commutators:
-![ScreenShot](IMG_1856.jpg)
+![ScreenShot](IMG_1856.JPG)
 
 Image2:
-![ScreenShot](IMG_1862.jpg)
+![ScreenShot](IMG_1862.JPG)
 
 
 Inspiration:
