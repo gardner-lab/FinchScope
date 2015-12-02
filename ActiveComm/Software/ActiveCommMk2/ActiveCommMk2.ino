@@ -3,7 +3,7 @@
 // 01.13.15
 // WALIII
 
-// Hall sensor controlled actove commutator
+// Hall sensor controlled actove commutator, driven by a servo motor
 // Inspired 
 // 
 //
