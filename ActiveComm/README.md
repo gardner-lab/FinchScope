@@ -23,6 +23,8 @@ Schematic:
 
 Assembled Commutators:
 ![ScreenShot](IMG_1856.jpg)
+
+Image2:
 ![ScreenShot](IMG_1862.jpg)
 
 
