@@ -3,7 +3,7 @@
 
 ActiveCommMk1: For active commutators driven by servo motors. reads from sensor every */200ms
 
-ActiveCommMk1: This is identical to ActiveCommMk1, but has magnet orientation swapped, and reads from sensor  */50ms.
+ActiveCommMk2: This is identical to ActiveCommMk1, but has magnet orientation swapped, and reads from sensor  */50ms.
 
 CommutatorMk3: For quieter, stepper motor driven commutators. Requires some additional hardware (i.e. stepper motor and stepper motor driver). Additional parts may not interface smoothly with servo driven design.
 

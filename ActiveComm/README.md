@@ -21,12 +21,6 @@ Schematic:
 ![ScreenShot](schematic.png)
 
 
-Assembled Commutators:
-![ScreenShot](IMG_1856.JPG)
-
-Image2:
-![ScreenShot](IMG_1862.JPG)
-
 
 Inspiration:
 http://web.mit.edu/fee/Public/Publications/FeeLeonardo2001.pdf
