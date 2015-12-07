@@ -44,7 +44,7 @@ void loop() {
 }
 
 if(sensorValue > setpoint-15 && sensorValue < setpoint+15){
-pos = 90;
+pos = 93;
    myservo.write(pos);
 }
 
