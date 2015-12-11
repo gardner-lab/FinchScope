@@ -40,7 +40,9 @@ Make sure the Hall sensor is wired correctly:
 
 ![ScreenShot](hall_sensor.png)
 
-On the serial monitor, with no magnet, pin A0 should read ~512. Bringing a magnet close to the sensor will cause this value to increase or decrease, depending on the deflection. The sketch is programmed to do this already
+On the serial monitor, with no magnet, pin A0 should read ~512. Bringing a magnet close to the sensor will cause this value to increase or decrease, depending on the deflection. The sketch is programmed to do this already.
+
+On the cable, the Magnet should sit just below the hall sensor (see IMAGES dir)
 
 ## Inspiration:
 This was inspired by work done in Michale Fee's lab, by Anthony Leonardo.  
