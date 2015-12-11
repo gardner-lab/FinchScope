@@ -31,6 +31,7 @@ The wiring is simple. On the Arduino:
 
 
 Make sure the Hall sensor is wired correctly:
+
 ![ScreenShot](hall_sensor.png)
 
 On the serial monitor, with no magnet, pin A0 should read ~512. The sketch is programmed to do this already
