@@ -22,5 +22,17 @@ Schematic:
 
 
 
+
+## Wiring:
+on the arduino,
+PIN 09: Servo output
+PIN A0: Hall sensor output
+
+
+Make sure the sensor is wired correctly:
+![ScreenShot](hall_sensor.png)
+
+
+
 Inspiration:
 http://web.mit.edu/fee/Public/Publications/FeeLeonardo2001.pdf
