@@ -24,15 +24,16 @@ Schematic:
 
 
 ## Wiring:
-on the arduino,
-PIN 09: Servo output
-PIN A0: Hall sensor output
+The wiring is simple. On the Arduino:
+
+    PIN 09: Servo output
+    PIN A0: Hall sensor output
 
 
-Make sure the sensor is wired correctly:
+Make sure the Hall sensor is wired correctly:
 ![ScreenShot](hall_sensor.png)
 
-
+On the serial monitor, with no magnet, pin A0 should read ~512. The sketch is programmed to do this already
 
 Inspiration:
 http://web.mit.edu/fee/Public/Publications/FeeLeonardo2001.pdf
