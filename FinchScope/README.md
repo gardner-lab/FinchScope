@@ -7,15 +7,25 @@ The project is now in beta- works in our lab, and started some collaborations, b
 
 ![ScreenShot](FS_IMAGE.jpg)
 
-#### Hardware Components:
-### FreedomScope
 The FreedomScope is a lightweight (<2g) 3D printed microscope for biological imaging, specifically designed for fluorescence calcium imaging in Zebra Finches and other small animals.
+
+#### Hardware Components:
+
 
 Parts List:
 https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
 
-Detailed Assembly Schematic:
-https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
+##### Detailed Assembly Schematics:
+
+CAMERA:
+https://docs.google.com/drawings/d/1Mr2SnDT4y19bNpteDOJaQ2hIX_aQwCAYKedkWsTO91U/edit
+
+TEST CABLES:
+https://docs.google.com/drawings/d/1CfU9u8T49LHIxU1WA31IjVRijmX2HUkyHNBYetaNZlw/edit
+
+COMMUTATOR INTERFACE:
+https://docs.google.com/drawings/d/1axYK-PdhWuuLdrFH5zi7WUmzpqFvBdvdiIFzCNW9POA/edit
+
 
 ### DAQ BOX
 The DAQ converts/syncs audioIN and video, Triggers in/out, and also controls LED power levels
