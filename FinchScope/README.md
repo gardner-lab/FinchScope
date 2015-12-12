@@ -30,10 +30,11 @@ https://docs.google.com/drawings/d/1axYK-PdhWuuLdrFH5zi7WUmzpqFvBdvdiIFzCNW9POA/
 ### DAQ BOX
 The DAQ converts/syncs audioIN and video, Triggers in/out, and also controls LED power levels
 
-Cable Wiring: https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
+DAQ Overview:
+https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit
 
-Detailed Assembly Schematic:
-https://docs.google.com/a/bu.edu/drawings/d/18Dm9MpK5yCYzgoE184fAivyCe2NFyLcQP5wxAE53_zA/edit?usp=sharing
+Internal Wiring Diagram:
+https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit
 
 Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models
 
