@@ -5,7 +5,7 @@ function FS_AV_Parse(DIR,varargin)
 % Parse Data from FreedomScopes
 %   Created: 2015/08/02
 %   By: WALIII
-%   Updated: 2015/11/18
+%   Updated: 2015/11/19
 %   By: WALIII
 
 % FS_AVparse will do several things:
