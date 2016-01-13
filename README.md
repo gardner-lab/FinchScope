@@ -4,7 +4,7 @@
 ##Overview
 The FreedomScope project aims to develop a modular in-vivo ABA (awake, behaving animal) optophysiology rig, with a transparent acquisition and analysis pipeline. The goal is to produce a customizable and scaleable single-photon fluorescent imaging platform that takes advantage of developing open-source analysis platforms.
 
-The project is now active- but documentation is still sparse on some things.
+The project is now active in the Gardner lab, (Pub pending...) but documentation is still sparse on some things.
 
 ![ScreenShot](ACS3.png)
 
