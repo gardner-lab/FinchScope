@@ -97,6 +97,9 @@ fs = 48000;
 		imwrite(flipdim(uint8(s(minpt:maxpt,:)),1),hot,fullfile(gif_dir,[file '.gif']),'gif');
 		save(fullfile(mat_dir,[file '.mat']),'audio','video','-v7.3');
 
+        % clear the buffer
+clear video;
+clear audio;
 
 
 end
