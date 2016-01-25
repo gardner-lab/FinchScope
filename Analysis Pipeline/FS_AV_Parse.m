@@ -5,7 +5,7 @@ function FS_AV_Parse(DIR,varargin)
 % Parse Data from FreedomScopes
 %   Created: 2015/08/02
 %   By: WALIII
-%   Updated: 2015/11/18
+%   Updated: 2015/11/19
 %   By: WALIII
 
 % FS_AVparse will do several things:
@@ -97,6 +97,9 @@ fs = 48000;
 		imwrite(flipdim(uint8(s(minpt:maxpt,:)),1),hot,fullfile(gif_dir,[file '.gif']),'gif');
 		save(fullfile(mat_dir,[file '.mat']),'audio','video','-v7.3');
 
+        % clear the buffer
+clear video;
+clear audio;
 
 
 end
