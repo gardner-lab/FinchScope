@@ -29,7 +29,7 @@ for i=1:length(mov_listing)
     [path,file,ext]=fileparts(filenames{i});
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 
-	load(fullfile(DIR,mov_listing{i}),'video');
+	load(fullfile(DIR,mov_listing{i}),'mov_data');
 
     %create DFF
     figure, set(gcf, 'Color','white')
@@ -47,7 +47,7 @@ open(vidObj);
 colormap(bone);
 
 
-mov_data = video.frames;
+
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
