@@ -1,6 +1,6 @@
 
 function FS_AV_Parse(DIR,varargin)
-% FS_AVparse
+% FS_AV_Parse
 
 % Parse Data from FreedomScopes
 %   Created: 2015/08/02
@@ -8,7 +8,7 @@ function FS_AV_Parse(DIR,varargin)
 %   Updated: 2015/11/19
 %   By: WALIII
 
-% FS_AVparse will do several things:
+% FS_AV_parse will do several things:
 %
 %   1. Seperate Audio and Video, and place them into .mat files in a .mat
 %      directory

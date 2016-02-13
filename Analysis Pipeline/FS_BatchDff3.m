@@ -1,9 +1,12 @@
-function FS_BatchDff_UA(DIR, varargin)
+function FS_BatchDff3(DIR, varargin)
 
-%run thorough directory and make DfF movies in AVI format
+%run thorough directory and make Df/f in AVI format
+% This Script is for 'unprocessed' videos
+
+
 % WALIII
-% For unprocessed videos
-% 09.05.15
+% For ALL video input types.
+% 02.10.16
 
 
 mat_dir='DFF_MOVIES';
@@ -43,49 +46,86 @@ clear video;
 save_filename=[ fullfile(mat_dir,file) ];
 
 vidObj = VideoWriter(save_filename);
-vidObj.Quality = 100;
+vidObj.Quality = 40;
 vidObj.FrameRate = 30;
 open(vidObj);
 colormap(bone);
 
-
-mov_data = video.frames(1:video.nrFramesTotal);
+try
+   LastFrame = video.nrFramesTotal;
+catch
+        LastFrame = size(video.frames,2);
+    end
+        
+mov_data = video.frames(1:LastFrame);
 %%%%
-for i=1:(length(mov_data)-2)
-   mov_data3 = single(rgb2gray(mov_data(i).cdata));
-   mov_data4 = single(rgb2gray(mov_data(i+1).cdata));
+try
+for iii=1:(length(mov_data)-2)
+   mov_data3 = single(rgb2gray(mov_data(iii).cdata));
+   mov_data4 = single(rgb2gray(mov_data(iii+1).cdata));
    %mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
-   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4)/2);
+   mov_data2(:,:,iii) = uint16((mov_data3 + mov_data4)/2);
+end
+catch
+    % Non- FreedomScope Image
+   disp('non-FS image detected. Processing anyway..')
+ for iii=1:(length(mov_data)-2)
+   mov_data3 = single((mov_data(iii).cdata));
+   mov_data4 = single((mov_data(iii+1).cdata));
+   %mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
+   mov_data2(:,:,iii) = (((mov_data3 + mov_data4)/2));
+end   
 end
 
-test=mov_data2;
-test=imresize((test),.25);
+%test=(mov_data2/2^16);
+test=(mov_data2);
 
-h=fspecial('disk',50);
-bground=imfilter(test,h);
-% bground=smooth3(bground,[1 1 5]);
-test=test-bground;
-h=fspecial('disk',1);
+
+
+
+
+
+Y = diff(test,1,3);
+test = Y;
+test=imresize((test),.5);
+h=fspecial('disk',2);
 test=imfilter(test,h);
+
+%# Filter out large fluctuations...
+h=fspecial('disk',30);
+bground=imfilter(test,h);
+% % bground=smooth3(bground,[1 1 5]);
+test=test-bground;
+
 
 %%%%%
 % Scale videos by pixel value intensities of a single, representative frame
 LinKat =  cat(1,test(:,1,15)); % take this from the 15 frame
-for i = 2:size(test,2)
+for i = 2:size(test,1)
 Lin = cat(1,test(:,i,size(test,3)));
 LinKat = cat(1,LinKat,Lin);
 end
-H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
-L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
+
+
+
+H = (prctile(LinKat,99))+100; % clip pixel value equal to the 95th percentile value
+L = (prctile(LinKat,30));% clip the pixel value equal to the bottem 20th percentile value
 %%%%%
-test=imresize(test,4);
+test=imresize(test,2);
 
 [optimizer, metric] = imregconfig('multimodal');
+
 %# create movie
-for i=1:(length(mov_data)-2);
+for ii=10:(size(test,3)-10);
     %test3(:,:,i) = imregister(test2(:,:,i),test2(:,:,1),'rigid',optimizer,metric);
-   image(test(:,:,i),'CDataMapping','scaled');
+  
+ 
+
+    image('CData',test(:,:,ii),'CDataMapping','scaled');
    caxis([double(L),double(H)])%caxis([0,70]) % change caxis
+
+set(gca,'LooseInset',get(gca,'TightInset'))
+
    writeVideo(vidObj, getframe(gca));
 end
 close(gcf)
@@ -93,16 +133,16 @@ close(gcf)
 %# save as AVI file, and open it using system video player
 close(vidObj);
 
-FrameInfo = max(test,[],3);
-%figure();
+FrameInfo = max(test(:,:,10:size(test,3)),[],3);
+FrameInfo2 = std(double(test(:,:,10:size(test,3))),[],3);
 colormap(bone)
 imagesc(FrameInfo);
 %set(gca,'ydir','normal'); % Otherwise the y-axis would be flipped
 X = mat2gray(FrameInfo);
-X = im2uint8(X);
+X = im2uint16(X);
 imwrite(X,save_filename,'png')
 
-TotalX(:,:,counter) = X;
+% TotalX(:,:,counter) = X;
 
 
 counter = counter+1;
@@ -117,6 +157,7 @@ clear L;
 clear mov_data2
 clear mov_data3
 clear mov_data4
+clear test
 
 end
 fprintf(1,'\n');
@@ -129,8 +170,8 @@ fprintf(1,'\n');
 
 
 
-FrameInfo2 = max(TotalX,[],3);
-imwrite(FrameInfo2,'Dff_composite','png')
+%FrameInfo2 = max(TotalX,[],3);
+%imwrite(FrameInfo2,'Dff_composite','png')
 
 %% Save Data from aggregate
 % Test = TotalX2;
