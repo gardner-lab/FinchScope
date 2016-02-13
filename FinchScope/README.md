@@ -49,7 +49,8 @@ Figure: Brightfield imagiing
 ![ScreenShot](FS02.jpg)
 Figure: Single channel fluorescence imaging, at cellular resolution. Low-Latency ROI information for BMI experiments.
 
-
+Current software can be found here: 
+https://github.com/nathanntg/video-capture/releases
 
 ## TUTORIALS
 coming soon!
