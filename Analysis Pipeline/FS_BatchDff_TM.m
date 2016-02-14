@@ -1,12 +1,24 @@
 function FS_BatchDff_TM(DIR, varargin)
+  % Tif_BatchDff_TM()
 
-%run thorough directory and make DfF movies in AVI format
-% This is for data that has been Template matched via 'FS_TemplateMatch'
-% WALIII
-% 09.05.15
+  % Run through Template matched files in a directory and make Background subtracted
+  % videos (Spatially downsampled, in AVI format) as well as MAX projections of
+  % These AVI videos.
+
+  %   Created: 2016/02/12
+  %   By: WALIII
+  %   Updated: 2016/02/15
+  %   By: WALIII
+
+  % FS_BatchDff_TM will do several things:
+  %
+  %   1. Create AVI file, abckgorund subtracted AVIs
+  %   2. Make MAX projections of these AVIs
+  %   3.  Run in the Directory of the all .mat files
+  %
 
 
-mat_dir='DFF_MOVIES';
+mat_dir='DFF_MOVIES'; % MAke dir for Dff movies
 counter = 1;
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
