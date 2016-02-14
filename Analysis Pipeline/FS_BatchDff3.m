@@ -1,12 +1,21 @@
 function FS_BatchDff3(DIR, varargin)
+  % FS_BatchDff3 
 
-%run thorough directory and make Df/f in AVI format
-% This Script is for 'unprocessed' videos
+  % Run through Template matched files in a directory and make Dif 
+  % videos (Spatially downsampled, in AVI format) as well as MAX projections of
+  % These AVI videos.
 
+  %   Created: 2016/02/12
+  %   By: WALIII
+  %   Updated: 2016/02/15
+  %   By: WALIII
 
-% WALIII
-% For ALL video input types.
-% 02.10.16
+  % FS_BatchDff_TM will do several things:
+  %
+  %   1.  Create AVI file, abckgorund subtracted AVIs
+  %   2.  Make MAX projections of these AVIs
+  %   3.  Run in the Directory of the all .mat files
+  %
 
 
 mat_dir='DFF_MOVIES';
@@ -83,12 +92,11 @@ test=(mov_data2);
 
 
 
-h=fspecial('disk',2);
-test=imfilter(test,h);
 Y = diff(test,1,3);
 test = Y;
 test=imresize((test),.5);
-
+h=fspecial('disk',3);
+test=imfilter(test,h);
 
 %# Filter out large fluctuations...
 % h=fspecial('disk',30);
@@ -107,8 +115,8 @@ end
 
 
 
-H = (prctile(LinKat,99))+80; % clip pixel value equal to the 95th percentile value
-L = (prctile(LinKat,10));% clip the pixel value equal to the bottem 20th percentile value
+H = (prctile(LinKat,99))+200; % clip pixel value equal to the 95th percentile value
+L = (prctile(LinKat,30));% clip the pixel value equal to the bottem 20th percentile value
 %%%%%
 test=imresize(test,2);
 
