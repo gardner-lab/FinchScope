@@ -68,16 +68,22 @@ To extract ROIS from your movies, go back into the .mat directory, and run:
 
 roi_ave will be saved in the directory 'rois' and it will have all of your ROI time series data in it, as well as calculated dF/F traces, and interpolated traces. you can thumb through the .mat file to check out the data structure. to plot it right away:
 ```
->> figure(); plot(roi_ave.interp_dff(:,:,1)) % interpolated df/f
+figure(); plot(roi_ave.interp_time{1},(roi_ave.interp_dff{1,1})); % interpolated df/f
 ```
 
 ![ScreenShot](SW_im1.png)
 
 ```
->> figure(); plot(roi_ave.raw{1}) % raw signal
+>> figure(); plot(roi_ave.raw_time{1},(roi_ave.raw_dat{1,1})); % raw data
 ```
 
 ![ScreenShot](SW_im2.png)
+
+```
+figure(); plot(roi_ave.analogIO_time{1},roi_ave.analogIO_dat{1}); % Analog sync'd channel
+```
+
+![ScreenShot](SW_im3.png)
 
 ==========================================================
 
