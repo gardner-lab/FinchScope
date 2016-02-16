@@ -67,7 +67,8 @@ To extract ROIS from your movies, go back into the .mat directory, and run:
 ```
 >> roi_ave= FS_plot_ROI(ROI);
 ```
-
+This will extract ROIs, using the mask 'ROI', for every .mat file in the folder.
+ 
 roi_ave will be saved in the directory 'rois' and it will have all of your ROI time series data in it, as well as calculated dF/F traces, and interpolated traces. you can thumb through the .mat file to check out the data structure. to plot it right away:
 
 ```
