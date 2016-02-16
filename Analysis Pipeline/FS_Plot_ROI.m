@@ -4,14 +4,15 @@ function roi_ave= FS_Plot_ROI(ROIS,varargin)
 % Selects an arbitrary number of roi's for plotting. Run in .mat directory.
 %   Created: 2015/08/02
 %   By: WALIII
-%   Updated: 2015/11/18
+%   Updated: 2016/02/15
 %   By: WALIII
 
 %% Starting Variables
 colors=eval(['winter(' num2str(length(ROIS.coordinates)) ')']);
 sono_colormap='hot';
 baseline=3;
-ave_fs=30; % multiply by a variable 'n' if you want to interpolate
+n = 3; % How much to interpolate by?
+ave_fs=30*n; % multiply by a variable 'n' if you want to interpolate
 save_dir='roi';
 template=[];
 fs=48000;
@@ -26,6 +27,7 @@ resize=1;
 detrend_traces=0;
 crop_correct=0;
 counteri = 1;
+fs = 48000;
 
 nparams=length(varargin);
 
@@ -49,118 +51,67 @@ for i=1:2:nparams
 			template=varargin{i+1};
 		case 'fs'
 			fs=varargin{i+1};
-		case 'per'
-			per=vargin{i+1};
-		case 'max_row'
-			max_row=varargin{i+1};
-		case 'dff_scale'
-			dff_scale=varargin{i+1};
-		case 't_scale'
-			t_scale=varargin{i+1};
-		case 'resize'
-			resize=varargin{i+1};
-		case 'detrend_traces'
-			detrend_traces=varargin{i+1};
-		case 'crop_correct'
-			crop_correct=varargin{i+1};
 	end
 end
 
-if resize~=1
-	disp(['Adjusting ROIs for resizing by factor ' num2str(resize)]);
-
-	for i=1:length(ROIS.coordinates)
-		ROIS.coordinates{i}=round(ROIS.coordinates{i}.*resize);
-	end
-end
 
 
 mkdir(save_dir);
-
 % ROIS is a cell array of image indices returned by fb_select_roi
 
 mov_listing=dir(fullfile(pwd,'*.mat'));
 mov_listing={mov_listing(:).name};
 
-to_del=[];
+
 for i=1:length(mov_listing)
-	if strcmp(mov_listing{i},'dff_data.mat')
-		to_del=i;
-	end
-end
-mov_listing(to_del)=[];
-
-roi_n=length(ROIS.coordinates);
-
-load(fullfile(pwd,mov_listing{1}),'mov_data','mic_data','fs');
-for i = 1:length(mov_data)
-     mov_data2(:,:,i) = rgb2gray(mov_data(i).cdata(:,:,:,:));
-end
-mov_data = double(mov_data2);
-
-
-ave_time=0:1/ave_fs:length(mic_data)/fs;
-
-% need to interpolate the average onto a new time bases
-
-roi_ave.raw={};
-roi_ave.interp_dff=zeros(roi_n,length(ave_time),length(mov_listing));
-roi_ave.interp_raw=zeros(roi_n,length(ave_time),length(mov_listing));
-
-clear mov_data
-for i=1:length(mov_listing)
-clear tmp
-clear frames
+clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times;
 
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-	load(fullfile(pwd,mov_listing{i}),'mov_data','mic_data','fs','vid_times');
+	load(fullfile(pwd,mov_listing{i}),'mov_data','mic_data','fs','vid_times','video','audio');
 
-for ii = 1:length(mov_data)
-     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+% Get Audio/Video template matched offsets
+try
+	for ii = 1:length(mov_data)
+		mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+	end
+	disp(' Template match detected: Compensating for A/V mis-alignment...')
+		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
+		 timevec=(offset2'); %movie_fs
+		 G = diff(vid_times(:,1), 1);
+		 clear mic_data
+		 mic_data= mic_data(:,1) % only use data column
+catch
+	disp(' Non-template matched video: proceed to align to A/V timestamps...')
+	mov_data = video.frames;
+	vid_times = video.times;
+	mic_data = audio.data;
+	G = diff(vid_times(:,1), 1);
+	timevec = (vid_times');
+	for ii = 1:length(mov_data)
+	     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+	end
 end
 mov_data = double(mov_data2);
-[rows,columns,frames]=size(mov_data);
-	% resize if we want
 
-	if resize~=1
-
-		disp(['Resizing movie data by factor of ' num2str(resize)]);
-
-		frameone=imresize(mov_data(:,:,1),resize);
-		[new_rows,new_columns]=size(frameone);
-
-		new_mov=zeros(new_rows,new_columns,frames);
-
-		for j=1:frames
-			new_mov(:,:,j)=imresize(mov_data(:,:,j),resize);
-		end
-
-		%im_resize=im_resize.*resize;
-		mov_data=new_mov;
-		clear new_mov;
-
-	end
-
-	[path,file,ext]=fileparts(mov_listing{i});
-	save_file=[ file '_roi' ];
-
-
-	% roi_traces
-
-
-	roi_t=zeros(roi_n,frames);
-
-
-G = diff(vid_times(:,1), 1);
-
+% Check For Dropped Frames:
 if any(G >.07) %0.05 for 30fps
     disp('   **    Dropped Frame detected    **  ')
 else
     disp('No Dropped Frames Detected')
-clear offset2
 
-offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
-timevec=(offset2'); %movie_fs
+
+% Format ROIs
+[rows,columns,frames]=size(mov_data);
+
+roi_n=length(ROIS.coordinates);
+roi_t=zeros(roi_n,frames);
+ave_time=0:1/ave_fs:length(mic_data)/fs;
+[path,file,ext]=fileparts(mov_listing{i});
+save_file=[ file '_roi' ];
+
+
+	% resize if we want to add this later...
+
 
 
 	disp('Computing ROI averages...');
@@ -186,14 +137,19 @@ timevec=(offset2'); %movie_fs
 	dff=zeros(size(roi_t));
 
 
-	% interpolate ROIs to a common timeframe
 
+roi_ave.analogIO_dat{i} = mic_data;
+roi_ave.analogIO_time{i}= (1:length(mic_data))/fs;
+roi_ave.interp_time{i} = ave_time;
+
+%------[ PROCESS ROIs]--------%
+% interpolate ROIs to a common timeframe
 	for j=1:roi_n
-clear tmp
+clear tmp; clear dff; clear yy2; clear yy;
+
+
 		tmp=roi_t(j,:);
         tmp = tmp(:,(1:size(timevec,2)));
-
-
 		if baseline==0
 			norm_fact=mean(tmp,3);
 		elseif baseline==1
@@ -204,46 +160,22 @@ clear tmp
 			norm_fact=prctile(tmp,per);
 		end
 
-		%dff{j}=((tmp-norm_fact)./norm_fact).*100;
-
-
-% 		yy=interp1(timevec,dff(j,:),ave_time,'spline');
+% Interpolate to timescale determined by 'n' paramater (see above)
+dff(j,:)=((tmp-norm_fact)./norm_fact).*100;
+yy=interp1(timevec,dff(j,:),ave_time,'spline');
 yy2=interp1(timevec,tmp,ave_time,'spline');
-%         yy3=interp1(timevec+offset,tmp,ave_time,'spline');
-%         yy4=interp1(timevec+offset,tmp,ave_time,'spline');
-%
 
-
-% 		roi_ave.interp_dff(j,:,i)=yy;
-roi_ave.interp_raw(j,:,counteri)=yy2;
-%         roi_ave.interp_corr(j,:,i)=yy3;
-%         roi_ave.interp_corr2(j,:,i)=yy4;
-
-
-     roi_ave.RawTime{j,counteri} = timevec;
-     roi_ave.RAWdat{j,counteri} = tmp;
-%         roi_ave.interp_Timeing(j,:,i) = (1:length(yy2));
+roi_ave.interp_dff{j,counteri}=yy;
+roi_ave.interp_raw{j, counteri}=yy2;
+roi_ave.raw_time{j,counteri} = timevec;
+roi_ave.raw_dat{j,counteri} = tmp;
 
     end
-        counteri = counteri+1;
-
-	% detrend?
-
-	if detrend_traces
-		detrended=fb_roi_detrend(dff,timevec,'normalize',0);
-	else
-		detrended=dff;
-	end
-
-
-
-	roi_ave.raw{i}=roi_t; % store for average
-	roi_ave.filename{i}=mov_listing{i};
-
+        counteri = counteri+1; % In case we need to skip ROIs due to dropped frames, (instead of using u in the loop)
+				roi_ave.filename{i}=mov_listing{i};
 
 end
 end
 
-roi_ave.t=ave_time;
 save(fullfile(save_dir,['ave_roi.mat']),'roi_ave');
 disp('Generating average ROI figure...');

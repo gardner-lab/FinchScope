@@ -51,8 +51,13 @@ vidObj.FrameRate = 30;
 open(vidObj);
 colormap(bone);
 
+try
+   LastFrame = video.nrFramesTotal;
+catch
+        LastFrame = size(video.frames,2);
+end
 
-mov_data = video.frames(1:video.nrFramesTotal);
+mov_data = video.frames(1:video.Lastframe;);
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
