@@ -1,6 +1,6 @@
 # Basic Analysis Pipeline
 
-This code serves as a basic analysis pipeline for extracting fluorescence time series traces from the .mov files generated from the FreedomScopes. While this is a basic workflow, the exported .mov files can be used with any analysis software. 
+This code serves as a basic analysis pipeline for extracting fluorescence time series traces from the .mov files generated from the FreedomScopes. While this is a basic workflow, the exported .mov files can be used with any analysis software.
 
 
 
@@ -13,7 +13,7 @@ This code serves as a basic analysis pipeline for extracting fluorescence time s
 >> FS_AV_Parse.
 ```
 
-This will separate video blocks in .m files, and separate video blocks from synchronized analog input blocks. This will vary from one application to another- I use it for aligning to song (as an audio channel) others will use this as a sync to sone behavioral paradigm, with an TTL input.
+This will parse the .mov files into matlab-readable .m files, and will created a cell array for video data, and a corresponding cell array with synchronized analog data. The use of this synchronization cell array will vary from one user's application to another- I myself use it for aligning to zebrafinch song (as an audio channel) others will use this as a sync to sone behavioral paradigm, i.e. a TTL input.
 
 
 3. Run:
@@ -24,7 +24,7 @@ This will separate video blocks in .m files, and separate video blocks from sync
 
 ...which will make a downsampled, background subtracted video as well as a maximum projection image for each file in your directory. In addition, it will make a Average-maximum projection image called Dff_composite, of all the recordings from the session combined.
 
-At this point, The cell video.cdata for each .m file in the mat folder is a 4D matrix (H,W,C,T) and can be plugged into any analysis pipeline- although it may need to be formatted differently for you application. A simple 'get off the ground quick' manual ROI selection paradigm follows.
+At this point, The calcium imaging videos exist in the cell video.frames.cdata contained inside each .m file in the mat folder. It is stored as a 4D matrix (H,W,C,T) and can be plugged into any analysis pipeline- although it may need to be formatted differently depending on your application. A simple 'get off the ground quick' manual ROI selection paradigm follows:
 
 
 3b. Extract ROIs manually:
@@ -49,14 +49,15 @@ Then, create your ROI mask:
 ```
 >> FS_image_roi(IMAGE);
 ```
-This will open up a GUI to select ROIs from the image you picked. just point over an ROI, click on one you want, drag the mouse out so you get the right size, then unclick your mouse. Then DOUBLE CLICK on the ring you made. it should turn yellow. then you can drag/move the ring over to make another selection.  You can add/move as many ROIs as you want. when you are done, just exit out of the GUI. It will save all your ROIS, and number them...
+This will open up a GUI to select ROIs from the image you picked. just point over an ROI, click on one you want, drag the mouse out so you get the right size, then unclick your mouse. Then DOUBLE CLICK on the ring you made. it should turn yellow. then you can drag/move the ring over to make another selection.  You can add/move as many ROIs as you want. when you are done, just exit out of the GUI. It will save all your ROIS, and number them...and will create a .tif of your selected ROI map called roi_map_image.tiff, which resides in mat--> image_roi
 
 
 ![ScreenShot](ROI_MAP.png)
 
 
 
-Then, go into the new 'roi_image' directory and load ROI masks into MATLAB...
+Then, go into the new 'roi_image' directory and load roi_data_image.mat file into MATLAB
+
 ```
 >> load('roi_data_image.mat')
 ```
@@ -68,6 +69,7 @@ To extract ROIS from your movies, go back into the .mat directory, and run:
 ```
 
 roi_ave will be saved in the directory 'rois' and it will have all of your ROI time series data in it, as well as calculated dF/F traces, and interpolated traces. you can thumb through the .mat file to check out the data structure. to plot it right away:
+
 ```
 figure(); plot(roi_ave.interp_time{1},(roi_ave.interp_dff{1,1})); % interpolated df/f
 ```
@@ -95,6 +97,5 @@ I. To eliminate 'bad' frames semi-automatically, run:
 ```
 SM_ProcessROIS
 ```
-
 
 ...This will eliminate bad frames ( where the excitation light turned on/off early or late) from the videos, that may interfere with calculating SNR or DF/F.
