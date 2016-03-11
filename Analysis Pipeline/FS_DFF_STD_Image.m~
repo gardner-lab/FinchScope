@@ -1,4 +1,4 @@
-function FS_BatchDff(DIR, varargin)
+function FS_DFF_STD_Image(DIR, varargin)
 
 %run thorough directory and make Background Subtracted Movies in AVI format
 % This Script is for 'unprocessed' videos
@@ -9,7 +9,7 @@ function FS_BatchDff(DIR, varargin)
 % 09.05.15
 
 
-mat_dir='DFF_MOVIES';
+mat_dir='DFF_Images';
 counter = 1;
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
@@ -41,15 +41,8 @@ clear video;
       axis tight
       set(gca, 'nextplot','replacechildren', 'Visible','off');
 
-%# create AVI object
 
 save_filename=[ fullfile(mat_dir,file) ];
-
-vidObj = VideoWriter(save_filename);
-vidObj.Quality = 100;
-vidObj.FrameRate = 30;
-open(vidObj);
-colormap(bone);
 
 try
    LastFrame = video.nrFramesTotal;
@@ -57,7 +50,7 @@ catch
    LastFrame = size(video.frames,2);
 end
 
-mov_data = video.frames(1:LastFrame);
+mov_data = video.frames(7:LastFrame); % dont take dead frames
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
@@ -76,38 +69,26 @@ test=test-bground;
 h=fspecial('disk',1);
 test=imfilter(test,h);
 
-%%%%%
-% Scale videos by pixel value intensities of a single, representative frame
-LinKat =  cat(1,test(:,1,15)); % take this from the 15 frame
-for i = 2:size(test,2)
-Lin = cat(1,test(:,i,size(test,3)));
-LinKat = cat(1,LinKat,Lin);
-end
-H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
-L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
-%%%%%
+
 test=imresize(test,4);
 
-[optimizer, metric] = imregconfig('multimodal');
-%# create movie
-for i=1:(length(mov_data)-2);
-    %test3(:,:,i) = imregister(test2(:,:,i),test2(:,:,1),'rigid',optimizer,metric);
-   image(test(:,:,i),'CDataMapping','scaled');
-   caxis([double(L),double(H)])%caxis([0,70]) % change caxis
-   writeVideo(vidObj, getframe(gca));
-end
-close(gcf)
-
-%# save as AVI file, and open it using system video player
-close(vidObj);
-
 FrameInfo = max(test,[],3);
-%figure();
+
+
 colormap(bone)
 imagesc(FrameInfo);
-%set(gca,'ydir','normal'); % Otherwise the y-axis would be flipped
+
 X = mat2gray(FrameInfo);
 X = im2uint8(X);
+imwrite(X,save_filename,'png')
+
+clear FrameInfo;
+FrameInfo = std(test,[],3);
+imagesc(FrameInfo);
+
+X = mat2gray(FrameInfo);
+X = im2uint8(X);
+save_filename = strcat(save_filename,'_STD','.png');
 imwrite(X,save_filename,'png')
 
 TotalX(:,:,counter) = X;
@@ -115,7 +96,9 @@ TotalX(:,:,counter) = X;
 
 counter = counter+1;
 clear mov_data;
+clear LastFrame
 clear h;
+clear bground;
 clear X;
 clear FrameInfo;
 clear test;
