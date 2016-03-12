@@ -1,19 +1,26 @@
 function FS_DFF_STD_Image(DIR, varargin)
+% FS_DFF_STD_Image.m
 
-%run thorough directory and make Background Subtracted Movies in AVI format
+
+%run thorough directory and make STD and MAX images for every mat file in directory
 % This Script is for 'unprocessed' videos
+%
+%   Created: 2016/03/09
+%   By: WALIII
+%   Updated: 2016/03/10
+%   By: WALIII
 
 
-% WALIII
-% For unprocessed videos
-% 09.05.15
 
-
+% Make directory for all subsequent videos...
 mat_dir='DFF_Images';
 counter = 1;
-
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
+MaxDir = strcat(mat_dir,'/MAX')
+StdDir = strcat(mat_dir,'/STD')
+mkdir(MaxDir);
+mkdir(StdDir);
 
 
 outlier_flag=0;
@@ -36,21 +43,18 @@ clear video;
 
 	load(fullfile(DIR,mov_listing{i}),'video');
 
-%     %create DFF
-%     figure, set(gcf, 'Color','white')
-%       axis tight
-%       set(gca, 'nextplot','replacechildren', 'Visible','off');
 
-
-save_filename=[ fullfile(mat_dir,file) ];
+save_filename_MAX=[ fullfile(MaxDir,file) ];
+save_filename_STD=[ fullfile(StdDir,file) ];
 
 try
    LastFrame = video.nrFramesTotal;
 catch
+  disp('no number of frames total found, defaulting until the end of the video...')
    LastFrame = size(video.frames,2);
 end
 
-mov_data = video.frames(7:LastFrame); % dont take dead frames
+mov_data = video.frames(7:LastFrame); % dont take dead frames, looks like by frame 7 things have spun up.
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
@@ -80,8 +84,8 @@ imagesc(FrameInfo);
 
 X = mat2gray(FrameInfo);
 X = im2uint8(X);
-save_filenameB = strcat(save_filename,'_MAX','.png');
-imwrite(X,save_filenameB,'png')
+save_filename_MAX = strcat(save_filename_MAX,'_MAX','.png');
+imwrite(X,save_filename_MAX,'png')
 
 clear FrameInfo;
 FrameInfo = std(double(test),[],3);
@@ -89,15 +93,18 @@ imagesc(FrameInfo);
 
 X = mat2gray(FrameInfo);
 X = im2uint8(X);
-save_filenameA = strcat(save_filename,'_STD','.png');
-imwrite(X,save_filenameA,'png')
+
+save_filename_STD = strcat(save_filename_STD,'_STD','.png');
+imwrite(X,save_filename_STD,'png')
 
 TotalX(:,:,counter) = X;
 
 
-counter = counter+1;
+counter = counter+1; % Up the counter
+
+% Clear all used Variables
 clear mov_data;
-clear LastFrame
+clear LastFrame;
 clear h;
 clear bground;
 clear X;
@@ -107,13 +114,13 @@ clear LinKat;
 clear Kat;
 clear H;
 clear L;
-clear mov_data2
-clear mov_data3
-clear mov_data4
+clear mov_data2;
+clear mov_data3;
+clear mov_data4;
 
 end
 fprintf(1,'\n');
-%%
+
 %% Register Images
 % [optimizer, metric] = imregconfig('multimodal');
 % for g = 1:size(TotalX,3)
@@ -121,13 +128,5 @@ fprintf(1,'\n');
 % end
 
 
-
 FrameInfo2 = max(TotalX,[],3);
 imwrite(FrameInfo2,'Dff_composite','png')
-
-%% Save Data from aggregate
-% Test = TotalX2;
-%mov_data = video.frames;
-%im_resize = 1;
-
-%save(save_filename,'Test','mov_data','im_resize','-v7.3')
