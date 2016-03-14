@@ -27,9 +27,11 @@ fprintf(1,['Progress:  ' blanks(nblanks)]);
 % Root is where the script is run...
 START_DIR_ROOT = pwd;
 
-myfile = 'Template.mat';
+myfile = '/template/template_data.mat';
 [parentdir,~,~]=fileparts(START_DIR_ROOT);
-Template = (fullfile(parentdir,myfile))
+
+load(fullfile(START_DIR_ROOT,myfile),'TEMPLATE');
+
 
 % Get a list of all files and folders in this folder.
 
@@ -39,10 +41,11 @@ dirFlags = [files.isdir]% Get a logical vector that tells which is a directory.
 subFolders = files(dirFlags)% Extract only those that are directories.
 
 
-for k = 1 : length(subFolders)
-  nextDir = strcat(subFolders(k),'/mat')
+for i = 1:length(subFolders)
+
+  nextDir = strcat(subFolders(i).name,'/mat')
   cd(nextDir)
-FS_Batch_TemplateMatch(Template)
+FS_BatchJob_TemplateMatch(TEMPLATE)
 disp('Processing for day X moving to the next day')
 end
 

@@ -10,7 +10,7 @@ function send_text_message(number,carrier,subject,message)
 %
 %    Example:
 %      send_text_message('617-529-0762','Verizon', ...
-         'Calculation Complete','CIRCE is waiting for input')
+%         'Calculation Complete','CIRCE is waiting for input')
 %      send_text_message('617-529-0762','Verizon', ...
 %         'This is a text message without subject')
 %
