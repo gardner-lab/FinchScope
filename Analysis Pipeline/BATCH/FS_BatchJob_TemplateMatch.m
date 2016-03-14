@@ -51,7 +51,7 @@ out_dir='';
 sound_dir='';
 template_data=[];
 im_resize=[]; % setting this to .5 seems reasonable, depends on required resolution
-padding=[.25 .25];
+padding=[.25 .75];
 
 % parameter collection
 
@@ -166,6 +166,9 @@ response=[];
 if exist(fullfile(out_dir,'cluster_data.mat'),'file')
 	disp('Looks like you have computed the scores before...');
 
+	send_text_message('617-529-0762','Verizon', ...
+	         'Verification Alert','Looks like you have computed the scores before...')
+
 	while isempty(response)
 		response=input('Would you like to (r)ecompute or (s)kip to clustering?  ','s');
 		switch (lower(response))
@@ -202,8 +205,8 @@ if extract_sounds
 	skip=0;
 	response=[];
 	if exist(fullfile(out_dir,'cluster_results.mat'),'file')
-		send_text_message('617-529-0762','Verizon', ...
-		         'Calculation Complete','Looks like you have clustered the data before..')
+ send_text_message('617-529-0762','Verizon', ...
+       'Verification Alert','Looks like you have clustered the data before..')
 		disp('Looks like you have clustered the data before..');
 
 		while isempty(response)
@@ -240,8 +243,8 @@ if extract_sounds
 	response=[];
 	if exist(fullfile(out_dir,'extracted_data.mat'),'file')
 
-		send_text_message('617-529-0762','Verizon', ...
-		         'Error Alert','analysis computer is waiting for input')
+		% send_text_message('617-529-0762','Verizon', ...
+		%          'Error Alert','analysis computer is waiting for input')
 
 		disp('Looks like you have extracted the data before..');
 

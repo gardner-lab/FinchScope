@@ -1,4 +1,4 @@
-function FS_DFF_STD_Image(DIR, varargin)
+function FS_DFF_STD_Image(DIR,startFrame,varargin)
 % FS_DFF_STD_Image.m
 
 
@@ -10,7 +10,7 @@ function FS_DFF_STD_Image(DIR, varargin)
 %   Updated: 2016/03/10
 %   By: WALIII
 
-
+% startFrame can equal 7, for full files
 
 % Make directory for all subsequent videos...
 mat_dir='DFF_Images';
@@ -41,7 +41,7 @@ clear video;
     [path,file,ext]=fileparts(filenames{i});
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 
-	load(fullfile(DIR,mov_listing{i}),'video');
+	load(fullfile(DIR,mov_listing{i}),'video','mov_data');
 
 
 save_filename_MAX=[ fullfile(MaxDir,file) ];
@@ -49,12 +49,13 @@ save_filename_STD=[ fullfile(StdDir,file) ];
 
 try
    LastFrame = video.nrFramesTotal;
+   mov_data = video.frames(startFrame:LastFrame); % dont take dead frames, looks like by fr
 catch
   disp('no number of frames total found, defaulting until the end of the video...')
-   LastFrame = size(video.frames,2);
+   LastFrame = size(mov_data,2);
+ mov_data = mov_data(startFrame:LastFrame); % dont take dead frames, looks like by fr
 end
 
-mov_data = video.frames(7:LastFrame); % dont take dead frames, looks like by frame 7 things have spun up.
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
@@ -128,5 +129,5 @@ fprintf(1,'\n');
 % end
 
 
-FrameInfo2 = max(TotalX,[],3);
-imwrite(FrameInfo2,'Dff_composite','png')
+% FrameInfo2 = max(TotalX,[],3);
+% imwrite(FrameInfo2,'Dff_composite','png')

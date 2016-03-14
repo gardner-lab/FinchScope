@@ -1,6 +1,11 @@
 function FS_BatchJob_Pt01()
 % FS_BatchJob_Pt01.m
 
+% Part one aligns data to song.
+% Part two performs within trial, within day and across-day motion correction
+% Part three performs ROI extraction
+
+
 
 % Run thorough 5 Day Longitudinal studies, and directory and:
 %  -- Template Match (Based on a template stored in some subfolder)
@@ -20,8 +25,8 @@ function FS_BatchJob_Pt01()
 
 
 
-[nblanks formatstring]=fb_progressbar(100);
-fprintf(1,['Progress:  ' blanks(nblanks)]);
+% [nblanks formatstring]=fb_progressbar(100);
+% fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 
 % Root is where the script is run...
@@ -42,23 +47,24 @@ subFolders = files(dirFlags)% Extract only those that are directories.
 
 
 for i = 1:length(subFolders)
-
+  clear nextDir
   nextDir = strcat(subFolders(i).name,'/mat')
-  cd(nextDir)
-FS_BatchJob_TemplateMatch(TEMPLATE)
-disp('Processing for day X moving to the next day')
+
+try
+    cd(nextDir)
+catch
+  disp('could not enter file...')
 end
 
 
+try
+FS_BatchJob_TemplateMatch(TEMPLATE)
+catch
+  disp('could not match template')
+end
+disp('Processing for day X moving to the next day')
+cd(START_DIR_ROOT)
+end
 
-START_DIR_ROOT = pwd;
-day_listing=dir(fullfile(pwd,'*.mat'));
-
-
-current_path = strcat(START_DIR_ROOT,'/',BOX_ID{i});
-
-mov_listing={mov_listing(:).name};
-filenames=mov_listing;
-
-
-disp('Creating .tif movies');
+send_text_message('617-529-0762','Verizon', ...
+         'Calculation Complete','FS_BatchJob_Pt01 has completed')
