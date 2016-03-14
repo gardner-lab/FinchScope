@@ -19,4 +19,5 @@ a template song.
 HELPER FUNCTIONS:
 
 FS_BatchJob_TemplateMatch
-This function is a modification of FS_TemplateMatch,
+This function is a modification of FS_TemplateMatch, sends an SMS to the user
+when manual clustering is needed.

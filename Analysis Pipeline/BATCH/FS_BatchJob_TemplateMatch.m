@@ -202,6 +202,8 @@ if extract_sounds
 	skip=0;
 	response=[];
 	if exist(fullfile(out_dir,'cluster_results.mat'),'file')
+		send_text_message('617-529-0762','Verizon', ...
+		         'Calculation Complete','Looks like you have clustered the data before..')
 		disp('Looks like you have clustered the data before..');
 
 		while isempty(response)
@@ -219,6 +221,10 @@ if extract_sounds
 
 
 	if ~skip
+
+		send_text_message('617-529-0762','Verizon', ...
+		         'Computer Notification','Analysis computer is waiting for input to manually cluster data...')
+
 		uiwait(fb_data_plotter(fullfile(out_dir,'cluster_data.mat'),fullfile(out_dir,'cluster_results.mat')));
 	end
 
@@ -233,6 +239,10 @@ if extract_sounds
 	skip=0;
 	response=[];
 	if exist(fullfile(out_dir,'extracted_data.mat'),'file')
+
+		send_text_message('617-529-0762','Verizon', ...
+		         'Error Alert','analysis computer is waiting for input')
+
 		disp('Looks like you have extracted the data before..');
 
 		while isempty(response)

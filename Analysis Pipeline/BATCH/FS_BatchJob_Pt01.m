@@ -23,28 +23,28 @@ function FS_BatchJob_Pt01()
 [nblanks formatstring]=fb_progressbar(100);
 fprintf(1,['Progress:  ' blanks(nblanks)]);
 
+
 % Root is where the script is run...
 START_DIR_ROOT = pwd;
+
+myfile = 'Template.mat';
+[parentdir,~,~]=fileparts(START_DIR_ROOT);
+Template = (fullfile(parentdir,myfile))
+
 % Get a list of all files and folders in this folder.
 
 files = dir(START_DIR_ROOT)
-files(1:2) = []
-% Get a logical vector that tells which is a directory.
-dirFlags = [files.isdir]
-% Extract only those that are directories.
-subFolders = files(dirFlags)
-% Print folder names to command window.
+files(1:2) = [] % Exclude parent directories.
+dirFlags = [files.isdir]% Get a logical vector that tells which is a directory.
+subFolders = files(dirFlags)% Extract only those that are directories.
+
+
 for k = 1 : length(subFolders)
-	% fprintf('Sub folder #%d = %s\n', k, subFolders(k).name);
   nextDir = strcat(subFolders(k),'/mat')
   cd(nextDir)
-FS_Batch_TemplateMatch
-disp('moving to the next day')
-
+FS_Batch_TemplateMatch(Template)
+disp('Processing for day X moving to the next day')
 end
-
-
-
 
 
 
