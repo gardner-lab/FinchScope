@@ -89,12 +89,6 @@ for i = 1:length(subFolders)
   clear nextDir; clear mov_listing; clear filenames;
   nextDir = strcat(subFolders(i).name,'/mat/extraction/mov')
 
-% Make subdirectories:
-  MaxDir = strcat(nextDir,'/MAX')
-  StdDir = strcat(nextDir,'/STD')
-  mkdir(MaxDir);
-  mkdir(StdDir);
-% Go to new Dir:
     cd(nextDir)
   mov_listing=dir(fullfile(pwd,'*.mat')); % Get all .mat file names
   mov_listing={mov_listing(:).name};
@@ -122,28 +116,6 @@ for i = 1:length(subFolders)
 
       save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
 
-
-
-      FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       clear mov_data_aligned;
 %FS_BATCH_DFF_STD_Image(pwd,1); % takes the
 %catch; disp('could not enter file') end;
@@ -154,25 +126,29 @@ end
 
 
 
-
-%%%%MAX AND STD DFF_Images
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+%%Pick a STD or MAX projection to use as template, go through all DIR, including DIR 1.
+%
+% for i = 1:length(subFolders)
+% nextDir = strcat(subFolders(i).name,'/mat/extraction/mov')
+% try
+%   cd(nextDir)
+%
+% % Align to Selected template.
+%
+% %% could add LOCAL MOTION CORRECTION HERE!
+% %% Register Images
+% % [optimizer, metric] = imregconfig('multimodal');
+% % for g = 1:size(mov_data,3)
+% % tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,4),'rigid',optimizer, metric);
+% %  end
+%
+%
+% catch
+% disp('could not enter file')
+% end
+% disp('Processing for day X moving to the next day')
+% cd(START_DIR_ROOT)
+% end
 
 
 send_text_message('617-529-0762','Verizon', ...
