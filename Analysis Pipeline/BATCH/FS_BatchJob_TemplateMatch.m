@@ -538,14 +538,12 @@ for i=1:length(SELECTED_PEAKS)
             startT = loc1;
             endT = loc2;
 
-
             VID_TIMES{trial} = video.times(startT:endT);
-
             MOV_DATA{trial}=video.frames(startT:endT);
-			MIC_DATA(:,trial)=audio.data(startpoint:endpoint); % this is just the audio data
+		      	MIC_DATA(:,trial)=audio.data(startpoint:endpoint); % this is just the audio data
             MIC_DATA2(:,trial)= (startpoint:endpoint); % these are the actual index values of the mic data
-
-			USED_FILENAMES{end+1}=FILENAMES{i};
+						
+						USED_FILENAMES{end+1}=FILENAMES{i};
 
 			trial=trial+1;
 			counter=counter+1;
