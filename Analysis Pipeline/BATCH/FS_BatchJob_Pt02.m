@@ -87,7 +87,12 @@ fprintf(1,['Progress:  ' blanks(nblanks)]);
 for i = 1:length(subFolders)
     cd(START_DIR_ROOT);
   clear nextDir; clear mov_listing; clear filenames;
+
+try % in case there are Directories you can't enter...
   nextDir = strcat(subFolders(i).name,'/mat/extraction/mov')
+catch
+  disp(' could not enter DIR...')
+end
 
 % Make subdirectories:
   MaxDir = strcat(nextDir,'/MAX')
@@ -124,55 +129,15 @@ for i = 1:length(subFolders)
 
 
 
-      FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
+FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      clear mov_data_aligned;
+    clear mov_data_aligned;
 %FS_BATCH_DFF_STD_Image(pwd,1); % takes the
 %catch; disp('could not enter file') end;
 
   end
    cd(START_DIR_ROOT)
 end
-
-
-
-
-%%%%MAX AND STD DFF_Images
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 send_text_message('617-529-0762','Verizon', ...
