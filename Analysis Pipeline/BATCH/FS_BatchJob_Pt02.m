@@ -105,6 +105,7 @@ end
   mov_listing={mov_listing(:).name};
   filenames=mov_listing;
 
+IO = 1;
   for iii=1:length(mov_listing)
 
         [path,file,ext]=fileparts(filenames{iii});
@@ -113,8 +114,9 @@ end
         for ii = 1:size(mov_data,2) % format movie data
           mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
         end
-if i == 1
+if IO == 1
   X4 = max(mov_data2,[],3);
+  IO = 2;
 else
 end;
             MAX_dat = max(mov_data2,[],3); % get maximum projection.
