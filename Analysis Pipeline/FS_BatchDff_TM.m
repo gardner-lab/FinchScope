@@ -1,12 +1,24 @@
-function FS_BatchDff_UA(DIR, varargin)
+function FS_BatchDff_TM(DIR, varargin)
+  % Tif_BatchDff_TM()
 
-%run thorough directory and make DfF movies in AVI format
-% WALIII
-% For unprocessed videos
-% 09.05.15
+  % Run through Template matched files in a directory and make Background subtracted
+  % videos (Spatially downsampled, in AVI format) as well as MAX projections of
+  % These AVI videos.
+
+  %   Created: 2016/02/12
+  %   By: WALIII
+  %   Updated: 2016/02/15
+  %   By: WALIII
+
+  % FS_BatchDff_TM will do several things:
+  %
+  %   1. Create AVI file, abckgorund subtracted AVIs
+  %   2. Make MAX projections of these AVIs
+  %   3.  Run in the Directory of the all .mat files
+  %
 
 
-mat_dir='DFF_MOVIES';
+mat_dir='DFF_MOVIES'; % MAke dir for Dff movies
 counter = 1;
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
@@ -26,12 +38,11 @@ disp('Creating Dff movies');
 fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 for i=1:length(mov_listing)
-clear video;
 
     [path,file,ext]=fileparts(filenames{i});
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 
-	load(fullfile(DIR,mov_listing{i}),'video');
+	load(fullfile(DIR,mov_listing{i}),'mov_data');
 
     %create DFF
     figure, set(gcf, 'Color','white')
@@ -43,13 +54,13 @@ clear video;
 save_filename=[ fullfile(mat_dir,file) ];
 
 vidObj = VideoWriter(save_filename);
-vidObj.Quality = 100;
+vidObj.Quality = 30;
 vidObj.FrameRate = 30;
 open(vidObj);
 colormap(bone);
 
 
-mov_data = video.frames(1:video.nrFramesTotal);
+
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
@@ -66,25 +77,26 @@ bground=imfilter(test,h);
 % bground=smooth3(bground,[1 1 5]);
 test=test-bground;
 h=fspecial('disk',1);
-test=imfilter(test,h);
+test2=imfilter(test,h);
 
 %%%%%
-% Scale videos by pixel value intensities of a single, representative frame
-LinKat =  cat(1,test(:,1,15)); % take this from the 15 frame
-for i = 2:size(test,2)
-Lin = cat(1,test(:,i,size(test,3)));
+% Scale videos by pixel value intensities
+LinKat =  cat(1,test2(:,1,10));
+for i = 2:size(test2,2)
+Lin = cat(1,test2(:,i,size(test2,3)));
 LinKat = cat(1,LinKat,Lin);
 end
 H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
 L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
 %%%%%
-test=imresize(test,4);
+
+test2=imresize(test2,4);
 
 [optimizer, metric] = imregconfig('multimodal');
 %# create movie
 for i=1:(length(mov_data)-2);
     %test3(:,:,i) = imregister(test2(:,:,i),test2(:,:,1),'rigid',optimizer,metric);
-   image(test(:,:,i),'CDataMapping','scaled');
+   image(test2(:,:,i),'CDataMapping','scaled');
    caxis([double(L),double(H)])%caxis([0,70]) % change caxis
    writeVideo(vidObj, getframe(gca));
 end
@@ -93,7 +105,7 @@ close(gcf)
 %# save as AVI file, and open it using system video player
 close(vidObj);
 
-FrameInfo = max(test,[],3);
+FrameInfo = max(test2,[],3);
 %figure();
 colormap(bone)
 imagesc(FrameInfo);
@@ -103,20 +115,9 @@ X = im2uint8(X);
 imwrite(X,save_filename,'png')
 
 TotalX(:,:,counter) = X;
+TotalX2{counter} = X;
 
-
-counter = counter+1;
-clear mov_data;
-clear X;
-clear FrameInfo;
-clear test;
-clear LinKat;
-clear Kat;
-clear H;
-clear L;
-clear mov_data2
-clear mov_data3
-clear mov_data4
+    counter = counter+1;
 
 end
 fprintf(1,'\n');

@@ -1,7 +1,11 @@
-function FS_BatchDff2(DIR, varargin)
+function FS_BatchDff(DIR, varargin)
 
-%run thorough directory and make DfF movies in AVI format
+%run thorough directory and make Background Subtracted Movies in AVI format
+% This Script is for 'unprocessed' videos
+
+
 % WALIII
+% For unprocessed videos
 % 09.05.15
 
 
@@ -25,6 +29,7 @@ disp('Creating Dff movies');
 fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 for i=1:length(mov_listing)
+clear video;
 
     [path,file,ext]=fileparts(filenames{i});
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
@@ -41,13 +46,18 @@ for i=1:length(mov_listing)
 save_filename=[ fullfile(mat_dir,file) ];
 
 vidObj = VideoWriter(save_filename);
-vidObj.Quality = 30;
+vidObj.Quality = 100;
 vidObj.FrameRate = 30;
 open(vidObj);
 colormap(bone);
 
+try
+   LastFrame = video.nrFramesTotal;
+catch
+   LastFrame = size(video.frames,2);
+end
 
-mov_data = video.frames;
+mov_data = video.frames(1:LastFrame);
 %%%%
 for i=1:(length(mov_data)-2)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
@@ -64,26 +74,25 @@ bground=imfilter(test,h);
 % bground=smooth3(bground,[1 1 5]);
 test=test-bground;
 h=fspecial('disk',1);
-test2=imfilter(test,h);
+test=imfilter(test,h);
 
 %%%%%
-% Scale videos by pixel value intensities
-LinKat =  cat(1,test2(:,1,10));
-for i = 2:size(test2,2)
-Lin = cat(1,test2(:,i,size(test2,3)));
+% Scale videos by pixel value intensities of a single, representative frame
+LinKat =  cat(1,test(:,1,15)); % take this from the 15 frame
+for i = 2:size(test,2)
+Lin = cat(1,test(:,i,size(test,3)));
 LinKat = cat(1,LinKat,Lin);
 end
 H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
 L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
 %%%%%
-
-test2=imresize(test2,4);
+test=imresize(test,4);
 
 [optimizer, metric] = imregconfig('multimodal');
 %# create movie
 for i=1:(length(mov_data)-2);
     %test3(:,:,i) = imregister(test2(:,:,i),test2(:,:,1),'rigid',optimizer,metric);
-   image(test2(:,:,i),'CDataMapping','scaled');
+   image(test(:,:,i),'CDataMapping','scaled');
    caxis([double(L),double(H)])%caxis([0,70]) % change caxis
    writeVideo(vidObj, getframe(gca));
 end
@@ -92,7 +101,7 @@ close(gcf)
 %# save as AVI file, and open it using system video player
 close(vidObj);
 
-FrameInfo = max(test2,[],3);
+FrameInfo = max(test,[],3);
 %figure();
 colormap(bone)
 imagesc(FrameInfo);
@@ -102,9 +111,21 @@ X = im2uint8(X);
 imwrite(X,save_filename,'png')
 
 TotalX(:,:,counter) = X;
-TotalX2{counter} = X;
 
-    counter = counter+1;
+
+counter = counter+1;
+clear mov_data;
+clear h;
+clear X;
+clear FrameInfo;
+clear test;
+clear LinKat;
+clear Kat;
+clear H;
+clear L;
+clear mov_data2
+clear mov_data3
+clear mov_data4
 
 end
 fprintf(1,'\n');
