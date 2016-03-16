@@ -120,7 +120,7 @@ if IO == 1
 else
 end;
             MAX_dat = max(mov_data2,[],3); % get maximum projection.
-            tform = imregtform(X4,X3,'rigid',optimizer,metric); %Apply Max projection comparison
+            tform = imregtform(X4,X3,'rigid',optimizer,metric); %Apply Max projection comparison across days
 
         for ii = 1:size(mov_data,2)
           mov_data_aligned(ii).cdata(:,:,:) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X4))); % align locally to 7th image
