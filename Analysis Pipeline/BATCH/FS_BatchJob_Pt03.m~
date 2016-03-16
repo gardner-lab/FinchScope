@@ -48,18 +48,14 @@ nextDir = strcat(subFolders(1).name,'/mat/extraction/mov')
 
       try % in case there are Directories you can't enter...
         nextDir = strcat(subFolders(i).name,'/mat/extraction/mov')
-          cd(nextDir);
       catch
          disp(' could not enter DIR...')
       end
+      cd(nextDir);
 
+  roi_samp = FS_Plot_ROI(ROIS,'mov_mode',3); % Plot ROIs
 
-
-roi_trial = FS_Plot_ROI_Batch(ROIS,'mov_mode',3); % Plot ROIs
-
-  roi_ave(1).rois = roi_trial;
-
-  clear roi_trial;
+  roi_ave(1).rois = roi_samp;
   end
 
   save(fullfile(START_DIR_ROOT,['ROI_DATA' '.mat']),'roi_ave');
