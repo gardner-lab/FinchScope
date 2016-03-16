@@ -68,7 +68,7 @@ end
 
 
 disp('Performing Motion Correction transform Calculation');
-  X2 = MaxProj(:,:,1);
+  X2 = MaxProj(:,:,7);
   [optimizer, metric] = imregconfig('multimodal');
 for ii = 1:size(MaxProj,3)
   tform = imregtform(MaxProj(:,:,ii),X2,'rigid',optimizer,metric);
@@ -113,12 +113,15 @@ end
         for ii = 1:size(mov_data,2) % format movie data
           mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
         end
-
+if i == 1
+  X4 = max(mov_data2,[],3);
+else
+end;
             MAX_dat = max(mov_data2,[],3); % get maximum projection.
-            tform = imregtform(MAX_dat,X3,'rigid',optimizer,metric); %Apply Max projection comparison
+            tform = imregtform(MAX_dat,X4,'rigid',optimizer,metric); %Apply Max projection comparison
 
         for ii = 1:size(mov_data,2)
-          mov_data_aligned(ii).cdata(:,:,:) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X3))); % align locally to 7th image
+          mov_data_aligned(ii).cdata(:,:,:) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X4))); % align locally to 7th image
         end
 
         clear mov_data2;
