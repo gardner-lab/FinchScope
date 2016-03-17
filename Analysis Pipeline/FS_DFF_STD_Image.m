@@ -1,4 +1,4 @@
-function FS_DFF_STD_Image(DIR,startFrame,varargin)
+function FS_DFF_STD_Image(DIR,varargin)
 % FS_DFF_STD_Image.m
 
 
@@ -11,11 +11,11 @@ function FS_DFF_STD_Image(DIR,startFrame,varargin)
 %   By: WALIII
 
 % startFrame can equal 7, for full files
-
+startFrame = 27
 % Make directory for all subsequent videos...
-mat_dir='DFF_Images';
+mat_dir='DFF_Images2';
 counter = 1;
-if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
+if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
 MaxDir = strcat(mat_dir,'/MAX')
 StdDir = strcat(mat_dir,'/STD')
@@ -41,8 +41,9 @@ clear video;
     [path,file,ext]=fileparts(filenames{i});
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 
+    warning('off','all')
 	load(fullfile(DIR,mov_listing{i}),'video','mov_data');
-
+    warning('on','all')
 
 save_filename_MAX=[ fullfile(MaxDir,file) ];
 save_filename_STD=[ fullfile(StdDir,file) ];
