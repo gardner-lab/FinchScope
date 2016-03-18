@@ -110,7 +110,8 @@ IO = 1;
 
         [path,file,ext]=fileparts(filenames{iii});
 	         load(fullfile(pwd,mov_listing{iii}),'mov_data');  %load movie data
-
+path_tot{iii} = path;
+file_tot(iii} = file;
         for ii = 1:size(mov_data,2) % format movie data
           mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
           mov_data_aligned(ii).cdata(:,:,:) = mov_data2(:,:,ii);   % store rgb correceted data here temporarily...
@@ -124,28 +125,25 @@ IO = 1;
 
 X5 = mean(X4,3);
 tform = imregtform(X5,X3,'rigid',optimizer,metric); %Apply Max projection comparison across days
+
 %%--- Loop through each movie and perform intensity based image correction, based on aligning the average max projection.
-   for  iii = 1:length(mov_listing)
+   for  iv = 1:size(X4,3)
 
-     [path,file,ext]=fileparts(filenames{iii});
-     load(fullfile(pwd,mov_listing{iii}),'mov_data_aligned');  %load movie data
+     [path,file,ext]=fileparts(filenames{iv});
+     load(fullfile(pwd,mov_listing{iv}),'mov_data_aligned');  %load movie data
 
-     % MAX_dat = X4(:,:,iv); % Get current MAX projection
+     MAX_dat = X4(:,:,iv); % Get current MAX projection
 
         for ii = 1:size(mov_data_aligned,2)
           mov_data_aligned_actual(ii).cdata(:,:,:) = imwarp(mov_data_aligned(ii).cdata(:,:,:),tform,'OutputView',imref2d(size(X5))); % Align Video
         end
 
         clear mov_data2; clear mov_data; clear mov_data_aligned;
-
         mov_data_aligned =  mov_data_aligned_actual
-        
-        mov_data_aligned =  []; % clear out the variable....
-          save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
 
-      mov_data_aligned =  mov_data_aligned_actual
-      clear mov_data_aligned_actual;
-          save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
+
+
+      save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
 
 
 
@@ -157,7 +155,6 @@ FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
 
   end
    cd(START_DIR_ROOT)
-   clear mov_listing; clear filenames;
 end
 
 
