@@ -1,7 +1,7 @@
 function FS_BatchJob_Pt01()
 % FS_BatchJob_Pt01.m
 
-% Part one aligns data to song.
+% * Part one aligns data to song.
 % Part two performs within trial, within day and across-day motion correction
 % Part three performs ROI extraction
 
