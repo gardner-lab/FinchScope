@@ -1,4 +1,4 @@
-function FS_BatchJob_Pt02()
+function FS_BatchJob_Pt02_B()
 % FS_BatchJob_Pt02.m
 
 % Part one aligns data to song.
@@ -139,7 +139,7 @@ tform = imregtform(X5,X3,'rigid',optimizer,metric); %Apply Max projection compar
         clear mov_data2; clear mov_data; clear mov_data_aligned;
 
         mov_data_aligned =  mov_data_aligned_actual
-        
+
         mov_data_aligned =  []; % clear out the variable....
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
 
