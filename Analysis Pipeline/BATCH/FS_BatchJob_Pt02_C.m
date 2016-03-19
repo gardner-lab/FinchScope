@@ -1,4 +1,4 @@
-function FS_BatchJob_Pt02_B()
+function FS_BatchJob_Pt02_C()
 % FS_BatchJob_Pt02.m
 
 % Part one aligns data to song.
@@ -80,18 +80,18 @@ for i = 1:length(subFolders)
                 % TO DO: ** do we want to do an average here?
 
       [optimizer, metric] = imregconfig('multimodal');
-        for ii = 1:size(mov_data2,3)
+        for iv = 1:size(mov_data2,3)
           tform = imregtform(MaxProj(:,:,ii),MaxProj(:,:,1),'rigid',optimizer,metric); % Compare Max projections to the first video
-          mov_data3(:,:,ii) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X2))); % align frames locally
-          mov_data_aligned(ii).cdata(:,:,:) = mov_data2(:,:,ii); %% keep this data propogating through function....
+          mov_data3(:,:,iv) = imwarp(mov_data2(:,:,iv),tform,'OutputView',imref2d(size(MaxProj(:,:,1)))); % align frames locally
+          mov_data_aligned(iv).cdata(:,:,:) = mov_data2(:,:,iv); %% keep this data propogating through function....
         end
 
-        X3(:,:,i) = mean(MaxProj2,3); % Take the mean of the aligned max projection for across day alignment....
+        X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
 
        % SAVE the data in the matlab structure..
         mov_data_aligned =  []; % clear out the variable....
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-        mov_data_aligned =  mov_data_aligned_actual;
+        % mov_data_aligned =  mov_data_aligned_actual;
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
   end
@@ -100,7 +100,7 @@ disp('Performing Motion Correction transform calculation across days');
 X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
 
 
-tform = imregtform(X3(:,:,ii),X3(:,:,1),'rigid',optimizer,metric); %create transform for Max projection comparison across days
+tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transform for Max projection comparison across days
   %%--- Loop through each movie and perform intensity based image correction, based on aligning the average max projection.
   for  iii = 1:length(mov_listing)
         clear mov_data_aligned; clear mov_data2; clear mov_data; % Clear out remining buffer...
@@ -111,10 +111,10 @@ tform = imregtform(X3(:,:,ii),X3(:,:,1),'rigid',optimizer,metric); %create trans
             mov_data_aligned_actual(ii).cdata(:,:,:) = imwarp(mov_data_aligned(ii).cdata(:,:,:),tform,'OutputView',imref2d(size(X5))); % Align Video
           end
 
-
+          mov_data_aligned =  mov_data_aligned_actual;
           mov_data_aligned =  []; % clear out the variable....
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-          mov_data_aligned =  mov_data_aligned_actual;
+
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
             FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
