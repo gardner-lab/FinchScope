@@ -31,24 +31,24 @@ function FS_Write_IM(MaxDir,StdDir,file,mov_data)
 
 
   colormap(bone)
-  imagesc(FrameInfo);
+  image(FrameInfo);
 
   X = mat2gray(FrameInfo);
   X = im2uint8(X);
-  save_filename_MAX = strcat(save_filename_MAX,'_MAX','.png');
-  imwrite(X,save_filename_MAX,'png')
+  save_filename_MAX = strcat(save_filename_MAX,'_MAX','.tif');
+  imwrite(X,save_filename_MAX,'tif')
 
   clear FrameInfo;
   FrameInfo = std(double(test),[],3);
-  imagesc(FrameInfo);
+  image(FrameInfo);
 
   % X = mat2gray(FrameInfo);
   % X = im2uint16(X);
 
   X = uint16((2^16)*mat2gray(FrameInfo.^2)); % Square the signal of the STD image, higher contrast...
 
-  save_filename_STD = strcat(save_filename_STD,'_STD','.png');
-  imwrite(X,save_filename_STD,'png')
+  save_filename_STD = strcat(save_filename_STD,'_STD','.tif');
+  imwrite(X,save_filename_STD,'tif')
 
 
 
