@@ -95,7 +95,7 @@ for i = 1:length(subFolders)
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
   end
-
+clear MaxProj;
 disp('Performing Motion Correction transform calculation across days');
 X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
 
