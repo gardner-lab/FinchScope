@@ -37,8 +37,6 @@ dirFlags = [files.isdir]% Get a logical vector that tells which is a directory.
 subFolders = files(dirFlags)% Extract only those that are directories.
 
 
-
-
 for i = 1:length(subFolders)
       cd(START_DIR_ROOT);
       clear nextDir; clear mov_listing; clear filenames;
@@ -56,7 +54,7 @@ for i = 1:length(subFolders)
     mkdir(MaxDir);
     mkdir(StdDir);
 % Go to new Dir:
-      
+
     mov_listing=dir(fullfile(pwd,'*.mat')); % Get all .mat file names
     mov_listing={mov_listing(:).name};
     filenames=mov_listing;
@@ -113,7 +111,7 @@ tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transf
             mov_data_aligned_actual(ii).cdata(:,:,:) = imwarp(mov_data_aligned(ii).cdata(:,:,:),tform,'OutputView',imref2d(size(X5))); % Align Video
           end
 
-          
+
           mov_data_aligned =  []; % clear out the variable....
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
           mov_data_aligned =  mov_data_aligned_actual;

@@ -42,8 +42,10 @@ function FS_Write_IM(MaxDir,StdDir,file,mov_data)
   FrameInfo = std(double(test),[],3);
   imagesc(FrameInfo);
 
-  X = mat2gray(FrameInfo);
-  X = im2uint8(X);
+  % X = mat2gray(FrameInfo);
+  % X = im2uint16(X);
+
+  X = uint16((2^16)*mat2gray(FrameInfo.^2)); % Square the signal of the STD image, higher contrast...
 
   save_filename_STD = strcat(save_filename_STD,'_STD','.png');
   imwrite(X,save_filename_STD,'png')
