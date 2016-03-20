@@ -61,7 +61,7 @@ for i = 1:length(subFolders)
 
 
   for ii=1:length(mov_listing) % for all .mat files in directory,
-      clear mov_data; clear mov_data_aligned; clear mov_data_aligned_actual; % Make sure the buffer is clear...
+      clear mov_data2; clear mov_data3; clear mov_data; clear mov_data_aligned; clear mov_data_aligned_actual; % Make sure the buffer is clear...
 
         [path,file,ext]=fileparts(filenames{ii});
             load(fullfile(pwd,mov_listing{ii}),'mov_data');
@@ -82,7 +82,7 @@ for i = 1:length(subFolders)
         for iv = 1:size(mov_data2,3)
           tform = imregtform(MaxProj(:,:,ii),MaxProj(:,:,1),'rigid',optimizer,metric); % Compare Max projections to the first video
           mov_data3(:,:,iv) = imwarp(mov_data2(:,:,iv),tform,'OutputView',imref2d(size(MaxProj(:,:,1)))); % align frames locally
-          mov_data_aligned(iv).cdata(:,:,:) = mov_data2(:,:,iv); %% keep this data propogating through function....
+          mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
         end
 
         X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
