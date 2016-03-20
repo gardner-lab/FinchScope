@@ -45,6 +45,7 @@ for i = 1:length(subFolders)
 
       try % in case there are Directories you can't enter...
         nextDir = strcat(subFolders(i).name,'/mat/extraction/mov')
+        cd(nextDir);
       catch
         disp(' could not enter DIR...')
       end
@@ -55,14 +56,14 @@ for i = 1:length(subFolders)
     mkdir(MaxDir);
     mkdir(StdDir);
 % Go to new Dir:
-      cd(nextDir)
+      
     mov_listing=dir(fullfile(pwd,'*.mat')); % Get all .mat file names
     mov_listing={mov_listing(:).name};
     filenames=mov_listing;
 
 
   for ii=1:length(mov_listing) % for all .mat files in directory,
-      clear mov_data; % Make sure the buffer is clear...
+      clear mov_data; clear mov_data_aligned; clear mov_data_aligned_actual; % Make sure the buffer is clear...
 
         [path,file,ext]=fileparts(filenames{ii});
             load(fullfile(pwd,mov_listing{ii}),'mov_data');
@@ -89,9 +90,10 @@ for i = 1:length(subFolders)
         X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
 
        % SAVE the data in the matlab structure..
+       mov_data_aligned_actual = mov_data_aligned;
         mov_data_aligned =  []; % clear out the variable....
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-        % mov_data_aligned =  mov_data_aligned_actual;
+        mov_data_aligned =  mov_data_aligned_actual;
           save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
   end
@@ -111,10 +113,10 @@ tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transf
             mov_data_aligned_actual(ii).cdata(:,:,:) = imwarp(mov_data_aligned(ii).cdata(:,:,:),tform,'OutputView',imref2d(size(X5))); % Align Video
           end
 
-          mov_data_aligned =  mov_data_aligned_actual;
+          
           mov_data_aligned =  []; % clear out the variable....
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-
+          mov_data_aligned =  mov_data_aligned_actual;
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
             FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
