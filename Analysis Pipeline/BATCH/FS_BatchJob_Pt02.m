@@ -113,6 +113,7 @@ IO = 1;
 
         for ii = 1:size(mov_data,2) % format movie data
           mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+          mov_data3(ii).cdata(:,:,:) =  rgb2gray(mov_data(ii).cdata(:,:,:,:));
         end
 if IO == 1
   X4 = max(mov_data2,[],3);
@@ -125,9 +126,12 @@ end;
         for ii = 1:size(mov_data,2)
           mov_data_aligned(ii).cdata(:,:,:) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X4))); % align locally to 7th image
         end
-
+%% TAKE OUT 
+mov_data_aligned = mov_data3; % this will overwirte motion correction
+        clear mov_data;        
         clear mov_data2;
         clear mov_data;
+
 
 
       save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
