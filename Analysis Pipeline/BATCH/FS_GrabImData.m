@@ -35,10 +35,7 @@ function [ImageDataMax ImageDataSTD] = FS_GrabIMdata();
           [path,file,ext]=fileparts(filenames{ii});
               load(fullfile(pwd,mov_listing{ii}),'mov_data_aligned');
 
-          for iii = 1:size(mov_data,2) % Load in data
-            mov_data(:,:,iii) = mov_data_alignd(iii).cdata(:,:,:)); % convert to
-          end
-
+mov_data = mov_data_aligned;
           % Smooth Data...
 
           for iv=1:(length(mov_data)-2)
@@ -64,7 +61,7 @@ function [ImageDataMax ImageDataSTD] = FS_GrabIMdata();
           FrameInfo = max(test,[],3);
 
 
-          imagesc(FrameInfo);
+          %image(FrameInfo);
 
           X = mat2gray(FrameInfo);
           X = im2uint16(X);
@@ -72,8 +69,9 @@ function [ImageDataMax ImageDataSTD] = FS_GrabIMdata();
           % save_filename_MAX = strcat(save_filename_MAX,'_MAX','.tif');
           % imwrite(X,save_filename_MAX,'png')
           ImageDataSTD{i,ii} = X;
+          
           clear FrameInfo; clear mov_data2;
-          % FrameInfo = std(double(test),[],3);
+          FrameInfo = std(double(test),[],3);
           % image(FrameInfo);
 
           % X = mat2gray(FrameInfo);
