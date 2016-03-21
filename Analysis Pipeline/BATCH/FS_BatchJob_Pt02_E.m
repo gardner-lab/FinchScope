@@ -123,13 +123,12 @@ disp('Performing Motion Correction transform calculation across days');
            load(fullfile(pwd,mov_listing{iii}),'mov_data');
 
            for iiv = 1:size(mov_data,2) % Load in data
-             mov_data2(:,:,iiv) = (mov_data(iiv).cdata(:,:,:)); % convert to
+             mov_data2(:,:,iiv) = rgb2gray(mov_data(iiv).cdata(:,:,:)); % convert to
            end
 
-           for ii = 1:size(mov_data,3)
-           [move Greg2] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data(2:,:,ii)),100);
-           mov_data_aligned_actual(ii).cdata(:,:,:) = abs(ifft2(Greg2)); %% keep this data propogating through function....
-            clear
+           for ii = 1:size(mov_data,2)
+           [temp Greg] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data2(:,:,ii)),100);
+           mov_data_aligned_actual(ii).cdata(:,:,:) = abs(ifft2(Greg)); %% keep this data propogating through function....
            end
 
           % for ii = 1:size(mov_data_aligned,2)
