@@ -1,5 +1,8 @@
-function FS_BatchJob_Pt02_C()
-% FS_BatchJob_Pt02.m
+function FS_BatchJob_Pt02_D()
+% FS_BatchJob_Pt02_D.m
+
+% This variant is the most riggoius ofr motion correction, designed for LNY13
+
 
 % Part one aligns data to song.
 % * Part two performs within trial, within day and across-day motion correction
@@ -8,7 +11,7 @@ function FS_BatchJob_Pt02_C()
 
 
 % Run thorough 5 Day Longitudinal studies, and directory and:
-%  -- Within session alignment ** not in place
+%  -- Within session alignment
 %  -- Within day image alignment (using selected  MAX projection )
 %  -- Across day image alignment (using selected  MAX projection )
 %  -- Create STD and MAX images ( in order to manually check local alignment, and make XMASS tree images)
