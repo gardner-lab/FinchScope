@@ -127,8 +127,9 @@ disp('Performing Motion Correction transform calculation across days');
            end
 
            for ii = 1:size(mov_data,3)
-           [mov_data3(:,:,ii) Greg2] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data(2:,:,ii)),100);
-           mov_data_aligned_actual(ii).cdata(:,:,:) = mov_data3(:,:,ii); %% keep this data propogating through function....
+           [move Greg2] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data(2:,:,ii)),100);
+           mov_data_aligned_actual(ii).cdata(:,:,:) = abs(ifft2(Greg2)); %% keep this data propogating through function....
+            clear
            end
 
           % for ii = 1:size(mov_data_aligned,2)
