@@ -112,7 +112,7 @@ disp('Performing Motion Correction transform calculation across days');
 X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
 
 
-tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transform for Max projection comparison across days
+%tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transform for Max projection comparison across days
   %%--- Loop through each movie and perform intensity based image correction, based on aligning the average max projection.
   for  iii = 1:length(mov_listing)
         clear mov_data_aligned; clear mov_data2; clear mov_data; % Clear out remining buffer...
