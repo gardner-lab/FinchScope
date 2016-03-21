@@ -119,11 +119,11 @@ X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
        [path,file,ext]=fileparts(filenames{iii});
            load(fullfile(pwd,mov_listing{iii}),'mov_data_aligned');
 
-           for iii = 1:size(mov_data,2) % Load in data
-             mov_data(:,:,iii) = (mov_data_aligned(iii).cdata(:,:,:)); % convert to
+           for iiv = 1:size(mov_data_aligned,2) % Load in data
+             mov_data(:,:,iiv) = (mov_data_aligned(iiv).cdata(:,:,:)); % convert to
            end
 
-           for ii = 1:size(mov_data_aligned,2)
+           for ii = 1:size(mov_data,3)
            [mov_data2(:,:,ii) Greg] = dftregistration(fft2(X3(:,:,1)),fft2(mov_data(:,:,ii)),100);
            mov_data_aligned_actual(ii).cdata(:,:,:) = mov_data2(:,:,ii); %% keep this data propogating through function....
            end
