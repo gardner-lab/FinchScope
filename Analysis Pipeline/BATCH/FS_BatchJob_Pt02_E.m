@@ -63,18 +63,21 @@ for i = 1:length(subFolders)
     filenames=mov_listing;
 
 
-  for ii=1:length(mov_listing) % for all .mat files in directory,
-      clear mov_data2; clear mov_data3; clear mov_data; clear mov_data_aligned; clear mov_data_aligned_actual; % Make sure the buffer is clear...
-
-        [path,file,ext]=fileparts(filenames{ii});
-            load(fullfile(pwd,mov_listing{ii}),'mov_data');
-
-        for iii = 1:size(mov_data,2) % Load in data
+  % for ii=1:length(mov_listing) % for all .mat files in directory,
+  %     clear mov_data2; clear mov_data3; clear mov_data; clear mov_data_aligned; clear mov_data_aligned_actual; % Make sure the buffer is clear...
+if i == 1;
+        [path,file,ext]=fileparts(filenames{1});
+            load(fullfile(pwd,mov_listing{1}),'mov_data');
+        for iii = 1%:size(mov_data,2) % Load in data
           mov_data2(:,:,iii) = rgb2gray(mov_data(iii).cdata(:,:,:,:)); % convert to
         end
+        MaxProj(:,:,1) = max(mov_data2,[],3); % Take MAx projection of the video
+        disp('Performing Motion Correction transform calculation for the first day');
+end
 
 
-        MaxProj(:,:,ii) = max(mov_data2,[],3); % Take MAx projection of the video
+
+
 
 
 
@@ -82,13 +85,13 @@ for i = 1:length(subFolders)
 
                 %  clear mov_data2; clear mov_data;
 
-                disp('Performing Motion Correction transform calculation on Within day');
+                % disp('Performing Motion Correction transform calculation on Within day');
 
                 % TO DO: ** do we want to do an average here?
-for iv = 1:size(mov_data2,3)
-[mov_data3(:,:,iv) Greg] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data2(:,:,iv)),100);
-mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
-end
+% for iv = 1:size(mov_data2,3)
+% [mov_data3(:,:,iv) Greg] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data2(:,:,iv)),100);
+% mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
+% end
 
       % [optimizer, metric] = imregconfig('multimodal');
       %   for iv = 1:size(mov_data2,3)
@@ -96,36 +99,36 @@ end
       %     mov_data3(:,:,iv) = imwarp(mov_data2(:,:,iv),tform,'OutputView',imref2d(size(MaxProj(:,:,1)))); % align frames locally
       %     mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
       %   end
-
-        X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
+        %
+        % X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
 
        % SAVE the data in the matlab structure..
-       mov_data_aligned_actual = mov_data_aligned;
-        mov_data_aligned =  []; % clear out the variable....
-          save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-        mov_data_aligned =  mov_data_aligned_actual;
-          save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
+      %  mov_data_aligned_actual = mov_data_aligned;
+      %   mov_data_aligned =  []; % clear out the variable....
+      %     save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
+      %   mov_data_aligned =  mov_data_aligned_actual;
+      %     save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
-  end
-clear MaxProj;
+  % end
+% clear MaxProj;
 disp('Performing Motion Correction transform calculation across days');
-X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
-
+% X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
+%
 
 %tform = imregtform(X3(:,:,i),X3(:,:,1),'rigid',optimizer,metric); %create transform for Max projection comparison across days
   %%--- Loop through each movie and perform intensity based image correction, based on aligning the average max projection.
   for  iii = 1:length(mov_listing)
-        clear mov_data_aligned; clear mov_data2; clear mov_data; clear mov_data_actual; % Clear out remining buffer...
+        clear mov_data_aligned; clear mov_data2; clear mov_data; clear mov_data_actual; clear mov_data3; % Clear out remining buffer...
        [path,file,ext]=fileparts(filenames{iii});
-           load(fullfile(pwd,mov_listing{iii}),'mov_data_aligned');
+           load(fullfile(pwd,mov_listing{iii}),'mov_data');
 
-           for iiv = 1:size(mov_data_aligned,2) % Load in data
-             mov_data(:,:,iiv) = (mov_data_aligned(iiv).cdata(:,:,:)); % convert to
+           for iiv = 1:size(mov_data,2) % Load in data
+             mov_data2(:,:,iiv) = (mov_data(iiv).cdata(:,:,:)); % convert to
            end
 
            for ii = 1:size(mov_data,3)
-           [mov_data2(:,:,ii) Greg] = dftregistration(fft2(X3(:,:,1)),fft2(mov_data(:,:,ii)),100);
-           mov_data_aligned_actual(ii).cdata(:,:,:) = mov_data2(:,:,ii); %% keep this data propogating through function....
+           [mov_data3(:,:,ii) Greg2] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data(2:,:,ii)),100);
+           mov_data_aligned_actual(ii).cdata(:,:,:) = mov_data3(:,:,ii); %% keep this data propogating through function....
            end
 
           % for ii = 1:size(mov_data_aligned,2)
