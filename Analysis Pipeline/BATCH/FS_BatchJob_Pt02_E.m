@@ -52,8 +52,8 @@ for i = 1:length(subFolders)
       end
 
 % Make subdirectories:
-    MaxDir = ('/MAX')
-    StdDir = ('/STD')
+    MaxDir = ('MAX')
+    StdDir = ('STD')
     
 if exist(MaxDir,'dir'); rmdir(MaxDir,'s'); end; mkdir(MaxDir);
 if exist(StdDir,'dir'); rmdir(StdDir,'s'); end; mkdir(StdDir);
