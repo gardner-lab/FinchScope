@@ -1,4 +1,4 @@
-function FS_Write_IM(MaxDir,StdDir,file,mov_data)
+function FS_Write_IM(file,mov_data)
 
 
 

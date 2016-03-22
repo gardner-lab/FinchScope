@@ -52,10 +52,13 @@ for i = 1:length(subFolders)
       end
 
 % Make subdirectories:
-    MaxDir = strcat(nextDir,'/MAX')
-    StdDir = strcat(nextDir,'/STD')
-    mkdir(MaxDir);
-    mkdir(StdDir);
+    MaxDir = ('/MAX')
+    StdDir = ('/STD')
+    
+if exist(MaxDir,'dir'); rmdir(MaxDir,'s'); end; mkdir(MaxDir);
+if exist(StdDir,'dir'); rmdir(StdDir,'s'); end; mkdir(StdDir);
+%     mkdir(MaxDir);
+%     mkdir(StdDir);
 % Go to new Dir:
 
     mov_listing=dir(fullfile(pwd,'*.mat')); % Get all .mat file names
@@ -80,37 +83,6 @@ end
 
 
 
-
-
-
-                %  clear mov_data2; clear mov_data;
-
-                % disp('Performing Motion Correction transform calculation on Within day');
-
-                % TO DO: ** do we want to do an average here?
-% for iv = 1:size(mov_data2,3)
-% [mov_data3(:,:,iv) Greg] = dftregistration(fft2(MaxProj(:,:,1)),fft2(mov_data2(:,:,iv)),100);
-% mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
-% end
-
-      % [optimizer, metric] = imregconfig('multimodal');
-      %   for iv = 1:size(mov_data2,3)
-      %     tform = imregtform(MaxProj(:,:,ii),MaxProj(:,:,1),'rigid',optimizer,metric); % Compare Max projections to the first video
-      %     mov_data3(:,:,iv) = imwarp(mov_data2(:,:,iv),tform,'OutputView',imref2d(size(MaxProj(:,:,1)))); % align frames locally
-      %     mov_data_aligned(iv).cdata(:,:,:) = mov_data3(:,:,iv); %% keep this data propogating through function....
-      %   end
-        %
-        % X3(:,:,i) = mean(MaxProj,3); % Take the mean of the aligned max projection for across day alignment....
-
-       % SAVE the data in the matlab structure..
-      %  mov_data_aligned_actual = mov_data_aligned;
-      %   mov_data_aligned =  []; % clear out the variable....
-      %     save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
-      %   mov_data_aligned =  mov_data_aligned_actual;
-      %     save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
-
-  % end
-% clear MaxProj;
 disp('Performing Motion Correction transform calculation across days');
 % X5 = X3(:,:,1); % Take the first days's aligned, mean projeciton....
 %
@@ -131,22 +103,18 @@ disp('Performing Motion Correction transform calculation across days');
            mov_data_aligned_actual(ii).cdata(:,:,:) = abs(ifft2(Greg)); %% keep this data propogating through function....
            end
 
-          % for ii = 1:size(mov_data_aligned,2)
-          %   mov_data_aligned_actual(ii).cdata(:,:,:) = imwarp(mov_data_aligned(ii).cdata(:,:,:),tform,'OutputView',imref2d(size(X5))); % Align Video
-          % end
-
 
           mov_data_aligned =  []; % clear out the variable....
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
           mov_data_aligned =  mov_data_aligned_actual;
             save(fullfile(path,[file '.mat']),'mov_data_aligned','-append'); % store data here temporarily...
 
-            FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
+            FS_Write_IM(file,mov_data_aligned)
          clear mov_data_aligned_actual;   clear mov_data_aligned;
    end
 
    cd(START_DIR_ROOT)
-   clear mov_listing; clear filenames;
+   clear mov_listing; clear filenames; clear path; clear file;
 
 end
 
