@@ -1,4 +1,4 @@
-function roi_ave= FS_Plot_ROI(ROIS,varargin)
+function roi_ave= FS_Plot_ROI_archive(ROIS,varargin)
 % FS_Plot_ROI.m
 
 % Selects an arbitrary number of roi's for plotting. Run in .mat directory.
@@ -64,33 +64,33 @@ mov_listing={mov_listing(:).name};
 
 
 for i=1:length(mov_listing)
-clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times;
+clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
 
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-	load(fullfile(pwd,mov_listing{i}),'mov_data','mic_data','fs','vid_times','video','audio');
-
+	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio');
+mov_data = mov_data_aligned;
 % Get Audio/Video template matched offsets
-try
+
 	for ii = 1:length(mov_data)
-		mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+		mov_data2(:,:,ii) = (mov_data(ii).cdata(:,:,:,:));
 	end
 	disp(' Template match detected: Compensating for A/V mis-alignment...')
 		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
 		 timevec=(offset2'); %movie_fs
 		 G = diff(vid_times(:,1), 1);
-		 clear mic_data
-		 mic_data= mic_data(:,1) % only use data column
-catch
-	disp(' Non-template matched video: proceed to align to A/V timestamps...')
-	mov_data = video.frames;
-	vid_times = video.times;
-	mic_data = audio.data;
-	G = diff(vid_times(:,1), 1);
-	timevec = (vid_times');
-	for ii = 1:length(mov_data)
-	     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
-	end
-end
+		
+		 mic_data= mic_data(:,1); % only use data column
+% catch
+% 	disp(' Non-template matched video: proceed to align to A/V timestamps...')
+% 	mov_data = video.frames;
+% 	vid_times = video.times;
+% 	mic_data = audio.data;
+% 	G = diff(vid_times(:,1), 1);
+% 	timevec = (vid_times');
+% 	for ii = 1:length(mov_data)
+% 	     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
+% 	end
+% end
 mov_data = double(mov_data2);
 
 % Check For Dropped Frames:
