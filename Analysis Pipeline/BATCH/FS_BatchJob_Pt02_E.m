@@ -55,8 +55,14 @@ for i = 1:length(subFolders)
     MaxDir = ('MAX')
     StdDir = ('STD')
     
+    try
 if exist(MaxDir,'dir'); rmdir(MaxDir,'s'); end; mkdir(MaxDir);
 if exist(StdDir,'dir'); rmdir(StdDir,'s'); end; mkdir(StdDir);
+    catch
+mkdir('MAX')
+mkdir('STD')
+    end
+    
 %     mkdir(MaxDir);
 %     mkdir(StdDir);
 % Go to new Dir:
