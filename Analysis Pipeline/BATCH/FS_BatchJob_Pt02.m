@@ -38,9 +38,9 @@ subFolders = files(dirFlags)% Extract only those that are directories.
 
 
 %=========[  Get alignment info from day one ]==========%
-nextDir = strcat(subFolders(1).name,'/mat/extraction/mov')
-% try
-  cd(nextDir)
+% nextDir = strcat(subFolders(1).name,'/mat/extraction/mov')
+% % try
+%   cd(nextDir)
 
 
 mov_listing=dir(fullfile(pwd,'*.mat'));
@@ -48,39 +48,29 @@ mov_listing={mov_listing(:).name};
 filenames=mov_listing;
 
 disp('Loading in data from Day One');
-
-for i=1:length(mov_listing) % for all .mat files in directory,
-clear video;
-
-        [path,file,ext]=fileparts(filenames{i});
-            load(fullfile(pwd,mov_listing{i}),'mov_data');
-
-  for ii = 1:size(mov_data,2)
-      mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:)); % convert to
-  end
-
-            MaxProj(:,:,i) = max(mov_data2,[],3);
-
-
-clear mov_data2; clear mov_data;
-end
-
-
-
-% disp('Performing Motion Correction transform Calculation');
-%   X2 = MaxProj(:,:,1);
-%   [optimizer, metric] = imregconfig('multimodal');
-% for ii = 1:size(MaxProj,3)
-%   tform = imregtform(MaxProj(:,:,ii),X2,'rigid',optimizer,metric);
-%   MaxProj2(:,:,ii) = imwarp(MaxProj(:,:,ii),tform,'OutputView',imref2d(size(X2))); % align locally to 7th image
+% 
+% for i=1:length(mov_listing) % for all .mat files in directory,
+% clear video;
+% 
+%         [path,file,ext]=fileparts(filenames{i});
+%             load(fullfile(pwd,mov_listing{i}),'mov_data');
+% 
+%   for ii = 1:size(mov_data,2)
+%       mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:)); % convert to
+%   end
+% 
+%             MaxProj(:,:,i) = max(mov_data2,[],3);
+% 
+% 
+% clear mov_data2; clear mov_data;
 % end
-% disp('Calculting mean Max projection for Day one.');
-%   X3 = mean(MaxProj2,3);
+% 
 
 
 
 
-disp('Applying Motion Correction transform to all trials on all days');
+
+disp('Applying NO Motion Correction transform to all trials on all days');
 [nblanks formatstring]=fb_progressbar(100);
 fprintf(1,['Progress:  ' blanks(nblanks)]);
 
@@ -105,7 +95,7 @@ end
   mov_listing={mov_listing(:).name};
   filenames=mov_listing;
 
-IO = 1;
+
   for iii=1:length(mov_listing)
 
         [path,file,ext]=fileparts(filenames{iii});
@@ -115,18 +105,11 @@ IO = 1;
           mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
           mov_data3(ii).cdata(:,:,:) =  rgb2gray(mov_data(ii).cdata(:,:,:,:));
         end
-if IO == 1
-  X4 = max(mov_data2,[],3);
-  IO = 2;
-else
-end;
-            MAX_dat = max(mov_data2,[],3); % get maximum projection.
-        %     tform = imregtform(X4,X3,'rigid',optimizer,metric); %Apply Max projection comparison across days
-        %
-        % for ii = 1:size(mov_data,2)
-        %   mov_data_aligned(ii).cdata(:,:,:) = imwarp(mov_data2(:,:,ii),tform,'OutputView',imref2d(size(X4))); % align locally to 7th image
-        % end
-%% TAKE OUT
+
+         % Clear buffer
+mov_data_aligned = [];
+save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
+
 mov_data_aligned = mov_data3; % this will overwirte motion correction
         clear mov_data;
         clear mov_data2;
@@ -134,11 +117,11 @@ mov_data_aligned = mov_data3; % this will overwirte motion correction
 
 
 
-      save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
+save(fullfile(path,[file '.mat']),'mov_data_aligned','-append');
 
 
 
-FS_Write_IM(MaxDir,StdDir,file,mov_data_aligned)
+FS_Write_IM(file,mov_data_aligned)
 
     clear mov_data_aligned;
 %FS_BATCH_DFF_STD_Image(pwd,1); % takes the
