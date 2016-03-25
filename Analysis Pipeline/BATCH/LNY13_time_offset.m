@@ -10,6 +10,8 @@ mov_listing={mov_listing(:).name};
 filenames=mov_listing;
 g = 170/24/60/60/1000;
 
+
+
 for i=1:length(mov_listing)
     
      [path,file,ext]=fileparts(filenames{i});
@@ -22,12 +24,16 @@ S2 = datevec(S,'yyyy-mm-dd HH MM SS');
 S3 = etime(S2,SD);
 try
     g2 = video.alignment;
-    disp('video already aligned! not doing it again...');
+    disp('video already aligned! doing it again...');
+    video.times = video.TimeOriginal;
+    video.times = video.times + S3*g;
+    video.alignment = g;
+save(fullfile(path,[file '.mat']),'video','-append');
+    
 catch
 video.TimeOriginal = video.times;
 video.times = video.times + S3*g;
 video.alignment = g;
-
 
 save(fullfile(path,[file '.mat']),'video','-append');
 end;
