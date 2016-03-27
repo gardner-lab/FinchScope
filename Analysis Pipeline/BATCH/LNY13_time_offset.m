@@ -3,7 +3,7 @@ function LNY13_time_offset
 % this finction adds time to LNY13, who is loosing time in the
 % videoalignment
 
-Sdate = '2015-08-04 09 09 34'
+Sdate = '2015-08-04 08 22 49'
 SD = datevec(Sdate,'yyyy-mm-dd HH MM SS');
 mov_listing=dir(fullfile(pwd,'*.mat'));
 mov_listing={mov_listing(:).name};
