@@ -9,12 +9,12 @@ figure();
  clear G_c;
  clear G_uc;
  clear G;
- pdata = roi_ave_c;
+ pdata = roi_ave;
  counter = 1;
- for cell = 1:6;
- for i = 1:18 %[8 9 10 11 12 17 18 20 21 22]
+ for cell = 1:size(pdata.raw_dat,1);
+ for i = 1:100%size(pdata.raw_dat,2); %[8 9 10 11 12 17 18 20 21 22]
      if min(pdata.raw_dat{cell,i}(2:end))>30;
-    plot(pdata.raw_time{cell,i}(2:end),zscore(pdata.raw_dat{cell,i}(2:end))+cell*4,'b'); 
+    plot(pdata.raw_time{cell,i}(2:end),zscore(pdata.raw_dat{cell,i}(2:end))+cell*6,'b'); 
      end
      G(counter,:) = zscore(pdata.interp_raw{cell,i}(2:end));
     hold on; 
@@ -26,36 +26,43 @@ clear G;
  end
  
  figure();
- for cell = 1:6
+ for cell = 1:20
  plot((1:size(pdata.interp_time{1,1}(2:end),2))/3/30,G_c(cell,:)+cell*2);
  hold on;
  end
  
 x=[0.25, 0.25];
-y=[0,15];
+y=[0,45];
 plot(x,y,'--r')
 
 length(pdata.interp_time{1,1})
 l2 = pdata.interp_time{1,1}(:,end)-0.75
 x=[l2, l2];
-y=[0,15];
+y=[0,45];
 plot(x,y,'--r')
  
- figure(); imagesc(G_c(:,:)); colormap(jet);
+%  figure(); imagesc(G_c(:,:)); colormap(jet);
+%  
+%  
+%  
+%  figure(); imagesc(G_c(:,20:end-60)); colormap(jet);
  
  
- 
- figure(); imagesc(G_c(:,20:end-60)); colormap(jet);
- 
- 
- A    = (G_c(:,20:end-60));
-maxA = max(A, [], 2);
-[dummy, index] = sort(maxA);
-B    = A(index, :);
+ A    = (G_c(:,20:end-50));
+[maxA, Ind] = max(A, [], 2);
+[dummy, index] = sort(Ind);
+B  = A(index, :);
 figure();
 colormap(jet);
 imagesc(B);
  
+% whole image
+C  = G_c(index, :);
+figure();
+colormap(jet);
+imagesc(C);
+
+
 %  counter = 1;
 %  pdata = roi_ave_c;
 %   
