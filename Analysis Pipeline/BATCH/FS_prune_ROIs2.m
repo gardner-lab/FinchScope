@@ -1,6 +1,6 @@
-function FS_prune_ROIs(ROI_dat)
+function FS_prune_ROIs2(ROI_dat)
 
-% go through max proj folders, and eliminate traces
+% go through gif folders, and eliminate traces
 % Step one: Load in ROIs for the day.
 
 
@@ -29,11 +29,12 @@ subFolders = files(dirFlags)% Extract only those that are directories.
 for i = 1:length(subFolders)
   cd(START_DIR_ROOT);
   clear nextDir
-  nextDir = strcat(subFolders(i).name,'/dff')
+  
+  nextDir = strcat(subFolders(i).name,'/gif')
   try
   cd(nextDir)
   catch
-      disp('No Dff folder, skipping directory')
+      disp('No Gif folder, skipping directory')
       continue
   end
 
@@ -41,10 +42,10 @@ for i = 1:length(subFolders)
   clear NowROI; clear gifListing; clear gifListing2;
     
 
-     gifListing = dir(fullfile(pwd,'*tif'));
+     gifListing = dir(fullfile(pwd,'*gif'));
      gifListing = {gifListing(:).name};
      for ii = 1:length(gifListing);
-     gifListing2{ii} = gifListing{ii}(1:end-8);
+     gifListing2{ii} = gifListing{ii}(1:end-4);
      end
      
      
@@ -79,9 +80,9 @@ clear tf;
 
      end
      clear NowROI;
-     ROI_dat_New = NewROI_dat;
+     ROI_data_cleansed = NewROI_dat;
 end
 
 cd(START_DIR_ROOT);
-save('ROI_dat_edited','ROI_dat_New')
+save('ROI_data_cleansed','ROI_data_cleansed')
 
