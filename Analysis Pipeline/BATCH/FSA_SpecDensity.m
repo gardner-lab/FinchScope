@@ -1,4 +1,4 @@
-function SDI_dat = FSA_SpecDensity(ROI_dat_New);
+function SDI_dat = FSA_SpecDensity(ROI_dat_New)
 
 figure(); 
 for i = 1:size(ROI_dat_New,2)
