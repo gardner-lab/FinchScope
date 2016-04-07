@@ -1,4 +1,4 @@
-function roi_ave= FS_Plot_ROI_archive(ROIS,varargin)
+function roi_ave= FS_Plot_ROI(ROIS,varargin)
 % FS_Plot_ROI.m
 
 % Selects an arbitrary number of roi's for plotting. Run in .mat directory.
@@ -78,7 +78,7 @@ mov_data = mov_data_aligned;
 		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
 		 timevec=(offset2'); %movie_fs
 		 G = diff(vid_times(:,1), 1);
-		
+
 		 mic_data= mic_data(:,1); % only use data column
 % catch
 % 	disp(' Non-template matched video: proceed to align to A/V timestamps...')
