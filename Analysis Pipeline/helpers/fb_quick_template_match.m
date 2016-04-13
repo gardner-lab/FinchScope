@@ -60,7 +60,7 @@ if isempty(template)
 	TEMPLATE.data=fb_spectro_navigate(mic_data);
 	TEMPLATE.features=fb_smscore(TEMPLATE.data,fs);
 
-	[s,f,t]=pretty_sonogram(TEMPLATE.data,fs,'low',1);
+	[s,f,t]=fb_pretty_sonogram(TEMPLATE.data,fs,'low',1);
 
 	minf=1;
 	maxf=min(find(f>=10e3));
@@ -139,7 +139,7 @@ for i=1:size(MATCHES,1)
 
 	% write out sonograms for each match
 
-	[s,f,t]=pretty_sonogram(mic_data(MATCHES(i,1):MATCHES(i,2)),fs,'low',1);
+	[s,f,t]=fb_pretty_sonogram(mic_data(MATCHES(i,1):MATCHES(i,2)),fs,'low',1);
 
 	minf=1;
 	maxf=min(find(f>=10e3));

@@ -14,7 +14,7 @@ cut=25;
 out_dir='extraction';
 save_dir='detrended_aligned';
 dat_dir='trace_data';
-padding=[1 1];
+padding=[0.25 0.750];
 
 if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
