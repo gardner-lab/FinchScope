@@ -11,14 +11,16 @@ function FS_DFF_STD_Image(DIR,varargin)
 %   By: WALIII
 
 % startFrame can equal 7, for full files
-startFrame = 17;
+startFrame = 1;
+dispword = strcat('Start frame is set to ', startFrame);
+disp(dispword);
 % Make directory for all subsequent videos...
 mat_dir='DFF_Images2';
 counter = 1;
 if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
-MaxDir = strcat(mat_dir,'/MAX')
-StdDir = strcat(mat_dir,'/STD')
+MaxDir = strcat(mat_dir,'/MAX');
+StdDir = strcat(mat_dir,'/STD');
 mkdir(MaxDir);
 mkdir(StdDir);
 

@@ -5,7 +5,7 @@ function FS_AV_Parse(DIR,varargin)
 % Parse Data from FreedomScopes
 %   Created: 2015/08/02
 %   By: WALIII
-%   Updated: 2015/11/19
+%   Updated: 2015/04/18
 %   By: WALIII
 
 % FS_AV_parse will do several things:
@@ -100,8 +100,10 @@ fs = 48000;
         % clear the buffer
 clear video;
 clear audio;
-
-
+clear a_ts;
+clear a;
+clear v_ts; 
+clear v;
 end
 fprintf(1,'\n');
 %%
