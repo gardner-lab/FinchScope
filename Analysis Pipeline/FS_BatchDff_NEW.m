@@ -8,8 +8,8 @@ function FS_BatchDff_NEW(DIR, varargin)
 % For unprocessed videos
 % 09.05.15
 
-filt_rad=20; % gauss filter radius
-filt_alpha=30; % gauss filter alpha
+filt_rad=3; % gauss filter radius
+filt_alpha=3; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap=colormap('jet');
 per=0; % baseline percentile (0 for min)
@@ -59,13 +59,28 @@ catch
 end
 
 %%%%
-for i=1:(length(mov_data)-2)
+% Detect Bad frames
+TERM_LOOP = 0;
+for i=1:(length(mov_data)-3)
    mov_data3 = single(rgb2gray(mov_data(i).cdata));
    mov_data4 = single(rgb2gray(mov_data(i+1).cdata));
-   %mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
-   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4)/2);
+   mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
+      if mean(mean(mov_data4))< 60;
+        dispword = strcat(' WARNING:  Bad frame(s) detected on frame: ',num2str(i));
+        disp(dispword);
+        TERM_LOOP = 1;
+        break
+      end
+   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4 +mov_data5)/3);
+
 end
 
+
+
+if TERM_LOOP ==1;
+    disp(' skipping to nex mov file...')
+    continue
+end
 
 
  test = single(mov_data2(:,:,12:end));
@@ -82,19 +97,18 @@ disp(['Converting to df/f using the ' num2str(per) ' percentile for the baseline
 
 baseline=repmat(prctile(test,per,3),[1 1 frames]);
 
-h=fspecial('gaussian',80,80);
+h=fspecial('gaussian',50,10);
 baseline = imfilter(baseline,h,'circular'); % filter baseline
 
 tot = (test-baseline);
-%baseline(baseline<0)=1;
-dff=(tot./(baseline)).*100;
 
-dff2 = imresize(dff,1);% Scale Data
+dff2=((tot)./(baseline)).*100;
 
 
 
-H = prctile(max(dff2(:,:,15)),97);
-L = prctile(mean(dff2(:,:,15)),40);
+
+H = prctile(mean(max(dff2(:,:,:))),70);
+L = prctile(mean(mean(dff2(:,:,:))),10);
     
     clim = [double(L) double(H)];
     
