@@ -65,10 +65,10 @@ mov_listing={mov_listing(:).name};
 
 for i=1:length(mov_listing)
 clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
-
+warning('off','all')
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
 	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio','mov_data');
-
+warning('on','all')
     try
     mov_data = mov_data_aligned;
 
