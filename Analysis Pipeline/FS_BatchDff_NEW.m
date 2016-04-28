@@ -91,24 +91,30 @@ end
 disp('Gaussian filtering the movie data...');
 
 h=fspecial('gaussian',filt_rad,filt_alpha);
-test=imfilter(test,h,'circular');
+test=imfilter(test,h,'circular','replicate');
 
 disp(['Converting to df/f using the ' num2str(per) ' percentile for the baseline...']);
 
 baseline=repmat(prctile(test,per,3),[1 1 frames]);
 
-h=fspecial('gaussian',50,10);
-baseline = imfilter(baseline,h,'circular'); % filter baseline
+h=fspecial('gaussian',10,10);
+baseline = imfilter(baseline,h,'circular','replicate'); % filter baseline
 
-tot = (test-baseline);
+dff2 = (test.^2-baseline.^2)./baseline;
 
-dff2=((tot)./(baseline)).*100;
+h=fspecial('disk',2);
+dff2=imfilter(dff2,h); %Clean up
+% baseline2=mean(tot,3);
+% for iii=1:size(tot,3)
+%   dff2 =  tot(:,:,iii)./baseline2.*100;
+% end
+
 
 
 
 
 H = prctile(mean(max(dff2(:,:,:))),70);
-L = prctile(mean(mean(dff2(:,:,:))),10);
+L = prctile(mean(mean(dff2(:,:,:))),30);
     
     clim = [double(L) double(H)];
     

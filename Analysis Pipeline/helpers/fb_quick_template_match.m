@@ -4,7 +4,6 @@ function [MATCHES,SCORE,TEMPLATE]=fb_quick_template_match(FILE,varargin)
 %
 %
 %
-
 fs=24.414e3;
 n=1024;
 overlap=1e3;
@@ -92,6 +91,8 @@ for j=1:length(file_features)
 	
 	score_temp{j}=[];
 
+warning('off','all')
+
 	for k=1:file_length-template_length
 		score_temp{j}=[score_temp{j} sum(sum(abs( file_features{j}(:,k:k+template_length)-TEMPLATE.features{j} )))];
 	end
@@ -151,3 +152,6 @@ for i=1:size(MATCHES,1)
 end
 
 MATCHES(to_del,:)=[];
+warning('off','all')
+
+
