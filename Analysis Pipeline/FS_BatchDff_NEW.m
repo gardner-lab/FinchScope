@@ -114,7 +114,7 @@ dff2=imfilter(dff2,h); %Clean up
 
 
 H = prctile(mean(max(dff2(:,:,:))),70);
-L = prctile(mean(mean(dff2(:,:,:))),30);
+L = prctile(mean(max(dff2(:,:,:))),1);
     
     clim = [double(L) double(H)];
     
@@ -146,8 +146,7 @@ end
 close(v)
 
 
-
-
+imwrite(max(NormIm,[],3),strcat(save_filename,'.png'));
 
 
 end
