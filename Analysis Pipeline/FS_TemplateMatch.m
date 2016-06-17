@@ -264,7 +264,7 @@ if extract_sounds
 
 		% each rising edge indicates a new frame, map onto time from onset
 
-		extract_movies(mic_data2, vid_times, mic_data,mov_data,used_filenames,out_dir,im_resize,movie_fs,fs,min_f,max_f)%extract_movies(out_dir,im_resize,movie_fs,mic_data,fs,min_f,max_f);
+		extract_movies(mic_data2, vid_times, mic_data,mov_data,used_filenames,out_dir,im_resize,movie_fs,fs,min_f,max_f,padding)%extract_movies(out_dir,im_resize,movie_fs,mic_data,fs,min_f,max_f);
 
 		%save(fullfile(out_dir,'extracted_data.mat'),'mic_data','sync_data','ttl_data',...
 			%'rise_data','fall_data','used_filenames','-v7.3');
@@ -553,7 +553,7 @@ fprintf('\n');
 
 end
 
-function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,FS,MIN_F,MAX_F)
+function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,FS,MIN_F,MAX_F,PADDING)
 %function extract_movies(RISE_DATA,FALL_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,MIC_DATA,FS,MIN_F,MAX_F)
 
 if exist(fullfile(OUT_DIR,'mov'),'dir')
@@ -653,14 +653,31 @@ mov_idx=first_frame:last_frame;
 
 	% save sonogram of extraction
 
-	[s,f,t]=fb_pretty_sonogram(double(mic_data(:,1)),fs,'low',1.5,'zeropad',1024,'N',2048,'overlap',2040);
+	%[s,f,t]=fb_pretty_sonogram(double(mic_data(:,1)),fs,'low',1.5,'zeropad',1024,'N',2048,'overlap',2040);
+  [b,a]=ellip(5,.2,80,[500]/(fs/2),'high');
+	[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data(:,1)./abs(max(mic_data(:,1)))),fs,'low',1.5,'zeropad',0);
 
 	startidx=max(find(f<MIN_F));
 
 	if isempty(startidx), startidx=1; end
 	stopidx=min(find(f>MAX_F));
 
-	imwrite(flipdim(uint8(s),1),hot,fullfile(OUT_DIR,'gif',[ save_filename '.gif']),'gif');
+	% minpt=1;
+	% maxpt=min(find(f>=10e3));
+for i = 1:60;
+	g = round(size(s,1)/60);
+	if ~rem(i,3)*i/3;
+		k = find(abs(t-PADDING(1)) < 0.0001);
+		bkw = max(t)-PADDING(2);
+		k2 = find(abs(t-bkw) < 0.0001);
+		s((((i*g)-g)+1:i*g),k:k+3) = 100; s((((i*g)-g)+1:i*g),k2:k2+3) = 100;
+	end;
+end;
+
+warning off;
+	imwrite(flipdim(uint8(s(startidx:stopidx,:)),1),hot,fullfile(OUT_DIR,'gif',[save_filename '.gif']),'gif');
+warning on;
+	%imwrite(flipdim(uint8(s),1),hot,fullfile(OUT_DIR,'gif',[ save_filename '.gif']),'gif');
 
 end
 
