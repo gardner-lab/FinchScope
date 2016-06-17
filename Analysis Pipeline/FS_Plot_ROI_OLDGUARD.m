@@ -1,4 +1,4 @@
-function roi_ave= FS_Plot_ROI(ROIS,varargin)
+function roi_ave= FS_Plot_ROI_OLDGUARD(ROIS,varargin)
 % FS_Plot_ROI.m
 
 % Selects an arbitrary number of roi's for plotting. Run in .mat directory.
@@ -11,7 +11,7 @@ function roi_ave= FS_Plot_ROI(ROIS,varargin)
 colors=eval(['winter(' num2str(length(ROIS.coordinates)) ')']);
 sono_colormap='hot';
 baseline=3;
-n = 1; % How much to interpolate by?
+n = 3; % How much to interpolate by?
 ave_fs=30*n; % multiply by a variable 'n' if you want to interpolate
 save_dir='roi';
 template=[];
@@ -65,12 +65,12 @@ mov_listing={mov_listing(:).name};
 
 for i=1:length(mov_listing)
 clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
-warning('off','all')
+
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
 	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio','mov_data');
-warning('on','all')
+
     try
-    mov_data;
+    mov_data = mov_data_aligned;
 
         
 % Get Audio/Video template matched offsets
@@ -95,7 +95,7 @@ warning('on','all')
     end
     
     	disp(' Template match detected: Compensating for A/V mis-alignment...')
-		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
+		 offset2 = (vid_times'-mic_data(1,2)/fs);
 		 timevec=(offset2'); %movie_fs
 		 G = diff(vid_times(:,1), 1);
 
