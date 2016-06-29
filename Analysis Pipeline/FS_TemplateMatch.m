@@ -142,7 +142,7 @@ if isempty(template_data)
 
 
 	template_fig=figure('Visible','off');
-	[template_image,f,t]=fb_pretty_sonogram(TEMPLATE,fs,'low',1.5,'zeropad',1024,'N',2048,'overlap',2040);
+	[template_image,f,t]=fb_pretty_sonogram(TEMPLATE,fs,'low',2.5,'zeropad',1024,'N',2048,'overlap',2040);
 
 	startidx=max(find(f<min_f));
 
@@ -655,7 +655,7 @@ mov_idx=first_frame:last_frame;
 
 	%[s,f,t]=fb_pretty_sonogram(double(mic_data(:,1)),fs,'low',1.5,'zeropad',1024,'N',2048,'overlap',2040);
   [b,a]=ellip(5,.2,80,[500]/(fs/2),'high');
-	[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data(:,1)./abs(max(mic_data(:,1)))),fs,'low',1.5,'zeropad',0);
+	[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data(:,1)./abs(max(mic_data(:,1)))),fs,'low',2.5,'zeropad',0);
 
 	startidx=max(find(f<MIN_F));
 

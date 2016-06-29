@@ -64,7 +64,7 @@ if f.bytes/1000000< 900.000
 [a_ts, a, v_ts, v] = extractmedia(FILE);
 
 else
-  disp('moving file- to large for batch processing... use FS_AV_Parse(pwd,'large')')
+  disp('moving file- to large for batch processing... use FS_AV_Parse(pwd,large)');
   LargeDir = strcat(path,'/','LargeFiles');
   movefile(FILE, LaregDir)
   continue;
@@ -99,7 +99,7 @@ fs = 48000;
 		[b,a]=ellip(5,.2,80,[500]/(fs/2),'high');
 		plot_data=mic_data./abs(max(mic_data));
 
-		[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data./abs(max(mic_data))),fs,'low',1.5,'zeropad',0);
+		[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data./abs(max(mic_data))),fs,'low',2.5,'zeropad',0);
 
 		minpt=1;
 		maxpt=min(find(f>=10e3));
