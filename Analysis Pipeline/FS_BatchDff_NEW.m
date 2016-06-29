@@ -8,8 +8,8 @@ function FS_BatchDff_NEW(DIR, varargin)
 % For unprocessed videos
 % 09.05.15
 
-filt_rad=3; % gauss filter radius
-filt_alpha=3; % gauss filter alpha
+filt_rad=20; % gauss filter radius
+filt_alpha=30; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap=colormap('jet');
 per=0; % baseline percentile (0 for min)
@@ -47,6 +47,7 @@ clear mov_data;
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 try
 load(fullfile(DIR,mov_listing{i}),'video');
+sT = 20;
 save_filename=[ fullfile(mat_dir,file) ];
 try
    LastFrame = video.nrFramesTotal;
@@ -56,24 +57,27 @@ end
 mov_data = video.frames(1:LastFrame);
 catch
     load(fullfile(DIR,mov_listing{i}),'mov_data');
+    sT = 1;
 end
 
 %%%%
 % Detect Bad frames
+counter = 1;
 TERM_LOOP = 0;
-for i=1:(length(mov_data)-3)
-   mov_data3 = single(rgb2gray(mov_data(i).cdata));
-   mov_data4 = single(rgb2gray(mov_data(i+1).cdata));
-   mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
-      if mean(mean(mov_data4))< 60;
+for i=sT:(length(mov_data))
+   mov_data2(:,:,counter) = single(rgb2gray(mov_data(i).cdata));
+  
+      if mean(mean(mov_data2))< 60;
         dispword = strcat(' WARNING:  Bad frame(s) detected on frame: ',num2str(i));
         disp(dispword);
         TERM_LOOP = 1;
         break
       end
-   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4 +mov_data5)/3);
+      counter = counter+1;
 
 end
+
+mov_data3 = convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 
 
 
@@ -83,7 +87,7 @@ if TERM_LOOP ==1;
 end
 
 
- test = single(mov_data2(:,:,12:end));
+ test = single(mov_data3(:,:,1:end));
 [rows,columns,frames]=size(test);
   
 %%%=============[ FILTER Data ]==============%%%
@@ -113,8 +117,8 @@ dff2=imfilter(dff2,h); %Clean up
 
 
 
-H = prctile(mean(max(dff2(:,:,:))),70);
-L = prctile(mean(max(dff2(:,:,:))),1);
+H = prctile(max(max(dff2(:,:,:))),70);
+L = prctile(mean(max(dff2(:,:,:))),3);
     
     clim = [double(L) double(H)];
     
