@@ -57,9 +57,19 @@ for i=1:length(mov_listing)
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
     FILE = fullfile(DIR,mov_listing{i})
 
+f = dir(FILE)
+if f.bytes/1000000< 900.000
 
 %Extract Audio and video data...
 [a_ts, a, v_ts, v] = extractmedia(FILE);
+
+else
+  disp('moving file- to large for batch processing... use FS_AV_Parse(pwd,'large')')
+  LargeDir = strcat(path,'/','LargeFiles');
+  movefile(FILE, LaregDir)
+  continue;
+end
+
 
 
 
@@ -102,7 +112,7 @@ clear video;
 clear audio;
 clear a_ts;
 clear a;
-clear v_ts; 
+clear v_ts;
 clear v;
 end
 fprintf(1,'\n');
