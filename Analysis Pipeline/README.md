@@ -13,7 +13,26 @@ This code serves as a basic analysis pipeline for extracting fluorescence time s
 >> FS_AV_Parse.
 ```
 
-This will parse the .mov files into matlab-readable .m files, and will created a cell array for video data, and a corresponding cell array with synchronized analog data. The use of this synchronization cell array will vary from one user's application to another- I myself use it for aligning to zebrafinch song (as an audio channel) others will use this as a sync to sone behavioral paradigm, i.e. a TTL input.
+This will parse the .mov files into matlab-readable .m files, and will created a cell array for video data, and a corresponding cell array with synchronized analog data. The use of this synchronization cell array will vary from one user's application to another- I myself use it for aligning to zebrafinch song (as an audio channel) others will use this as a sync to sone behavioral paradigm, i.e. a TTL input. While the format contains:
+
+% Audio structure:
+audio.nrChannels
+audio.bitsnrFrames
+audio.data
+audio.rate
+audio.TotalDurration
+
+% Video structure
+video.width
+video.height
+video.channels
+video.times
+video.nrFramesTotal
+video.FrameRate
+video.frames
+
+
+However, in order to be as general as possible, many helper scripts use height*width*frame*color format. There is a legacy format, that uses  video.frame(n).cdata.
 
 
 3. Run:
@@ -68,7 +87,7 @@ To extract ROIS from your movies, go back into the .mat directory, and run:
 >> roi_ave= FS_plot_ROI(ROI);
 ```
 This will extract ROIs, using the mask 'ROI', for every .mat file in the folder.
- 
+
 roi_ave will be saved in the directory 'rois' and it will have all of your ROI time series data in it, as well as calculated dF/F traces, and interpolated traces. you can thumb through the .mat file to check out the data structure. to plot it right away:
 
 ```

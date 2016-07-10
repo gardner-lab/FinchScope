@@ -8,9 +8,39 @@ function FS_BatchDff(DIR, varargin)
 % For unprocessed videos
 % 09.05.15
 
-
+%% Default Paramaters:
+filt_rad=20; % gauss filter radius
+filt_alpha=30; % gauss filter alpha
+lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
+cmap=colormap('jet');
+per=4; % baseline percentile (0 for min)
+counter = 1;
 mat_dir='DFF_MOVIES';
 counter = 1;
+
+
+
+%% Custom Paramaters
+nparams=length(varargin);
+
+if mod(nparams,2)>0
+	error('Parameters must be specified as parameter/value pairs');
+end
+
+for i=1:2:nparams
+	switch lower(varargin{i})
+		case 'filt_rad'
+			filt_rad=varargin{i+1};
+		case 'filt_alpha'
+			filt_alpha=varargin{i+1};
+		case 'lims'
+			lims=varargin{i+1};
+		case 'baseline'
+			per=varargin{i+1};
+	end
+end
+
+
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
@@ -30,116 +60,122 @@ fprintf(1,['Progress:  ' blanks(nblanks)]);
 
 for i=1:length(mov_listing)
 clear video;
+clear NormIm;
+clear dff2;
+clear dff;
+clear mov_data3;
+clear mov_data2;
+clear mov_data;
 
     [path,file,ext]=fileparts(filenames{i});
+    save_filename=[ fullfile(mat_dir,file) ];
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
-
-	load(fullfile(DIR,mov_listing{i}),'video');
-
-    %create DFF
-    figure, set(gcf, 'Color','white')
-      axis tight
-      set(gca, 'nextplot','replacechildren', 'Visible','off');
-
-%# create AVI object
-
-save_filename=[ fullfile(mat_dir,file) ];
-
-vidObj = VideoWriter(save_filename);
-vidObj.Quality = 100;
-vidObj.FrameRate = 30;
-open(vidObj);
-colormap(bone);
-
 try
-   LastFrame = video.nrFramesTotal;
+load(fullfile(DIR,mov_listing{i}),'video');
+sT = 14;
+mov_data = video.frames(:,:,:,sT:end);
 catch
-   LastFrame = size(video.frames,2);
+    load(fullfile(DIR,mov_listing{i}),'mov_data');
+    sT = 1;
+    mov_data = mov_data(:,:,:,sT:end);
 end
 
-mov_data = video.frames(1:LastFrame);
 %%%%
-for i=1:(length(mov_data)-2)
-   mov_data3 = single(rgb2gray(mov_data(i).cdata));
-   mov_data4 = single(rgb2gray(mov_data(i+1).cdata));
-   %mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
-   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4)/2);
-end
+% Detect Bad frames
+counter = 1;
+TERM_LOOP = 0;
+for i=sT:(size(mov_data,4))
+   mov_data2(:,:,counter) = single(rgb2gray(mov_data(:,:,:,counter)));
 
-test=mov_data2;
-test=imresize((test),.25);
-
-h=fspecial('disk',50);
-bground=imfilter(test,h);
-% bground=smooth3(bground,[1 1 5]);
-test=test-bground;
-h=fspecial('disk',1);
-test=imfilter(test,h);
-
-%%%%%
-% Scale videos by pixel value intensities of a single, representative frame
-LinKat =  cat(1,test(:,1,15)); % take this from the 15 frame
-for i = 2:size(test,2)
-Lin = cat(1,test(:,i,size(test,3)));
-LinKat = cat(1,LinKat,Lin);
-end
-H = prctile(LinKat,95)+20; % clip pixel value equal to the 95th percentile value
-L = prctile(LinKat,20);% clip the pixel value equal to the bottem 20th percentile value
-%%%%%
-test=imresize(test,4);
-
-[optimizer, metric] = imregconfig('multimodal');
-%# create movie
-for i=1:(length(mov_data)-2);
-    %test3(:,:,i) = imregister(test2(:,:,i),test2(:,:,1),'rigid',optimizer,metric);
-   image(test(:,:,i),'CDataMapping','scaled');
-   caxis([double(L),double(H)])%caxis([0,70]) % change caxis
-   writeVideo(vidObj, getframe(gca));
-end
-close(gcf)
-
-%# save as AVI file, and open it using system video player
-close(vidObj);
-
-FrameInfo = max(test,[],3);
-%figure();
-colormap(bone)
-imagesc(FrameInfo);
-%set(gca,'ydir','normal'); % Otherwise the y-axis would be flipped
-X = mat2gray(FrameInfo);
-X = im2uint8(X);
-imwrite(X,save_filename,'png')
-
-TotalX(:,:,counter) = X;
-
-
-counter = counter+1;
-clear mov_data;
-clear h;
-clear X;
-clear FrameInfo;
-clear test;
-clear LinKat;
-clear Kat;
-clear H;
-clear L;
-clear mov_data2
-clear mov_data3
-clear mov_data4
+      if mean(mean(mov_data2))< 60;
+        dispword = strcat(' WARNING:  Bad frame(s) detected on frame: ',num2str(i));
+        disp(dispword);
+        TERM_LOOP = 1;
+        break
+      end
+      counter = counter+1;
 
 end
-fprintf(1,'\n');
-%%
-%% Register Images
-% [optimizer, metric] = imregconfig('multimodal');
-% for g = 1:size(TotalX,3)
-%     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
+
+
+
+if TERM_LOOP ==1;
+    disp(' skipping to nex mov file...')
+    continue
+end
+
+mov_data3 = convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
+
+
+ test = single(mov_data3(:,:,1:end));
+[rows,columns,frames]=size(test);
+
+%%%=============[ FILTER Data ]==============%%%
+
+disp('Gaussian filtering the movie data...');
+
+h=fspecial('gaussian',filt_rad,filt_alpha);
+test=imfilter(test,h,'circular','replicate');
+
+disp(['Converting to df/f using the ' num2str(per) ' percentile for the baseline...']);
+
+baseline=repmat(prctile(test,per,3),[1 1 frames]);
+
+h=fspecial('gaussian',10,10);
+baseline = imfilter(baseline,h,'circular','replicate'); % filter baseline
+
+dff2 = (test.^2-baseline.^2)./baseline;
+
+h=fspecial('disk',2);
+dff2=imfilter(dff2,h); %Clean up
+% baseline2=mean(tot,3);
+% for iii=1:size(tot,3)
+%   dff2 =  tot(:,:,iii)./baseline2.*100;
 % end
 
 
 
-FrameInfo2 = max(TotalX,[],3);
-imwrite(FrameInfo2,'Dff_composite','png')
+
+
+H = prctile(max(max(dff2(:,:,:))),70);
+L = prctile(mean(max(dff2(:,:,:))),3);
+
+    clim = [double(L) double(H)];
+
+NormIm(:,:,:) = mat2gray(dff2, clim);
+
+
+
+%figure(1); for  iii = 7:size(NormIm,3);  IM(:,:) = NormIm(:,:,iii); imagesc(IM); pause(0.05); end
+
+
+
+%% Write VIDEO
+
+
+v = VideoWriter(save_filename);
+v.Quality = 30;
+v.FrameRate = 30;
+
+open(v)
+
+
+for ii = 2:size(NormIm,3);
+colormap(gray);
+IM(:,:) = NormIm(:,:,ii);
+writeVideo(v,IM)
+imagesc(IM);
+end
+close(v)
+
+figure(1);
+imagesc(max(NormIm,[],3));
+
+imwrite(max(NormIm,[],3),strcat(save_filename,'_max_','.png'));
+
+
+end
+
 
 %% Save Data from aggregate
 % Test = TotalX2;

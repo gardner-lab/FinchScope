@@ -1,62 +1,60 @@
-function [audio_ts, audio, video_ts, video] = extractmedia(fl)
-  % extractmedia.m
+function [audio_ts, audio, video_ts, video] = extractmedia(fl, time_start, time_stop)
 
-  % function to assit parsing data from FreedomScopes
-  %   Created: 2015/09/20
-  %   By: Nathan Perkins
-
-
-
-
-
-% get path
-[folder, ~, ~] = fileparts(mfilename('fullpath'));
-
-% random seed
-tmp_rnd = int2str(round(rand * 99999));
-
-% get exec
-cmd = ['"' folder filesep 'extractmedia" -m "' fl '" > "' folder filesep 'tmp' tmp_rnd '.csv"'];
-[o, c] = system(cmd);
-
-% check for error
-if 0 < o
-    error('Unable to read aduio: %s.', c);
+% default to empty
+if ~exist('time_start', 'var')
+    time_start = [];
+end
+if ~exist('time_stop', 'var')
+    time_stop = [];
 end
 
-% read csv file
-m = csvread([folder filesep 'tmp' tmp_rnd '.csv']);
-delete([folder filesep 'tmp' tmp_rnd '.csv']);
+% use mex file to extract time stamps and aligned audio
+info = extractaudio(fl);
+audio_ts = info.audio_t;
+audio = info.audio;
+video_ts = info.video_t;
+clear info;
 
-% get outputs
-outputs = unique(m(:, 1));
-if 2 ~= length(outputs)
-    error('Unexpected number of outputs.');
+% clip by time
+o_video_ts = video_ts;
+if ~isempty(time_start)
+    audio = audio(audio_ts >= time_start, :);
+    audio_ts = audio_ts(audio_ts >= time_start);
+    video_ts = video_ts(video_ts >= time_start);
 end
-
-% get types
-types = unique(m(:, 2));
-if 2 ~= length(types)
-    error('Unexpected output types.');
+if ~isempty(time_stop)
+    audio = audio(audio_ts < time_stop, :);
+    audio_ts = audio_ts(audio_ts < time_stop);
+    video_ts = video_ts(video_ts < time_stop);
 end
-
-% audio
-audio_ts = m(m(:, 2) == 1, 3);
-audio_ts(audio_ts < 0) = nan;
-audio = m(m(:, 2) == 1, 4);
-
-% video
-video_ts = m(m(:, 2) == 2, 3);
 
 % read video
-video = {};
+video = cell(length(video_ts), 1);
+frm_out = 1;
+frm_in = 0; % input 
 vh = VideoReader(fl);
 while hasFrame(vh)
-    video{end + 1} = readFrame(vh);
+    % read frame
+    f = readFrame(vh);
+    frm_in = frm_in + 1;
+    
+    % stop at frame
+    if ~isempty(time_start) && o_video_ts(frm_in) < time_start
+        continue;
+    end
+    if ~isempty(time_stop) && o_video_ts(frm_in) >= time_stop
+        break;
+    end
+    
+    % read frame
+    video{frm_out} = f;
+    frm_out = frm_out + 1;
 end
 
+% sanity check some details
 if length(video_ts) ~= length(video)
-    warn('Unexpected frame count.');
+    warning('Unexpected frame count.');
 end
 
 end
+

@@ -51,23 +51,14 @@ save_filename_MAX=[ fullfile(MaxDir,file) ];
 save_filename_STD=[ fullfile(StdDir,file) ];
 
 try
-   LastFrame = video.nrFramesTotal;
-   mov_data = video.frames(startFrame:LastFrame); % dont take dead frames, looks like by fr
+[mov_data2, n] = FS_Format(mov_data,1);
 catch
-  disp('no number of frames total found, defaulting until the end of the video...')
-   LastFrame = size(mov_data,2);
- mov_data = mov_data(startFrame:LastFrame); % dont take dead frames, looks like by fr
+[mov_data2, n] = FS_Format(video.frames,10);
 end
 
-%%%%
-for i=1:(length(mov_data)-2)
-   mov_data3 = single(rgb2gray(mov_data(i).cdata));
-   mov_data4 = single(rgb2gray(mov_data(i+1).cdata));
-   %mov_data5 = single(rgb2gray(mov_data(i+2).cdata));
-   mov_data2(:,:,i) = uint8((mov_data3 + mov_data4)/2);
-end
+test= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 
-test=mov_data2;
+
 test=imresize((test),.25);
 
 h=fspecial('disk',50);

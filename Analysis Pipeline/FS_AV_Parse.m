@@ -78,21 +78,20 @@ end
 [video.width, video.height, video.channels] = size(v{1});
 video.times = v_ts% 0.1703*(day-1);
 
-video.nrFramesTotal = size(v,2);
+video.nrFramesTotal = size(v,1);
 video.FrameRate = 1/mean(diff(v_ts));
-for ii = 1: size(v,2)
-    video.frames(ii).cdata(:,:,:) = v{ii};
-    video.frames(ii).colormap = [];
+for ii = 1: size(v,1)
+    video.frames(:,:,:,ii) = v{ii};
 end
 
 % Format AUDIO DATA
 audio.nrChannels = 1;
 audio.bits = 16;
 audio.nrFrames = length(a);
-audio.data = a;
+audio.data = double(a);
 audio.rate = 48000;
 audio.TotalDurration = audio.nrFrames/48000;
-mic_data = a;
+mic_data = double(a);
 fs = 48000;
 
 

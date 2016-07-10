@@ -3,8 +3,8 @@ function FS_Tiff_Parse(DIR,varargin)
 
 mat_dir='mat';
 
-if exist(mat_dir,'dir') 
-    rmdir(mat_dir,'s'); 
+if exist(mat_dir,'dir')
+    rmdir(mat_dir,'s');
 end
 
 mkdir(mat_dir);
@@ -30,7 +30,7 @@ num_images = numel(info);
 
 for k = 1:num_images
     A = imread(FILE, k, 'Info', info);
-    video.frames(k).cdata = A;
+    video.frames(:,:,k) = A;
 end
 
 		save(fullfile(mat_dir,[file '.mat']),'video','-v7.3');

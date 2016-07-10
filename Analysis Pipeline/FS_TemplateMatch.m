@@ -259,12 +259,12 @@ if extract_sounds
 
 	if ~skip
 
-		[mic_data2 vid_times mic_data mov_data used_filenames]=...
+		[mic_data2 vid_times mic_data mov_data used_filenames motif]=...
 			extract_hits(sorted_syllable,filenames,act_templatesize,round(fs*padding));
 
 		% each rising edge indicates a new frame, map onto time from onset
 
-		extract_movies(mic_data2, vid_times, mic_data,mov_data,used_filenames,out_dir,im_resize,movie_fs,fs,min_f,max_f,padding)%extract_movies(out_dir,im_resize,movie_fs,mic_data,fs,min_f,max_f);
+		extract_movies(mic_data2, vid_times, mic_data,mov_data,used_filenames,out_dir,im_resize,movie_fs,fs,min_f,max_f,padding,motif)%extract_movies(out_dir,im_resize,movie_fs,mic_data,fs,min_f,max_f);
 
 		%save(fullfile(out_dir,'extracted_data.mat'),'mic_data','sync_data','ttl_data',...
 			%'rise_data','fall_data','used_filenames','-v7.3');
@@ -433,7 +433,7 @@ end
 
 %%%% the grand finale, extract the data!
 
-function [MIC_DATA2 VID_TIMES MIC_DATA MOV_DATA USED_FILENAMES]=...
+function [MIC_DATA2 VID_TIMES MIC_DATA MOV_DATA USED_FILENAMES MOTIF]=...
 		extract_hits(SELECTED_PEAKS,FILENAMES,TEMPLATESIZE,PADDING)
 % function [RAW_DATA SYNC_DATA TTL_DATA RISE_DATA FALL_DATA USED_FILENAMES]=...
 % 		extract_hits(SELECTED_PEAKS,FILENAMES,TEMPLATESIZE,PADDING)
@@ -472,7 +472,7 @@ for i=1:length(SELECTED_PEAKS)
 		endpoint=endpoint+PADDING(2);
 
 		if length(data.audio.data)>endpoint && startpoint>0%if length(data.mic_data)>endpoint && startpoint>0
-			counter=counter+1;
+			counter=counter+1; % here is where early motifs are excluded...
 		end
 	end
 end
@@ -489,6 +489,7 @@ RAW_DATA=zeros(length(startpoint:endpoint),counter,'single');
 USED_FILENAMES={};
 
 trial=1;
+motif_num = 0;
 
 disp('Extracting data');
 fprintf(1,['Progress:  ' blanks(nblanks)]);
@@ -536,14 +537,29 @@ for i=1:length(SELECTED_PEAKS)
 
             VID_TIMES{trial} = video.times(startT:endT);
 
-            MOV_DATA{trial}=video.frames(startT:endT);
+            MOV_DATA{trial}=video.frames(:,:,:,startT:endT);
 			MIC_DATA(:,trial)=audio.data(startpoint:endpoint); % this is just the audio data
             MIC_DATA2(:,trial)= (startpoint:endpoint); % these are the actual index values of the mic data
 
+
+
+		 if size(USED_FILENAMES,1)>=1 & USED_FILENAMES{end}~=FILENAMES{i} & catchcase == 0;% if newfilename does not equa; the previous one, and no catchcase,
+				motif_num = 1;
+		 	else
+				motif_num = motif_num+1;
+				cathcase =0;
+		 end
+
+
 			USED_FILENAMES{end+1}=FILENAMES{i};
+
+			MOTIF{trial}=motif_num;
 
 			trial=trial+1;
 			counter=counter+1;
+
+		else
+			motif_num = motif_num+1;
 
 		end
 	end
@@ -553,7 +569,7 @@ fprintf('\n');
 
 end
 
-function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,FS,MIN_F,MAX_F,PADDING)
+function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,FS,MIN_F,MAX_F,PADDING,MOTIF)
 %function extract_movies(RISE_DATA,FALL_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,MIC_DATA,FS,MIN_F,MAX_F)
 
 if exist(fullfile(OUT_DIR,'mov'),'dir')
@@ -634,7 +650,8 @@ mov_idx=first_frame:last_frame;
 	mic_data(:,1)=MIC_DATA(:,i);
     mic_data(:,2)=MIC_DATA2(:,i);
     mov_data= MOV_DATA{i};
-   vid_times = VID_TIMES{i};
+    vid_times = VID_TIMES{i};
+	motif = MOTIF{i};
 	fs=FS;
 	movie_fs=MOVIE_FS;
 
@@ -647,7 +664,7 @@ mov_idx=first_frame:last_frame;
 	% save an initial baseline estimate?
 
 	save(fullfile(OUT_DIR,'mov',[ save_filename '.mat' ]),...
-		'mov_data','mic_data','movie_fs','fs','im_resize','vid_times','-v7.3');
+		'mov_data','mic_data','movie_fs','fs','im_resize','vid_times','motif','-v7.3');
     %save(fullfile(OUT_DIR,'mov',[ save_filename '.mat' ]),...
 	%	'mov_data','mov_idx','frame_idx','mic_data','fs','movie_fs','im_resize','-v7.3');
 

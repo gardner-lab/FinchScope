@@ -69,69 +69,39 @@ warning('off','all')
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
 	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio','mov_data');
 warning('on','all')
-    try
-    mov_data;
 
-        
+
+
+G = exist('mov_data');
+
+if G == 1;
 % Get Audio/Video template matched offsets
+[mov_data2, n] = FS_Format(mov_data,1);
 
-	for ii = 1:length(mov_data)
-		mov_data2(:,:,ii) = (mov_data(ii).cdata(:,:,:,:));
-    end
-    
+
     	disp(' Template match detected: Compensating for A/V mis-alignment...')
-		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
+		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs); % vid_times(:,1)-(vid_times(1,1)+(vid_times(1,1)-mic_data(1,2)/fs))
 		 timevec=(offset2'); %movie_fs
 		 G = diff(vid_times(:,1), 1);
 
 		 mic_data= mic_data(:,1); % only use data column
-    
-    catch
-        
-        try
-    mov_data = mov_data;
-    for ii = 1:length(mov_data)
-		mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
-    end
-    
-    	disp(' Template match detected: Compensating for A/V mis-alignment...')
-		 offset2 = (vid_times(:,1)-mic_data(1,2)/fs);
-		 timevec=(offset2'); %movie_fs
-		 G = diff(vid_times(:,1), 1);
 
-		 mic_data= mic_data(:,1); % only use data column
-    
-    catch 
-        mov_data = video.frames;
-            
-            
+else
             	disp(' Non-template matched video: proceed to align to A/V timestamps...')
 	mov_data = video.frames;
 	vid_times = video.times;
 	mic_data = audio.data;
 	G = diff(vid_times(:,1), 1);
 	timevec = (vid_times');
-	for ii = 1:length(mov_data)
-	     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
-	end
-            
-            
-            
-        end
-    
-    end
-    
-% catch
-% 	disp(' Non-template matched video: proceed to align to A/V timestamps...')
-% 	mov_data = video.frames;
-% 	vid_times = video.times;
-% 	mic_data = audio.data;
-% 	G = diff(vid_times(:,1), 1);
-% 	timevec = (vid_times');
-% 	for ii = 1:length(mov_data)
-% 	     mov_data2(:,:,ii) = rgb2gray(mov_data(ii).cdata(:,:,:,:));
-% 	end
-% end
+[mov_data2, n] = FS_Format(mov_data,1);
+
+
+
+end
+
+
+
+
 mov_data = double(mov_data2);
 
 % Check For Dropped Frames:
