@@ -17,7 +17,7 @@ per=4; % baseline percentile (0 for min)
 counter = 1;
 mat_dir='DFF_MOVIES';
 counter = 1;
-
+sT = 1;
 
 
 %% Custom Paramaters
@@ -37,6 +37,8 @@ for i=1:2:nparams
 			lims=varargin{i+1};
 		case 'baseline'
 			per=varargin{i+1};
+        case 'start'
+            sT=varargin{i+1};
 	end
 end
 
@@ -72,11 +74,11 @@ clear mov_data;
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 try
 load(fullfile(DIR,mov_listing{i}),'video');
-sT = 14;
+
 mov_data = video.frames(:,:,:,sT:end);
 catch
     load(fullfile(DIR,mov_listing{i}),'mov_data');
-    sT = 1;
+
     mov_data = mov_data(:,:,:,sT:end);
 end
 
