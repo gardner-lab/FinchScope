@@ -18,9 +18,11 @@ function FS_tiff(videodata)
 
 [files, n] = FS_Format(videodata,1);
 
-for i = 1: size(files,3)
-    files2(:,:,i) = wiener2(files(:,:,i),[3 3]);
-end
+% for i = 1: size(files,3)
+%     files2(:,:,i) = wiener2(files(:,:,i),[3 3]);
+% end
+
+files2 = files;
 
 
 % files3 = convn(files2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
