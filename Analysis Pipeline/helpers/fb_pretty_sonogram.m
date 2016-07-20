@@ -2,7 +2,7 @@ function [IMAGE,F,T]=pretty_sonogram(SIGNAL,FS,varargin)
 %simple 2-taper histogram (Gauss and DGauss)
 %
 %
-%
+% [s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data./abs(max(mic_data))),fs,'low',2.5,'zeropad',0);
 %
 
 if nargin<2 | isempty(FS)

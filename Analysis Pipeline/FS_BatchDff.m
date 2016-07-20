@@ -18,6 +18,8 @@ counter = 1;
 mat_dir='DFF_MOVIES';
 counter = 1;
 sT = 1;
+resize = 1;
+
 
 
 %% Custom Paramaters
@@ -39,6 +41,10 @@ for i=1:2:nparams
 			per=varargin{i+1};
         case 'start'
             sT=varargin{i+1};
+        case 'resize'
+            resize=varargin{i+1};
+            filt_rad= round(filt_rad*resize); % gauss filter radius
+            filt_alpha= round(filt_alpha*resize); % gauss filter alpha
 	end
 end
 
@@ -82,6 +88,8 @@ catch
     mov_data = mov_data(:,:,:,sT:end);
 end
 
+mov_data = imresize(mov_data,resize);
+
 %%%%
 % Detect Bad frames
 counter = 1;
@@ -89,7 +97,7 @@ TERM_LOOP = 0;
 for i=sT:(size(mov_data,4))
    mov_data2(:,:,counter) = single(rgb2gray(mov_data(:,:,:,counter)));
 
-      if mean(mean(mov_data2))< 60;
+      if mean(mean(mov_data2))< 20;
         dispword = strcat(' WARNING:  Bad frame(s) detected on frame: ',num2str(i));
         disp(dispword);
         TERM_LOOP = 1;
@@ -135,7 +143,7 @@ dff2=imfilter(dff2,h); %Clean up
 %   dff2 =  tot(:,:,iii)./baseline2.*100;
 % end
 
-
+dff2 = imresize(dff2,(1/resize));
 
 
 
@@ -144,8 +152,8 @@ L = prctile(mean(max(dff2(:,:,:))),3);
 
     clim = [double(L) double(H)];
 
-NormIm(:,:,:) = mat2gray(dff2, clim);
 
+NormIm(:,:,:) = mat2gray(dff2, clim);
 
 
 %figure(1); for  iii = 7:size(NormIm,3);  IM(:,:) = NormIm(:,:,iii); imagesc(IM); pause(0.05); end
