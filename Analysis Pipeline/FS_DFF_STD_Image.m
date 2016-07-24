@@ -21,9 +21,10 @@ if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
 MaxDir = strcat(mat_dir,'/MAX');
 StdDir = strcat(mat_dir,'/STD');
+AvgDir = strcat(mat_dir,'/AVG');
 mkdir(MaxDir);
 mkdir(StdDir);
-
+mkdir(AvgDir)
 
 outlier_flag=0;
 if nargin<1 | isempty(DIR), DIR=pwd; end
@@ -49,6 +50,7 @@ clear video;
 
 save_filename_MAX=[ fullfile(MaxDir,file) ];
 save_filename_STD=[ fullfile(StdDir,file) ];
+save_filename_AVG=[ fullfile(AvgDir,file) ];
 
 try
 [mov_data2, n] = FS_Format(mov_data,1);
@@ -84,12 +86,24 @@ X = im2uint16(X);
 save_filename_MAX = strcat(save_filename_MAX,'_MAX','.tif');
 imwrite(X,save_filename_MAX,'tif')
 
-clear FrameInfo;
-FrameInfo = std(double(test),[],3);
-image(FrameInfo);
+%% AVG movie
 
-% X = mat2gray(FrameInfo);
-% X = im2uint16(X);
+clear FrameInfo; FrameInfo = mean(test,3);
+
+colormap(gray); image(FrameInfo);
+
+% X = uint16((2^16)*mat2gray(FrameInfo.^2));
+
+X = mat2gray(FrameInfo);
+X = im2uint16(X);
+save_filename_AVG = strcat(save_filename_AVG,'_AVG','.tif');
+imwrite(X,save_filename_AVG,'tif')
+
+%%
+
+
+
+clear FrameInfo; FrameInfo = std(double(test),[],3); image(FrameInfo);
 
 X = uint16((2^16)*mat2gray(FrameInfo.^2)); % Square the signal of the STD image, higher contrast...
 

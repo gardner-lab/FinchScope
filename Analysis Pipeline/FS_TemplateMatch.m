@@ -543,7 +543,7 @@ for i=1:length(SELECTED_PEAKS)
 
 
 
-		 if size(USED_FILENAMES,1)>=1 & USED_FILENAMES{end}~=FILENAMES{i} & catchcase == 0;% if newfilename does not equa; the previous one, and no catchcase,
+		 if size(USED_FILENAMES,1)>=1 & USED_FILENAMES{end}~=FILENAMES{i} & catchcase == 0;% if newfilename does not equal; the previous one, and no catchcase,
 				motif_num = 1;
 		 	else
 				motif_num = motif_num+1;
