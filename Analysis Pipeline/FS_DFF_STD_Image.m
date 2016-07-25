@@ -58,6 +58,11 @@ catch
 [mov_data2, n] = FS_Format(video.frames,10);
 end
 
+a = 6;
+			for iii = 1: size(mov_data2,3)
+                mov_data2(:,:,iii) = wiener2(mov_data2(:,:,iii),[a a]);
+            end
+            
 test= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 
 

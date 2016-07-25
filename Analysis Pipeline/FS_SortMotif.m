@@ -1,12 +1,18 @@
 function FS_MotifSort
 % Sort each .mat file by its identified motif
 
-mat_dir='DFF_Images2';
+% mat_dir='DFF_Images2';
 counter = 1;
-if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
-mkdir(mat_dir);
-MaxDir = strcat(mat_dir,'/MAX');
-StdDir = strcat(mat_dir,'/STD');
+% if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
+% mkdir(mat_dir);
+Dir01 = strcat(mat_dir,'/Motif01');
+Dir02= strcat(mat_dir,'/Motif02');
+Dir03 = strcat(mat_dir,'/Motif03');
+Dir04 = strcat(mat_dir,'/Motif_other');
+Dir05 = strcat(mat_dir,'/Motif_first');
+Dir06 = strcat(mat_dir,'/Motif_last');
+
+
 mkdir(MaxDir);
 mkdir(StdDir);
 
