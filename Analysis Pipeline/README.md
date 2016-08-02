@@ -38,13 +38,19 @@ video.frames
 However, in order to be as general as possible, many helper scripts use height*width*frame*color format. There is a legacy format, that uses  video.frame(n).cdata.
 
 
-3. Run:
+3. In the .mat folder, you can then then run:
+
+```
+>> FS_DFF_STD_Image
+```
+
+... And you will get a directory of images, based on the Max, Average, and Standard deviation projections of each video in the directory that the command is run. 
 
 ```
 >> FS_BatchDff
 ```
 
-...which will make a downsampled, background subtracted video as well as a maximum projection image for each file in your directory. In addition, it will make a Average-maximum projection image called Dff_composite, of all the recordings from the session combined.
+...will make a downsampled, background subtracted video as well as a maximum projection image for each file in your .mat directory. In addition, it will make a Average-maximum projection image called Dff_composite, of all the recordings from the session combined.
 
 At this point, The calcium imaging videos exist in the cell video.frames.cdata contained inside each .m file in the mat folder. It is stored as a 4D matrix (H,W,C,T) and can be plugged into any analysis pipeline- although it may need to be formatted differently depending on your application. A simple 'get off the ground quick' manual ROI selection paradigm follows:
 

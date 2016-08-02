@@ -11,7 +11,7 @@ function FS_DFF_STD_Image(DIR,varargin)
 %   By: WALIII
 
 % startFrame can equal 7, for full files
-startFrame = 1;
+startFrame = 7;
 dispword = strcat('Start frame is set to ', startFrame);
 disp(dispword);
 % Make directory for all subsequent videos...
@@ -62,7 +62,7 @@ a = 6;
 			for iii = 1: size(mov_data2,3)
                 mov_data2(:,:,iii) = wiener2(mov_data2(:,:,iii),[a a]);
             end
-            
+
 test= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 
 
