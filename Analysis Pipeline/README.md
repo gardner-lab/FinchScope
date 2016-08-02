@@ -16,13 +16,16 @@ This code serves as a basic analysis pipeline for extracting fluorescence time s
 This will parse the .mov files into matlab-readable .m files, and will created a cell array for video data, and a corresponding cell array with synchronized analog data. The use of this synchronization cell array will vary from one user's application to another- I myself use it for aligning to zebrafinch song (as an audio channel) others will use this as a sync to sone behavioral paradigm, i.e. a TTL input. While the format contains:
 
 % Audio structure:
+```
 audio.nrChannels
 audio.bitsnrFrames
 audio.data
 audio.rate
 audio.TotalDurration
+```
 
 % Video structure
+```
 video.width
 video.height
 video.channels
@@ -30,7 +33,7 @@ video.times
 video.nrFramesTotal
 video.FrameRate
 video.frames
-
+```
 
 However, in order to be as general as possible, many helper scripts use height*width*frame*color format. There is a legacy format, that uses  video.frame(n).cdata.
 
