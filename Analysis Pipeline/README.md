@@ -44,7 +44,7 @@ However, in order to be as general as possible, many helper scripts use height*w
 >> FS_DFF_STD_Image
 ```
 
-... And you will get a directory of images, based on the Max, Average, and Standard deviation projections of each video in the directory that the command is run. 
+... And you will get a directory of images, based on the Max, Average, and Standard deviation projections of each video in the directory that the command is run.
 
 ```
 >> FS_BatchDff
@@ -121,10 +121,4 @@ figure(); plot(roi_ave.analogIO_time{1},roi_ave.analogIO_dat{1}); % Analog sync'
 
 ## OPTIONAL CODE
 
-I. To eliminate 'bad' frames semi-automatically, run:
-
-```
-SM_ProcessROIS
-```
-
-...This will eliminate bad frames ( where the excitation light turned on/off early or late) from the videos, that may interfere with calculating SNR or DF/F.
+... TBD, Songbird specific scripts are in progress. 
