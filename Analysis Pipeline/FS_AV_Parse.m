@@ -23,12 +23,15 @@ function FS_AV_Parse(DIR,varargin)
 
 mat_dir='mat';
 gif_dir='gif';
+error_dir ='error';
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 if exist(gif_dir,'dir') rmdir(gif_dir,'s'); end
+% if exist(error_dir,'dir') rmdir(error_dir,'s'); end
 
 mkdir(mat_dir);
 mkdir(gif_dir);
+mkdir(error_dir);
 
 
 
@@ -61,12 +64,15 @@ f = dir(FILE)
 if f.bytes/1000000< 900.000
 
 %Extract Audio and video data...
+
 [a_ts, a, v_ts, v] = extractmedia(FILE);
 
+
 else
+    
   disp('moving file- to large for batch processing... use FS_AV_Parse(pwd,large)');
-  LargeDir = strcat(path,'/','LargeFiles');
-  movefile(FILE, LaregDir)
+  %LargeDir = strcat(path,'/','LargeFiles');
+  movefile(FILE, error_dir)
   continue;
 end
 
