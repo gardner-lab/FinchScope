@@ -15,11 +15,19 @@ counter = 1;
           end
       disp('WARNING: old FS format detected!')
         catch
+            try % If converted from RGB
           for ii = startT:size(in_mov,2)
             out_mov(:,:,counter) = (in_mov(counter).cdata(:,:,:));
             counter = counter+1;
           end
       disp('WARNING: non-FS format detected!')
+            catch %.. if needs RGB conversion
+          for ii = startT:size(in_mov,2)
+            out_mov(:,:,counter) = (rgb2gray(in_mov(counter).cdata(:,:,:)));
+            counter = counter+1;
+          end
+      disp('WARNING: non-FS format detected!')
+            end
         end
 
   case 3 % Regular, typical format.

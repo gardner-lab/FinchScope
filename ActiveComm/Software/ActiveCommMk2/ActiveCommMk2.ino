@@ -48,5 +48,5 @@ pos = 93;
    myservo.write(pos);
 }
 
-  delay(50);                     
+  delay(10);                     
 }
