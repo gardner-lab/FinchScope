@@ -35,7 +35,7 @@ video.FrameRate
 video.frames
 ```
 
-However, in order to be as general as possible, many helper scripts use height*width*frame*color format. There is a legacy format, that uses  video.frame(n).cdata.
+However, in order to be as general as possible, many helper scripts use `height * width * color * frame`  format. There is a legacy format, that uses  video.frame(n).cdata.
 
 
 3. In the .mat folder, you can then then run:
@@ -121,4 +121,4 @@ figure(); plot(roi_ave.analogIO_time{1},roi_ave.analogIO_dat{1}); % Analog sync'
 
 ## OPTIONAL CODE
 
-... TBD, Songbird specific scripts are in progress. 
+... TBD, Songbird specific scripts are in progress.
