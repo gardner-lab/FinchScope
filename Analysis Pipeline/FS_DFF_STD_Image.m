@@ -64,7 +64,7 @@ a = 6;
             end
 
 test= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
-
+rTest = test;
 
 test=imresize((test),.25);
 
@@ -93,7 +93,8 @@ imwrite(X,save_filename_MAX,'tif')
 
 %% AVG movie
 
-clear FrameInfo; FrameInfo = mean(test,3);
+clear FrameInfo; FrameInfo = mean(rTest,3);
+clear rTest;
 
 colormap(gray); image(FrameInfo);
 
