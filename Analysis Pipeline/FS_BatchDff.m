@@ -163,7 +163,7 @@ NormIm(:,:,:) = mat2gray(dff2, clim);
 %% Write VIDEO
 
 
-v = VideoWriter(save_filename);
+v = VideoWriter(save_filename,'MPEG-4');
 v.Quality = 30;
 v.FrameRate = 30;
 
