@@ -10,9 +10,34 @@ function FS_DFF_STD_Image(DIR,varargin)
 %   Updated: 2016/03/10
 %   By: WALIII
 
+
+
+
+%% Custom Paramaters
+nparams=length(varargin);
+
+if mod(nparams,2)>0
+	error('Parameters must be specified as parameter/value pairs');
+end
+startFrame = 1;
+
+for i=1:2:nparams
+	switch lower(varargin{i})
+		case 'filt_rad'
+			filt_rad=varargin{i+1};
+        case 'start'
+            startFrame=varargin{i+1};
+        case 'resize'
+            resize=varargin{i+1};
+            filt_rad= round(filt_rad*resize); % gauss filter radius
+            filt_alpha= round(filt_alpha*resize); % gauss filter alpha
+	end
+end
+            
+            
 % startFrame can equal 7, for full files
-startFrame = 7;
-dispword = strcat('Start frame is set to ', startFrame);
+
+dispword = strcat('Start frame is set to:  ', num2str(startFrame));
 disp(dispword);
 % Make directory for all subsequent videos...
 mat_dir='DFF_Images2';
@@ -59,11 +84,12 @@ catch
 end
 
 a = 6;
-			for iii = 1: size(mov_data2,3)
-                mov_data2(:,:,iii) = wiener2(mov_data2(:,:,iii),[a a]);
+counter = 1;
+			for iii = startFrame: size(mov_data2,3)
+                mov_data3(:,:,counter) = wiener2(mov_data2(:,:,iii),[a a]);
+                counter = counter+1;
             end
-
-test= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
+test= convn(mov_data3, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 rTest = test;
 
 test=imresize((test),.25);
