@@ -53,16 +53,20 @@ end
 
 
 imwrite(uint8(files(:,:,1)),'G.tif');
+imwrite(bitshift(uint16(files(:,:,1)), 8),'G_16.tif');
 
 
 for i=2:size(files,3) %number of images to be read
     
     K = files(:,:,i);
-    %K = wiener2(files2(:,:,i),[5 5]);
+    K = wiener2(K,[5 5]);
+    K2 = bitshift(uint16(K), 8);
+   
     %G  = filter2(fspecial('average',3),files2(:,:,i));
     %GG = medfilt2(G);
 
 imwrite(uint8(K),'G.tif','WriteMode','append');
+imwrite(uint16(K2),'G_16.tif','WriteMode','append');
 end
 
 end

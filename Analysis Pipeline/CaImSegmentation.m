@@ -65,10 +65,7 @@ function [SpatMap,CaSignal,width,height,contour,Json] = CaImSegmentation(VideoFi
 % If you are unsure of the neuron size input, you must be very cautious because
 % the initialization procedure is heavily dependent on that value.  Check
 % greedyROI2d.m for that procedure, specifically look to imblur()
-%Created: 2016/02/09, 24 Cummington, Boston
-% Byron Price
-%Updated: 2016/02/09
-% By: Byron Price
+
 
 addpath(genpath('utilities'));
 
