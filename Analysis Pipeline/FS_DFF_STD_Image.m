@@ -33,8 +33,8 @@ for i=1:2:nparams
             filt_alpha= round(filt_alpha*resize); % gauss filter alpha
 	end
 end
-            
-            
+
+
 % startFrame can equal 7, for full files
 
 dispword = strcat('Start frame is set to:  ', num2str(startFrame));
@@ -42,6 +42,7 @@ disp(dispword);
 % Make directory for all subsequent videos...
 mat_dir='DFF_Images2';
 counter = 1;
+counter2 = 1;
 if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
 MaxDir = strcat(mat_dir,'/MAX');
@@ -142,10 +143,9 @@ X = uint16((2^16)*mat2gray(FrameInfo.^2)); % Square the signal of the STD image,
 save_filename_STD = strcat(save_filename_STD,'_STD','.tif');
 imwrite(X,save_filename_STD,'tif')
 
-TotalX(:,:,counter) = X;
+TotalX(:,:,counter2) = X;
 
-
-counter = counter+1; % Up the counter
+counter2 = counter2+1; % Up the counter
 
 % Clear all used Variables
 clear mov_data;
@@ -166,12 +166,33 @@ clear mov_data4;
 end
 fprintf(1,'\n');
 
-%% Register Images
-% [optimizer, metric] = imregconfig('multimodal');
-% for g = 1:size(TotalX,3)
-%     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
-% end
 
+try
+if size(TotalX,3) >1;
+	% Register Images
+	disp('Registering Images...')
+	 [optimizer, metric] = imregconfig('multimodal');
+	 for g = 1:size(TotalX,3)
+	     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
+	end
+	clear TotalX;
+	TotalX = tiledImage;
+FrameInfo2 = max(TotalX,[],3);
+imwrite(uint16(FrameInfo2),'Dff_composite_MAX.tif','tif')
 
-% FrameInfo2 = max(TotalX,[],3);
-% imwrite(FrameInfo2,'Dff_composite','png')
+FrameInfo3 = std(double(TotalX),[],3);
+imwrite(uint16(FrameInfo3),'Dff_composite_STD.tif','tif')
+
+FrameInfo4 = mean(TotalX,3);
+imwrite(uint16(FrameInfo3),'Dff_composite_AVG.tif','tif')
+
+else
+FrameInfo2 = TotalX;
+imwrite(uint16(FrameInfo2),'Dff_composite_MAX_ONE.tif','tif')
+imwrite(uint16(FrameInfo2),'Dff_composite_STD_ONE.tif','tif')
+imwrite(uint16(FrameInfo2),'Dff_composite_AVG_ONE.tif','tif')
+end
+
+catch
+    disp('No images to process')
+end
