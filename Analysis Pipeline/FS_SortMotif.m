@@ -48,7 +48,7 @@ for  iii = 1:length(mov_listing)
     if filenames{iii}(1:end-9) == filenames{iii+1}(1:end-9)
       copyfile(filenames{iii},Dir01); % if this is in the beginning of a series, put it in the 01 folder
     else
-      copyfile(filenames{iii},Dir04); % if tthere is only one,, put it in the only folder
+      copyfile(filenames{iii},Dir04); % if tthere is only one, put it in the only folder
     end
   else
     if filenames{iii}(1:end-9) == filenames{iii+1}(1:end-9)

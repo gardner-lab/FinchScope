@@ -73,7 +73,7 @@ for n = 1:chunk_size;
   try
 [a_ts, a, v_ts, v] = extractmedia(FILE,20*(n-1),20*n);
 catch
-[a_ts, a, v_ts, v] = extractmedia(FILE,20*(n-1),[]);
+[a_ts, a, v_ts, v] = extractmedia(FILE,20*(n-1),vid.Duration-20*(n-1));
   end
 
 
