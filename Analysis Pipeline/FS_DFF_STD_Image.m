@@ -37,7 +37,7 @@ end
 
 % startFrame can equal 7, for full files
 
-dispword = strcat('Start frame is set to:  ', num2str(startFrame));
+dispword = strcat('Start frame is set to:  ', ' ', num2str(startFrame));
 disp(dispword);
 % Make directory for all subsequent videos...
 mat_dir='DFF_Images2';
