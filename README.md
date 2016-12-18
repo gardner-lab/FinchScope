@@ -14,7 +14,7 @@ The project was initially developed in the Gardner Lab, for multi-month imaging 
 
 ####Components:
 ###Finchscope
-The FinchScope is a lightweight (<2g) dual channel, lightweight microscope for biological imaging- Designed specifically for monitoring the neural activity (via genetically encoded calcium indicators) of zebra finches while they sing their courtship songs.
+The FinchScope is a lightweight (<2g) dual channel, lightweight wireless-capable microscope for biological imaging- Designed specifically for monitoring the neural activity (via genetically encoded calcium indicators) of zebra finches while they sing their courtship songs. You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).  Also, we have a [Guide Through a Basic Analysis Pipeline](https://github.com/WALIII/FreedomScope/wiki/Analysis-Guide) 
 
 ###ActiveComm
 The ActiveCom is a low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
