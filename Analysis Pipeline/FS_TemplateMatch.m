@@ -47,7 +47,7 @@ out_dir='';
 sound_dir='';
 template_data=[];
 im_resize=[]; % setting this to .5 seems reasonable, depends on required resolution
-padding=[.25 .75];
+padding=[0.25 .70];
 
 % parameter collection
 
@@ -543,11 +543,11 @@ for i=1:length(SELECTED_PEAKS)
 
 
 
-		 if size(USED_FILENAMES,1)>=1 & USED_FILENAMES{end}~=FILENAMES{i} & catchcase == 0;% if newfilename does not equal; the previous one, and no catchcase,
+		 if size(USED_FILENAMES,1)>=1 & strcmp(USED_FILENAMES{end},FILENAMES{i}) == 0 & catchcase == 0;% if newfilename does not equal; the previous one, and no catchcase,
 				motif_num = 1;
 		 	else
 				motif_num = motif_num+1;
-				cathcase =0;
+				catchcase =0;
 		 end
 
 
@@ -558,11 +558,16 @@ for i=1:length(SELECTED_PEAKS)
 			trial=trial+1;
 			counter=counter+1;
 
-		else
-			motif_num = motif_num+1;
-
-		end
+        elseif strcmp(USED_FILENAMES{end},FILENAMES{i}) == 0 % if its the first, new case
+			motif_num = 1;
+            catchcase = 1; % make sure this goes through..
+        else
+            motif_num = motifnum+1; % if its the last (truncated)
+            catchcase = 1; % make sure this goes through..
+            
+		
 	end
+    end
 end
 
 fprintf('\n');
@@ -702,3 +707,4 @@ fprintf('\n');
 
 
 end
+
