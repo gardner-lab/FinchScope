@@ -29,14 +29,14 @@ for i=1:2:nparams
 			filt_rad=varargin{i+1};
         case 'start'
             startFrame=varargin{i+1};
+        case 'max_dff'
+            maxDff = varargin{i+1};
+        case 'min_dff'
+            minDff = varargin{i+1};
         case 'resize'
             resize=varargin{i+1};
             filt_rad= round(filt_rad*resize); % gauss filter radius
             filt_alpha= round(filt_alpha*resize); % gauss filter alpha
-        case 'maxDff'
-            maxDff = varargin{i+1};
-        case 'minDff'
-            minDff = varargin{i+1};
 	end
 end
 
