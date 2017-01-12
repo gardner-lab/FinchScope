@@ -46,10 +46,12 @@ end
 dispword = strcat('Start frame is set to:  ', ' ', num2str(startFrame));
 disp(dispword);
 % Make directory for all subsequent videos...
-mat_dir='DFF_Images';
+mat_dir= [pwd, '/','DFF_Images';
 counter = 1;
 counter2 = 1;
+
 if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
+
 mkdir(mat_dir);
 MaxDir = strcat(mat_dir,'/MAX');
 StdDir = strcat(mat_dir,'/STD');
