@@ -20,6 +20,8 @@ if mod(nparams,2)>0
 	error('Parameters must be specified as parameter/value pairs');
 end
 startFrame = 1;
+maxDff = 9;
+minDff = 2;
 
 for i=1:2:nparams
 	switch lower(varargin{i})
@@ -31,6 +33,10 @@ for i=1:2:nparams
             resize=varargin{i+1};
             filt_rad= round(filt_rad*resize); % gauss filter radius
             filt_alpha= round(filt_alpha*resize); % gauss filter alpha
+        case 'maxDff'
+            maxDff = varargin{i+1};
+        case 'minDff'
+            minDff = varargin{i+1};
 	end
 end
 
@@ -138,7 +144,11 @@ imwrite(X,save_filename_AVG,'tif')
 
 clear FrameInfo; FrameInfo = std(double(test),[],3); image(FrameInfo);
 
-X = uint16((2^16)*mat2gray(FrameInfo.^2)); % Square the signal of the STD image, higher contrast...
+
+
+X = uint16((2^16)*mat2gray(FrameInfo.^2,[minDff.^2 maxDff.^2])); % Square the signal of the STD image, higher contrast...
+
+
 
 save_filename_STD = strcat(save_filename_STD,'_STD','.tif');
 imwrite(X,save_filename_STD,'tif')
@@ -167,32 +177,32 @@ end
 fprintf(1,'\n');
 
 
-try
-if size(TotalX,3) >1;
-	% Register Images
-	disp('Registering Images...')
-	 [optimizer, metric] = imregconfig('multimodal');
-	 for g = 1:size(TotalX,3)
-	     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
-	end
-	clear TotalX;
-	TotalX = tiledImage;
-FrameInfo2 = max(TotalX,[],3);
-imwrite(uint16(FrameInfo2),'Dff_composite_MAX.tif','tif')
-
-FrameInfo3 = std(double(TotalX),[],3);
-imwrite(uint16(FrameInfo3),'Dff_composite_STD.tif','tif')
-
-FrameInfo4 = mean(TotalX,3);
-imwrite(uint16(FrameInfo3),'Dff_composite_AVG.tif','tif')
-
-else
-FrameInfo2 = TotalX;
-imwrite(uint16(FrameInfo2),'Dff_composite_MAX_ONE.tif','tif')
-imwrite(uint16(FrameInfo2),'Dff_composite_STD_ONE.tif','tif')
-imwrite(uint16(FrameInfo2),'Dff_composite_AVG_ONE.tif','tif')
-end
-
-catch
-    disp('No images to process')
-end
+% try
+% if size(TotalX,3) >1;
+% 	% Register Images
+% 	disp('Registering Images...')
+% 	 [optimizer, metric] = imregconfig('multimodal');
+% 	 for g = 1:size(TotalX,3)
+% 	     tiledImage(:,:,g) = imregister(TotalX(:,:,g), TotalX(:,:,1),'rigid',optimizer, metric);
+% 	end
+% 	clear TotalX;
+% 	TotalX = tiledImage;
+% FrameInfo2 = max(TotalX,[],3);
+% imwrite(uint16(FrameInfo2),'Dff_composite_MAX.tif','tif')
+% 
+% FrameInfo3 = std(double(TotalX),[],3);
+% imwrite(uint16(FrameInfo3),'Dff_composite_STD.tif','tif')
+% 
+% FrameInfo4 = mean(TotalX,3);
+% imwrite(uint16(FrameInfo3),'Dff_composite_AVG.tif','tif')
+% 
+% else
+% FrameInfo2 = TotalX;
+% imwrite(uint16(FrameInfo2),'Dff_composite_MAX_ONE.tif','tif')
+% imwrite(uint16(FrameInfo2),'Dff_composite_STD_ONE.tif','tif')
+% imwrite(uint16(FrameInfo2),'Dff_composite_AVG_ONE.tif','tif')
+% end
+% 
+% catch
+%     disp('No images to process')
+% end
