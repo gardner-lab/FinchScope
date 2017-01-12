@@ -1,21 +1,18 @@
-function FS_SortMotif
-% Sort each .mat file by its identified motif
+function FS_SortMotif2
+% Sort each .mat file by its identified motif in the .mat file
 
-mat_dir='MOTIF';
+mat_dir=[pwd,'/', 'MOTIF2'];
 counter = 1;
  if exist(mat_dir,'dir'); rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
 Dir01 = strcat(mat_dir,'/Motif_first');
-Dir02 = strcat(mat_dir,'/Motif_Middle');
-Dir03 = strcat(mat_dir,'/Motif_last');
-Dir04 = strcat(mat_dir,'/Motif_second');
+Dir02 = strcat(mat_dir,'/Motif_second');
+Dir03 = strcat(mat_dir,'/Motif_third');
+Dir04 = strcat(mat_dir,'/Motif_fourth');
 mkdir(Dir01);
 mkdir(Dir02);
 mkdir(Dir03);
 mkdir(Dir04);
-
-
-
 
 
 
@@ -24,9 +21,6 @@ if nargin<1 | isempty(DIR), DIR=pwd; end
 mov_listing=dir(fullfile(DIR,'*.mat'));
 mov_listing={mov_listing(:).name};
 filenames=mov_listing;
-
-
-
 
 [nblanks formatstring]=fb_progressbar(100);
 fprintf(1,['Progress:  ' blanks(nblanks)]);
@@ -43,29 +37,17 @@ for  iii = 1:length(mov_listing)
   [path,file,ext]=fileparts(filenames{iii});
 	load(fullfile(DIR,mov_listing{iii}),'mov_data','motif');
 
-    try
-  if motif ==1;
-    if filenames{iii}(1:end-9) == filenames{iii+1}(1:end-9)
-      copyfile(filenames{iii},Dir01); % if this is in the beginning of a series, put it in the 01 folder
-    else
-      copyfile(filenames{iii},Dir04); % if tthere is only one, put it in the only folder
+    if motif ==1;
+        copyfile(filenames{iii},Dir01);
+    elseif motif == 2;
+        copyfile(filenames{iii},Dir02); 
+    elseif motif == 3;
+        copyfile(filenames{iii},Dir03);
+    elseif motif == 4;
+        copyfile(filenames{iii},Dir04);
     end
-  else
-    if filenames{iii}(1:end-9) == filenames{iii+1}(1:end-9)
-      copyfile(filenames{iii},Dir02); % if this is in the middle of a series, put it in the middle
-    else
-      copyfile(filenames{iii},Dir03); % if not, put it at the end.
-    end
-  end
-    catch
-if motif ==1;
-copyfile(filenames{iii},Dir01);
-else
-  copyfile(filenames{iii},Dir03);
-end
-
-    end
-
+    
+    
 end
 
 disp( 'Making Dff Images....');
