@@ -3,7 +3,8 @@
 ## Overview
 
 
-The project is now in beta- works in our lab, and started some collaborations, but might still have some bugs...
+The project is now in live. If you have questions or find bugs, feel free to [post an issue](https://github.com/WALIII/FinchScope/issues) and I'll get on it.
+
 
 ![ScreenShot](FS_IMAGE.jpg)
 
