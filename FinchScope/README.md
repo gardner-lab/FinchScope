@@ -29,7 +29,7 @@ The DAQ converts/syncs audioIN and video, Triggers in/out, and also controls LED
 
 [Internal Wiring Diagram](https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit)
 
-[Use these Connectors](http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models
+I like to use [these Connectors](http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models)
 
 
 ## SOFTWARE
