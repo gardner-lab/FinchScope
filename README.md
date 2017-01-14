@@ -2,7 +2,7 @@
 
 
 
-<font size="10"> <img src="im1.png" width="30"/>FinchScope Project</font>
+<font size="10"> <img src="im1.png" width="50"/>FinchScope Project</font>
 =======
 
 
