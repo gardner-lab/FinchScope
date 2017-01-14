@@ -2,9 +2,7 @@
 
 
 
-<p><img src="im1.png" width="60"/>  <font size="6"> FreedomScope Project </p>
-
-<font size="6">This is some text!</font>
+<font size="6"> <img src="im1.png" width="60"/>FinchScope Project</font>
 =======
 #FinchScope Project
 
