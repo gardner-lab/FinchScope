@@ -3,7 +3,8 @@
 
 <img src="im1.png" alt="Drawing" style="width: 50px;"/>
 
-<img src="im1.png" alt="Drawing" style="width: 1px;"/>
+<img src="im1.png" width="20"/>
+
 
 
 
