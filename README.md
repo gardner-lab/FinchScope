@@ -1,6 +1,8 @@
 
-Inline-style:
-![alt text](im1.png "FreedomScope")
+
+
+<img src="im1.png" alt="Drawing" style="width: 50px;"/>
+
 #FreedomScope Project
 =======
 #FinchScope Project
