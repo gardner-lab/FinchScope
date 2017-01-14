@@ -3,7 +3,8 @@
 ## Overview
 
 
-The project is now in beta- works in our lab, and started some collaborations, but might still have some bugs...
+The project is now in live. If you have questions or find bugs, feel free to [post an issue](https://github.com/WALIII/FinchScope/issues) and I'll get on it.
+
 
 ![ScreenShot](FS_IMAGE.jpg)
 
@@ -11,32 +12,25 @@ The FreedomScope is a lightweight (<2g) 3D printed microscope for biological ima
 
 #### Hardware Components:
 
-
-Parts List:
-https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing
+[PARTS LIST](https://docs.google.com/a/bu.edu/spreadsheets/d/1X6249HvX6Zhh-KnQvc4uEf_1f7gnXYBuc04Sh4Ooo6Y/edit?usp=sharing)
 
 ##### Detailed Assembly Schematics:
 
-CAMERA:
-https://docs.google.com/drawings/d/1Mr2SnDT4y19bNpteDOJaQ2hIX_aQwCAYKedkWsTO91U/edit
+[CAMERA](https://docs.google.com/drawings/d/1Mr2SnDT4y19bNpteDOJaQ2hIX_aQwCAYKedkWsTO91U/edit)
 
-TEST CABLES:
-https://docs.google.com/drawings/d/1CfU9u8T49LHIxU1WA31IjVRijmX2HUkyHNBYetaNZlw/edit
+[TEST CABLES](https://docs.google.com/drawings/d/1CfU9u8T49LHIxU1WA31IjVRijmX2HUkyHNBYetaNZlw/edit)
 
-COMMUTATOR INTERFACE:
-https://docs.google.com/drawings/d/1axYK-PdhWuuLdrFH5zi7WUmzpqFvBdvdiIFzCNW9POA/edit
+[COMMUTATOR INTERFACE](https://docs.google.com/drawings/d/1axYK-PdhWuuLdrFH5zi7WUmzpqFvBdvdiIFzCNW9POA/edit)
 
 
 ### DAQ BOX
 The DAQ converts/syncs audioIN and video, Triggers in/out, and also controls LED power levels
 
-DAQ Overview:
-https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit
+[DAQ Overview] (https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit)
 
-Internal Wiring Diagram:
-https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit
+[Internal Wiring Diagram](https://docs.google.com/drawings/d/1Maer1AkDQlLleWU_moi8kYX32AhPPOLMHTUVHxjg2Lc/edit)
 
-Connectors:  http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models
+I like to use [these Connectors](http://www.advanced.com/products/board-to-board-connectors/mezza-pede-smt-connectors/table-of-models)
 
 
 ## SOFTWARE
@@ -49,11 +43,7 @@ Figure: Brightfield imagiing
 ![ScreenShot](FS02.jpg)
 Figure: Single channel fluorescence imaging, at cellular resolution. Low-Latency ROI information for BMI experiments.
 
-Current software can be found here: 
-https://github.com/gardner-lab/video-capture/releases
-
-## TUTORIALS
-coming soon!
+Current software [can be found here](https://github.com/gardner-lab/video-capture/releases)
 
 
 #Contact:
