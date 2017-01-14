@@ -2,7 +2,8 @@
 
 
 
-<img src="im1.png" width="90"/>  #FreedomScope Project
+<p><img src="im1.png" width="60"/>  <font size="6"> FreedomScope Project </p>
+
 
 =======
 #FinchScope Project
