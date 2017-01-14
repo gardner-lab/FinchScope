@@ -1,15 +1,9 @@
 
 
 
-<img src="im1.png" alt="Drawing" style="width: 50px;"/>
 
-<img src="im1.png" width="20"/>
+<img src="im1.png" width="90"/>  #FreedomScope Project
 
-
-
-
-
-#FreedomScope Project
 =======
 #FinchScope Project
 
