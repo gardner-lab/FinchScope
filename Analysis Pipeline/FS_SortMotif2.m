@@ -39,12 +39,18 @@ for  iii = 1:length(mov_listing)
 
     if motif ==1;
         copyfile(filenames{iii},Dir01);
+        copyfile([DIR(1:end-4),'/gif/',filenames{iii}(1:end-4),'.gif'],Dir01)
     elseif motif == 2;
         copyfile(filenames{iii},Dir02); 
+        copyfile([DIR(1:end-4),'/gif/',filenames{iii}(1:end-4),'.gif'],Dir02)
     elseif motif == 3;
         copyfile(filenames{iii},Dir03);
+        copyfile([DIR(1:end-4),'/gif/',filenames{iii}(1:end-4),'.gif'],Dir03)
+
     elseif motif == 4;
         copyfile(filenames{iii},Dir04);
+        copyfile([DIR(1:end-4),'/gif/',filenames{iii}(1:end-4),'.gif'],Dir04)
+
     end
     
     

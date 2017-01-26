@@ -17,15 +17,15 @@ function Tif_Parse(DIR,varargin)
 
 
 
-mat_dir='mat';
-Dff_dir='Dff';
+mat_dir=[pwd, '/mat'];
+
 
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
-if exist(Dff_dir,'dir') rmdir(Dff_dir,'s'); end
+
 
 mkdir(mat_dir);
-mkdir(Dff_dir);
+
 
 
 
@@ -59,8 +59,8 @@ info = imfinfo(FILE);
 num_images = numel(info);
 for k = 1:num_images
     A = imread(FILE, k, 'Info', info);
-%     A = imresize(A,.5);
-    video.frames(k).cdata = A;
+    A = imresize(A,.25);
+    video.frames(k).cdata = double(A);
 end
 
 

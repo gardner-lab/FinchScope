@@ -13,7 +13,7 @@ filt_rad=10; % gauss filter radius
 filt_alpha=30; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap=colormap('jet');
-per=4; % baseline percentile (0 for min)
+per=1; % baseline percentile (0 for min)
 counter = 1;
 mat_dir='DFF_MOVIES';
 counter = 1;
@@ -50,7 +50,7 @@ end
 
 
 
-if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
+%if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 mkdir(mat_dir);
 
 
@@ -81,11 +81,12 @@ clear mov_data;
 try
 load(fullfile(DIR,mov_listing{i}),'video');
 
-mov_data = video.frames(:,:,:,sT:end);
+[mov_data, n]= FS_Format(video.frames,1);
 catch
     load(fullfile(DIR,mov_listing{i}),'mov_data');
 
-    mov_data = mov_data(:,:,:,sT:end);
+
+    [mov_data, n]= FS_Format(mov_data,1);
 end
 
 mov_data = imresize(mov_data,resize);
@@ -95,7 +96,7 @@ mov_data = imresize(mov_data,resize);
 counter = 1;
 TERM_LOOP = 0;
 for i=sT:(size(mov_data,4))
-   mov_data2(:,:,counter) = single(rgb2gray(mov_data(:,:,:,counter)));
+   mov_data2(:,:,counter) = mov_data(:,:,counter);
 
       if mean(mean(mov_data2))< 20;
         dispword = strcat(' WARNING:  Bad frame(s) detected on frame: ',num2str(i));
@@ -114,7 +115,7 @@ if TERM_LOOP ==1;
     continue
 end
 
-mov_data3 = convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
+mov_data3 = convn(mov_data, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
 
 
  test = single(mov_data3(:,:,1:end));
@@ -148,14 +149,18 @@ dff2 = imresize(dff2,(1/resize));
 
 
 H = prctile(max(max(dff2(:,:,:))),70);
-L = 20;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
+L = 50;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
 
     clim = [double(L) double(H)];
 
 
+dff2 = imresize(dff2,.5);
 NormIm(:,:,:) = mat2gray(dff2, clim);
 
 
+% clear NormIm
+% NormIm = NormIm2;
+% clear NormIm2;
 %figure(1); for  iii = 7:size(NormIm,3);  IM(:,:) = NormIm(:,:,iii); imagesc(IM); pause(0.05); end
 
 
@@ -172,7 +177,7 @@ open(v)
 
 for ii = 2:size(NormIm,3);
 colormap(gray);
-IM(:,:) = NormIm(:,:,ii);
+IM(:,:) = double(NormIm(:,:,ii));
 writeVideo(v,IM)
 imagesc(IM);
 end

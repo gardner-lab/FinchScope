@@ -46,7 +46,7 @@ end
 dispword = strcat('Start frame is set to:  ', ' ', num2str(startFrame));
 disp(dispword);
 % Make directory for all subsequent videos...
-mat_dir= [pwd, '/','DFF_Images';
+mat_dir= [pwd, '/','DFF_Images'];
 counter = 1;
 counter2 = 1;
 

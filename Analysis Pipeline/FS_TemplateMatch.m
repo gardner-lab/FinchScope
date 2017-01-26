@@ -47,7 +47,7 @@ out_dir='';
 sound_dir='';
 template_data=[];
 im_resize=[]; % setting this to .5 seems reasonable, depends on required resolution
-padding=[0.25 .70];
+padding=[0.25 .75];
 
 % parameter collection
 
@@ -562,7 +562,7 @@ for i=1:length(SELECTED_PEAKS)
 			motif_num = 1;
             catchcase = 1; % make sure this goes through..
         else
-            motif_num = motifnum+1; % if its the last (truncated)
+            motif_num = motif_num+1; % if its the last (truncated)
             catchcase = 1; % make sure this goes through..
             
 		
