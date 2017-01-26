@@ -1,7 +1,7 @@
 
 function FS_Tiff_Parse(DIR,varargin)
 
-mat_dir='mat';
+mat_dir=[pwd, '/mat']
 
 if exist(mat_dir,'dir')
     rmdir(mat_dir,'s');
