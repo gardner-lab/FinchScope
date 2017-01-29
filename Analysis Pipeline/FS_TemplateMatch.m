@@ -557,7 +557,9 @@ for i=1:length(SELECTED_PEAKS)
 
 			trial=trial+1;
 			counter=counter+1;
-
+        elseif size(USED_FILENAMES) == [0,0];
+            motif_num = 1;
+            catchcase = 1; % make sure this goes through..
         elseif strcmp(USED_FILENAMES{end},FILENAMES{i}) == 0 % if its the first, new case
 			motif_num = 1;
             catchcase = 1; % make sure this goes through..
