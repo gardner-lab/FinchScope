@@ -21,9 +21,9 @@ function FS_AV_Parse(DIR,varargin)
 
 
 
-mat_dir='mat';
-gif_dir='gif';
-error_dir ='error';
+mat_dir=[pwd,'/mat'];
+gif_dir=[pwd,'/gif'];
+error_dir =[pwd,'/error'];
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 if exist(gif_dir,'dir') rmdir(gif_dir,'s'); end
