@@ -148,7 +148,7 @@ dff2 = imresize(dff2,(1/resize));
 
 
 H = prctile(max(max(dff2(:,:,:))),70);
-L = 1;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
+L = 5;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
 
     clim = [double(L) double(H)];
 
