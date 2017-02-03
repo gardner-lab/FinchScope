@@ -34,6 +34,6 @@ for k = 1:num_images
 end
 
 		save(fullfile(mat_dir,[file '.mat']),'video','-v7.3');
-
+clear video;
 end
 fprintf(1,'\n');
