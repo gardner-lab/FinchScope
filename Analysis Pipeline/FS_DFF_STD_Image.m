@@ -87,9 +87,9 @@ save_filename_STD=[ fullfile(StdDir,file) ];
 save_filename_AVG=[ fullfile(AvgDir,file) ];
 
 try
-[mov_data2, n] = FS_Format(mov_data,1);
+[mov_data2, n] = FS_Format2(mov_data,1);
 catch
-[mov_data2, n] = FS_Format(video.frames,10);
+[mov_data2, n] = FS_Format2(video.frames,10);
 end
 
 a = 6;
@@ -191,20 +191,20 @@ fprintf(1,'\n');
 % 	TotalX = tiledImage;
 % FrameInfo2 = max(TotalX,[],3);
 % imwrite(uint16(FrameInfo2),'Dff_composite_MAX.tif','tif')
-% 
+%
 % FrameInfo3 = std(double(TotalX),[],3);
 % imwrite(uint16(FrameInfo3),'Dff_composite_STD.tif','tif')
-% 
+%
 % FrameInfo4 = mean(TotalX,3);
 % imwrite(uint16(FrameInfo3),'Dff_composite_AVG.tif','tif')
-% 
+%
 % else
 % FrameInfo2 = TotalX;
 % imwrite(uint16(FrameInfo2),'Dff_composite_MAX_ONE.tif','tif')
 % imwrite(uint16(FrameInfo2),'Dff_composite_STD_ONE.tif','tif')
 % imwrite(uint16(FrameInfo2),'Dff_composite_AVG_ONE.tif','tif')
 % end
-% 
+%
 % catch
 %     disp('No images to process')
 % end
