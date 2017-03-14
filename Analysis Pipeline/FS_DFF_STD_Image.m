@@ -87,9 +87,9 @@ save_filename_STD=[ fullfile(StdDir,file) ];
 save_filename_AVG=[ fullfile(AvgDir,file) ];
 
 try
-[mov_data2, n] = FS_Format2(mov_data,1);
+[mov_data2, n] = FS_Format_test(mov_data,1);
 catch
-[mov_data2, n] = FS_Format2(video.frames,10);
+[mov_data2, n] = FS_Format_test(video.frames,10);
 end
 
 a = 6;
