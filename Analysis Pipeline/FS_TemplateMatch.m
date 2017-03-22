@@ -205,7 +205,7 @@ end
 
 if extract_sounds
 	property_names={'cos','derivx', 'derivy', 'amp','product','curvature'};
-	save(fullfile(out_dir,'cluster_data.mat'),'property_names','-append');
+	save(fullfile(out_dir,'cluster_data.mat'),'property_names','-append'); 
 
 	skip=0;
 	response=[];
@@ -303,8 +303,25 @@ parfor i=1:length(MAT_FILES)
 	% simply read in the file and score it
 
 	data=load(input_file,'audio'); % data=load(input_file,'mic_data','fs');
-	sound_features=fb_smscore(data.audio.data,data.audio.rate); %sound_features=fb_smscore(data.mic_data,data.fs);
+    
+    % load in buffer/longer audio from file 
+    currentpath = cd('..');
+    parentpath = pwd();
+    cd(currentpath);
+    try
+    [y,Fs] = audioread([parentpath,'/',MAT_FILES{i}(1:end-4),'.mov']);
+    catch
+    currentpath = cd('../..');
+    parentpath = pwd();
+    cd(currentpath);
+    [y,Fs] = audioread([parentpath,'/',MAT_FILES{i}(1:end-4),'.mov']);
+    end
+    
+%     [Xa,Ya,D(i,:)]= alignsignals(y,data.audio.data); % get offset.
+    
+     sound_features=fb_smscore(y,data.audio.rate); %sound_features=fb_smscore(data.mic_data,data.fs);
 
+	%sound_features=fb_smscore(data.audio.data,data.audio.rate); %sound_features=fb_smscore(data.mic_data,data.fs);
 	% save for recollection
 
 	par_save(output_file,sound_features);
@@ -385,7 +402,7 @@ parfor i=1:length(file_listing)
 	end
 
 	warning('off','signal:findpeaks:largeMinPeakHeight');
-	[pks,locs]=findpeaks(product_score,'MINPEAKHEIGHT',.005);
+	[pks,locs]=findpeaks(product_score,'MINPEAKHEIGHT',.005,'MinPeakDistance',6);
 	warning('on','signal:findpeaks:largeMinPeakHeight');
 
 	if isempty(locs)
@@ -433,6 +450,7 @@ end
 
 %%%% the grand finale, extract the data!
 
+%%
 function [MIC_DATA2 VID_TIMES MIC_DATA MOV_DATA USED_FILENAMES MOTIF]=...
 		extract_hits(SELECTED_PEAKS,FILENAMES,TEMPLATESIZE,PADDING)
 % function [RAW_DATA SYNC_DATA TTL_DATA RISE_DATA FALL_DATA USED_FILENAMES]=...
@@ -450,7 +468,7 @@ disp('Pre-allocating matrices (may take a minute)...');
 
 [nblanks formatstring]=fb_progressbar(100);
 fprintf(1,['Progress:  ' blanks(nblanks)]);
-
+%%
 counter=0;
 for i=1:length(SELECTED_PEAKS)
 
@@ -469,13 +487,14 @@ for i=1:length(SELECTED_PEAKS)
 		endpoint=startpoint+TEMPLATESIZE+N;
 
 		startpoint=startpoint-PADDING(1);
-		endpoint=endpoint+PADDING(2);
+		endpoint=endpoint+PADDING(2); %+D(i,:)*48000
 
 		if length(data.audio.data)>endpoint && startpoint>0%if length(data.mic_data)>endpoint && startpoint>0
 			counter=counter+1; % here is where early motifs are excluded...
 		end
 	end
 end
+%%
 
 fprintf('\n');
 disp(['Found ' num2str(counter) ' trials ']);
@@ -499,6 +518,21 @@ for i=1:length(SELECTED_PEAKS)
 	fprintf(1,formatstring,round((i/length(SELECTED_PEAKS))*100));
 
 	load(FILENAMES{i},'audio','video');
+    
+    
+     try
+    currentpath = cd('..');
+    parentpath = pwd();
+    cd(currentpath);
+    [y,Fs] = audioread([parentpath,'/',FILENAMES{i}(1:end-4),'.mov']);
+    catch
+    currentpath = cd('../..');
+    parentpath = pwd();
+    cd(currentpath);
+    [y,Fs] = audioread([parentpath,'/',FILENAMES{i}(1:end-4),'.mov']);
+    end
+    [Xa,Ya,D]= alignsignals(y,audio.data); % get offset.
+   
 
 	counter=1;
 	for j=1:length(SELECTED_PEAKS{i})
@@ -511,16 +545,19 @@ for i=1:length(SELECTED_PEAKS)
 		startpoint=(peakLoc*(N-NOVERLAP)*DOWNSAMPLE)-N;
 		endpoint=startpoint+TEMPLATESIZE+N;
 
-		startpoint=startpoint-PADDING(1);
-		endpoint=endpoint+PADDING(2);
+		startpoint=startpoint-PADDING(1)+D;
+		endpoint=endpoint+PADDING(2)+D;
+        
 
-        startpoint_video=round((startpoint/48e3)*30);
-        endpoint_video=round((endpoint/48e3)*30);
+            
+        startpoint_video=round((startpoint/48e3)*round(video.FrameRate));
+        endpoint_video=round((endpoint/48e3)*round(video.FrameRate));
 
         nframes=length(video.frames);
-
-		if length(audio.data)>endpoint && startpoint>0 ...
+        
+        if length(audio.data)>endpoint && startpoint>0 ...
                 && nframes>endpoint_video && startpoint_video>0
+		
 
 
 
@@ -568,7 +605,9 @@ for i=1:length(SELECTED_PEAKS)
             catchcase = 1; % make sure this goes through..
             
 		
-	end
+%         else
+%             motif_num = motif_num+1; % if there is a motif before the start condition...
+        end
     end
 end
 
