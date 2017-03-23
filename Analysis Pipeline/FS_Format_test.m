@@ -10,7 +10,7 @@ counter = 1;
       case 2 % OLD FreedomScope format.
         try
           for ii = startT:size(in_mov)
-            out_mov(:,:,counter) = squeeze(mov_data(ii).cdata(:,:,2,:));
+            out_mov(:,:,counter) = squeeze(in_mov(ii).cdata(:,:,2,:));
             counter = counter+1;
           end
       disp('WARNING: old FS format detected!')
@@ -23,7 +23,7 @@ counter = 1;
       disp('WARNING: non-FS format detected!')
             catch %.. if needs RGB conversion
           for ii = startT:size(in_mov,2)
-            out_mov(:,:,counter) = squeeze(mov_data(ii).cdata(:,:,2,:));
+            out_mov(:,:,counter) = squeeze(in_mov(ii).cdata(:,:,2,:));
             counter = counter+1;
           end
       disp('WARNING: non-FS format detected!')
@@ -35,7 +35,7 @@ counter = 1;
 
   case 4 % RGB format: convert to greyscale
           for ii = startT:size(in_mov,4)
-            out_mov(:,:,counter) = squeeze(mov_data(ii).cdata(:,:,2,ii));
+            out_mov(:,:,counter) = squeeze(in_mov(:,:,2,ii));
             counter = counter+1;
           end
 

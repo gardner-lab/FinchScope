@@ -9,13 +9,13 @@ function FS_BatchDff(DIR, varargin)
 % 09.05.15
 
 %% Default Paramaters:
-filt_rad=1; % gauss filter radius
-filt_alpha=1; % gauss filter alpha
+filt_rad=10; % gauss filter radius
+filt_alpha=10; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap=colormap('jet');
-per=4; % baseline percentile (0 for min)
+per=5; % baseline percentile (0 for min)
 counter = 1;
-mat_dir='DFF_MOVIES';
+mat_dir='DFF_MOVIES3';
 counter = 1;
 sT = 1;
 resize = 1;
@@ -80,7 +80,7 @@ clear mov_data;
 	fprintf(1,formatstring,round((i/length(mov_listing))*100));
 try
 load(fullfile(DIR,mov_listing{i}),'video');
-[mov_data, n]= FS_Format(video.frames,1);
+[mov_data, n]= FS_Format_test(video.frames,1);
 mov_data = mov_data(:,:,sT:end);
 catch
     load(fullfile(DIR,mov_listing{i}),'mov_data');
@@ -147,8 +147,8 @@ dff2 = imresize(dff2,(1/resize));
 
 
 
-H = prctile(max(max(dff2(:,:,:))),70);
-L = 5;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
+H = prctile(max(max(dff2(:,:,:))),60);
+L = 10;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
 
     clim = [double(L) double(H)];
 
