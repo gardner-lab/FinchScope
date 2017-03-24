@@ -67,7 +67,7 @@ for i=1:length(mov_listing)
 clear tmp; clear mov_data; clear frames; clear mic_data; clear ave_time; clear offset2; clear vid_times; clear mov_data_aligned;
 warning('off','all')
 	disp(['Processing file ' num2str(i) ' of ' num2str(length(mov_listing))]);
-	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio','mov_data');
+	load(fullfile(pwd,mov_listing{i}),'mov_data_aligned','mic_data','fs','vid_times','video','audio','mov_data','motif');
 warning('on','all')
 
 
@@ -152,6 +152,11 @@ save_file=[ file '_roi' ];
 roi_ave.analogIO_dat{i} = mic_data;
 roi_ave.analogIO_time{i}= (1:length(mic_data))/fs;
 roi_ave.interp_time{i} = ave_time;
+                G2 = exist('motif');
+                if G2 == 1;
+                    roi_ave.motif{i} = motif;
+                end
+                
 
 %------[ PROCESS ROIs]--------%
 % interpolate ROIs to a common timeframe
@@ -185,6 +190,7 @@ roi_ave.raw_dat{j,counteri} = tmp;
         counteri = counteri+1; % In case we need to skip ROIs due to dropped frames, (instead of using u in the loop)
 				roi_ave.filename{i}=mov_listing{i};
 
+                
 end
 end
 
