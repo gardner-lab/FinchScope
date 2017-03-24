@@ -105,7 +105,7 @@ end
 mov_data = double(mov_data2);
 
 % Check For Dropped Frames:
-if any(G >.17) %0.05 for 30fps
+if any(G >.25) %0.05 for 30fps
     disp('   **    Dropped Frame detected    **  ')
 else
     disp('No Dropped Frames Detected')
