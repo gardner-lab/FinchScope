@@ -149,9 +149,9 @@ save_file=[ file '_roi' ];
 
 
 
-roi_ave.analogIO_dat{i} = mic_data;
-roi_ave.analogIO_time{i}= (1:length(mic_data))/fs;
-roi_ave.interp_time{i} = ave_time;
+roi_ave.analogIO_dat{counteri} = mic_data;
+roi_ave.analogIO_time{counteri}= (1:length(mic_data))/fs;
+roi_ave.interp_time{counteri} = ave_time;
                 G2 = exist('motif');
                 if G2 == 1;
                     roi_ave.motif{i} = motif;
@@ -187,8 +187,9 @@ roi_ave.raw_time{j,counteri} = timevec;
 roi_ave.raw_dat{j,counteri} = tmp;
 
     end
-        counteri = counteri+1; % In case we need to skip ROIs due to dropped frames, (instead of using u in the loop)
-				roi_ave.filename{i}=mov_listing{i};
+				roi_ave.filename{counteri}=mov_listing{i};
+                        counteri = counteri+1; % In case we need to skip ROIs due to dropped frames, (instead of using u in the loop)
+
 
                 
 end
