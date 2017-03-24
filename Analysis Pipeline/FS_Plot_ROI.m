@@ -154,7 +154,7 @@ roi_ave.analogIO_time{counteri}= (1:length(mic_data))/fs;
 roi_ave.interp_time{counteri} = ave_time;
                 G2 = exist('motif');
                 if G2 == 1;
-                    roi_ave.motif{i} = motif;
+                    roi_ave.motif{counteri} = motif;
                 end
                 
 
