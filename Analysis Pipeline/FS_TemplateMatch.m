@@ -402,7 +402,7 @@ parfor i=1:length(file_listing)
 	end
 
 	warning('off','signal:findpeaks:largeMinPeakHeight');
-	[pks,locs]=findpeaks(product_score,'MINPEAKHEIGHT',.005,'MinPeakDistance',6);
+	[pks,locs]=findpeaks(product_score,'MINPEAKHEIGHT',.05,'MinPeakDistance',6);
 	warning('on','signal:findpeaks:largeMinPeakHeight');
 
 	if isempty(locs)
