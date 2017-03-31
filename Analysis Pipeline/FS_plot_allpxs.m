@@ -17,8 +17,8 @@ MOV_DATA = abs(double((MOV_DATA2)));
 nparams=length(varargin);
 
 
-filt_rad=20; % gauss filter radius
-filt_alpha=30; % gauss filter alpha
+filt_rad=15; % gauss filter radius
+filt_alpha=10; % gauss filter alpha
 lims=4; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap= colormap(jet);%  cubehelix(200,[0.9,-1,7,1]));
 per=3; % baseline percentile (0 for min)

@@ -17,6 +17,7 @@ The project was initially developed in the Gardner Lab, for multi-month imaging 
 
 ![ScreenShot](TRACES.png)
 
+<video src="video.mp4" width="320" height="200" controls preload></video>
 
 
 ####Components:
