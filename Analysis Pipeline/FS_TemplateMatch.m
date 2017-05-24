@@ -47,7 +47,7 @@ out_dir='';
 sound_dir='';
 template_data=[];
 im_resize=[]; % setting this to .5 seems reasonable, depends on required resolution
-padding=[0.25 .75];
+padding=[0.95 .95];
 
 % parameter collection
 
@@ -532,7 +532,7 @@ for i=1:length(SELECTED_PEAKS)
     [y,Fs] = audioread([parentpath,'/',FILENAMES{i}(1:end-4),'.mov']);
     end
     [Xa,Ya,D]= alignsignals(y,audio.data); % get offset.
-   
+   OFFSET{i} = D;
 
 	counter=1;
 	for j=1:length(SELECTED_PEAKS{i})
@@ -745,6 +745,7 @@ warning on;
 end
 
 fprintf('\n');
+save(fullfile(out_dir,'offset_data.mat'),'OFFSET');
 
 
 end
