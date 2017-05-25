@@ -612,7 +612,7 @@ for i=1:length(SELECTED_PEAKS)
 end
 
 fprintf('\n');
-
+save(fullfile(pwd,'extraction/offset_data.mat'),'OFFSET');
 end
 
 function extract_movies(MIC_DATA2, VID_TIMES, MIC_DATA,MOV_DATA,USED_FILENAMES,OUT_DIR,IM_RESIZE,MOVIE_FS,FS,MIN_F,MAX_F,PADDING,MOTIF)
@@ -745,7 +745,7 @@ warning on;
 end
 
 fprintf('\n');
-save(fullfile(out_dir,'offset_data.mat'),'OFFSET');
+
 
 
 end
