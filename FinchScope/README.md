@@ -46,7 +46,7 @@ Figure: Single channel fluorescence imaging, at cellular resolution. Low-Latency
 Current software [can be found here](https://github.com/gardner-lab/video-capture/releases)
 
 
-#Contact:
-email bliberti@bu.edu
+## Contact:
+email bliberti@bu.edu; dpleman@bu.edu
 
 Inspiration: http://www.nature.com/nmeth/journal/v8/n10/full/nmeth.1694.html
