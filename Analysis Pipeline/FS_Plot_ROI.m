@@ -15,7 +15,6 @@ n = 1; % How much to interpolate by?
 ave_fs=25*n; % multiply by a variable 'n' if you want to interpolate
 save_dir='roi';
 template=[];
-fs=48000;
 per=2;
 max_row=5;
 min_f=0;
@@ -27,7 +26,6 @@ resize=1;
 detrend_traces=0;
 crop_correct=0;
 counteri = 1;
-fs = 48000;
 
 nparams=length(varargin);
 
@@ -91,6 +89,7 @@ else
 	mov_data = video.frames;
 	vid_times = video.times;
 	mic_data = audio.data;
+    fs = audio.rate;
 	G = diff(vid_times(:,1), 1);
 	timevec = (vid_times');
 [mov_data2, n] = FS_Format(mov_data,1);

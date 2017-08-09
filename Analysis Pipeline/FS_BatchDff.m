@@ -13,7 +13,7 @@ filt_rad=10; % gauss filter radius
 filt_alpha=10; % gauss filter alpha
 lims=3; % contrast prctile limits (i.e. clipping limits lims 1-lims)
 cmap=colormap('jet');
-per=5; % baseline percentile (0 for min)
+per=3; % baseline percentile (0 for min)
 counter = 1;
 mat_dir='DFF_MOVIES3';
 counter = 1;
@@ -147,7 +147,7 @@ dff2 = imresize(dff2,(1/resize));
 
 
 
-H = prctile(max(max(dff2(:,:,:))),60);
+H = prctile(max(max(dff2(:,:,:))),95);
 L = 10;%prctile(mean(max(dff2(:,:,:))),3); Good to fix lower bound
 
     clim = [double(L) double(H)];

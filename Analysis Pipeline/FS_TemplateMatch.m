@@ -47,7 +47,7 @@ out_dir='';
 sound_dir='';
 template_data=[];
 im_resize=[]; % setting this to .5 seems reasonable, depends on required resolution
-padding=[0.95 .95];
+padding=[3.00 3.00];
 
 % parameter collection
 
