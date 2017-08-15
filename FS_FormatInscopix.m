@@ -55,9 +55,10 @@ load(FILE,'fs','mic_data')
       % Format AUDIO DATA
       audio.nrChannels = 1;
       audio.bits = 16;
+      mic_data = resample(mic_data,48000,24414);
       audio.nrFrames = length(mic_data);
-      audio.data = double(mic_data);
-      audio.rate = fs;
+      audio.data = double(mic_data)';% transposed to fit rhe current format. 
+      audio.rate = 48000; % after upsampling
 
 
 % Load from the tif in the upstream directory
