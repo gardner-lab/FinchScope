@@ -155,12 +155,12 @@ roi_ave.interp_time{counteri} = ave_time;
                 end
                 
 %------[ Background and Neuropil]--------%
-        % Background & Neuropil
 
-[Bgnd, Npil] = FS_PreMotor_Neuropil(mov_data,ROI);
+[Bgnd, Npil] = FS_neuropil(mov_data,ROIS);
 
-roi_ave.Bgnd{counteri}=interp1(timevec,Bkgd,ave_time,'spline');
+roi_ave.Bgnd{counteri}=interp1(timevec,Bgnd,ave_time,'spline');
 roi_ave.Npil{counteri}=interp1(timevec,Npil,ave_time,'spline');
+clear Bgnd Npil;
 
 %------[ PROCESS ROIs]--------%
 % interpolate ROIs to a common timeframe

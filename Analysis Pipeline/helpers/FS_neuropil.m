@@ -1,4 +1,4 @@
-function [Bgnd Npil] = FS_PreMotor_Neuropil(out_mov,ROI)
+function [Bgnd, Npil] = FS_neuropil(out_mov,ROI)
 % Extract Neuropil
 
 % d09/24/17
@@ -15,18 +15,20 @@ function [Bgnd Npil] = FS_PreMotor_Neuropil(out_mov,ROI)
   end
   end
 
-  % % Diagnostics
-  % XA = ROI.reference_image;
-  % XA(sub2ind( size(XA), X2(:,1), X2(:,2))) = NaN;
-  % figure();
-  % imagesc(XA);
+  % Diagnostics
+ % XA = ROI.reference_image;
+%   XA = mean(out_mov,3);
+% 
+%   XA(sub2ind( size(XA), X2(:,1), X2(:,2))) = NaN;
+%   figure();
+%   imagesc(XA);
 
 
 for ii = 1:size(out_mov,3)
     temp = out_mov(:,:,ii);
 Bgnd(:,ii) = mean(mean(temp));
 temp(sub2ind( size(temp), X2(:,1), X2(:,2))) = NaN;
-Npil(:,ii) = mean(mean(temp));
+Npil(:,ii) = nanmean(nanmean(temp));
 clear temp;
 end
 
