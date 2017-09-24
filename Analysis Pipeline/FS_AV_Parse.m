@@ -93,7 +93,7 @@ end
 %
 disp('Performing Gain correction')
 noise = squeeze(est(:,:,3,:)); % blue channel
-noise = (((squeeze(mean(mean(noise(:,1:40,:),2))))+(squeeze(mean(mean(noise(1:40,:,:),2)))))/2);
+noise = (smooth((squeeze(mean(mean(noise(:,1:40,:),2))))+(squeeze(mean(mean(noise(1:40,:,:),2)))))/2);
 
 sig = squeeze(est(:,:,2,:)); % green channel
 sig = (squeeze(mean(mean(sig(:,1:20,:),2))));
