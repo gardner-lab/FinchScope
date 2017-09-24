@@ -5,7 +5,7 @@ function FS_AV_Parse(DIR,varargin)
 % Parse Data from FreedomScopes
 %   Created: 2015/08/02
 %   By: WALIII
-%   Updated: 2015/04/18
+%   Updated: 2017/09/23 % added gain offset.
 %   By: WALIII
 
 % FS_AV_parse will do several things:
@@ -87,8 +87,19 @@ video.times = v_ts% 0.1703*(day-1);
 video.nrFramesTotal = size(v,1);
 video.FrameRate = 1/mean(diff(v_ts));
 for ii = 1: size(v,1)
-    video.frames(:,:,:,ii) = v{ii};
+    est(:,:,:,ii) = v{ii};
 end
+
+%
+disp('Performing Gain correction')
+noise = squeeze(est(:,:,3,:)); % blue channel
+noise = (squeeze(mean(mean(noise(:,1:40,:),2))));
+clear est;
+for ii = 1: size(v,1)
+    video.frames(:,:,:,ii) = v{ii}-noise(ii,:)+noise(10,:);
+end
+clear noise;
+
 
 % Format AUDIO DATA
 audio.nrChannels = 1;

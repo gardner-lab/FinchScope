@@ -14,7 +14,7 @@ noise = squeeze(video.frames(:,:,3,:)); % blue channel
 
 % get the means
 out.mean{i} = squeeze(mean(mean(sig_noise(:,:,:),2)));
-out.noise{i} = smooth(squeeze(mean(mean(noise(:,1:80,:),2))));
+out.noise{i} = (squeeze(mean(mean(noise(:,1:80,:),2))));
 % plot signal and noise
 % figure();
 % hold on;
