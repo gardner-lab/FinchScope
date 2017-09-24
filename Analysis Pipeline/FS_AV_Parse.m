@@ -93,12 +93,16 @@ end
 %
 disp('Performing Gain correction')
 noise = squeeze(est(:,:,3,:)); % blue channel
-noise = (squeeze(mean(mean(noise(:,1:40,:),2))));
-clear est;
+noise = (((squeeze(mean(mean(noise(:,1:40,:),2))))+(squeeze(mean(mean(noise(1:40,:,:),2)))))/2);
+
+sig = squeeze(est(:,:,2,:)); % green channel
+sig = (squeeze(mean(mean(sig(:,1:20,:),2))));
+
 for ii = 1: size(v,1)
-    video.frames(:,:,:,ii) = v{ii}-noise(ii,:)+noise(10,:);
+    video.frames(:,:,:,ii) = v{ii}-(noise(ii,:)-min(noise(30:end)));
 end
 clear noise;
+clear est;
 
 
 % Format AUDIO DATA
