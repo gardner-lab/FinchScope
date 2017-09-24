@@ -133,6 +133,7 @@ save_file=[ file '_roi' ];
 	% we'll eat up too much RAM for large movies
 
 	for j=1:roi_n
+        
 		fprintf(1,formatstring,round((j/roi_n)*100));
 
 		for k=1:frames
@@ -143,10 +144,7 @@ save_file=[ file '_roi' ];
 	end
 
 	fprintf(1,'\n');
-
 	dff=zeros(size(roi_t));
-
-
 
 roi_ave.analogIO_dat{counteri} = mic_data;
 roi_ave.analogIO_time{counteri}= (1:length(mic_data))/fs;
@@ -156,6 +154,13 @@ roi_ave.interp_time{counteri} = ave_time;
                     roi_ave.motif{counteri} = motif;
                 end
                 
+%------[ Background and Neuropil]--------%
+        % Background & Neuropil
+
+[Bgnd, Npil] = FS_PreMotor_Neuropil(mov_data,ROI);
+
+roi_ave.Bgnd{counteri}=interp1(timevec,Bkgd,ave_time,'spline');
+roi_ave.Npil{counteri}=interp1(timevec,Npil,ave_time,'spline');
 
 %------[ PROCESS ROIs]--------%
 % interpolate ROIs to a common timeframe
