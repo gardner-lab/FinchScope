@@ -18,7 +18,7 @@ function [Bgnd, Npil] = FS_neuropil(out_mov,ROI)
   % Diagnostics
  % XA = ROI.reference_image;
 %   XA = mean(out_mov,3);
-% 
+%
 %   XA(sub2ind( size(XA), X2(:,1), X2(:,2))) = NaN;
 %   figure();
 %   imagesc(XA);
