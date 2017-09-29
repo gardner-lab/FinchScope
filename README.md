@@ -21,7 +21,7 @@ The project was initially developed by Will Liberti in the Gardner Lab, for mult
 
 
 #### Components:
-
+ 
 
 ### Finchscope Microscope
 
