@@ -64,9 +64,21 @@ f = dir(FILE)
 if f.bytes/1000000< 900.000
 
 %Extract Audio and video data...
-
+try
 [a_ts, a, v_ts, v] = extractmedia(FILE);
-
+catch
+   v1 = VideoReader(FILE);
+   k = 1;
+    while hasFrame(v1)
+    v{k} = readFrame(v1);
+    k = k+1;
+    end
+    v = v';
+    a = 0;
+    a_ts = 0;
+    v_ts = 0;
+end
+    clear k V1;
 
 else
     
@@ -120,13 +132,18 @@ fs = 48000;
 		[b,a]=ellip(5,.2,80,[500]/(fs/2),'high');
 		plot_data=mic_data./abs(max(mic_data));
 
+        try
 		[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data./abs(max(mic_data))),fs,'low',2.5,'zeropad',0);
-
+      
+        
 		minpt=1;
 		maxpt=min(find(f>=10e3));
 
 		imwrite(flipdim(uint8(s(minpt:maxpt,:)),1),hot,fullfile(gif_dir,[file '.gif']),'gif');
-		save(fullfile(mat_dir,[file '.mat']),'audio','video','-v7.3');
+		 catch
+            disp('no audio... skipping spectrogram');
+        end
+        save(fullfile(mat_dir,[file '.mat']),'audio','video','-v7.3');
 
         % clear the buffer
 clear video;

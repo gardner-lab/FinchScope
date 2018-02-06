@@ -9,8 +9,8 @@ counter = 1;
   switch n
       case 2 % OLD FreedomScope format.
         try
-          for ii = startT:size(in_mov)
-            out_mov(:,:,counter) = squeeze(in_mov(ii).cdata(:,:,2,:));
+          for ii = startT:size(in_mov,2)
+            out_mov(:,:,counter) = squeeze(in_mov(ii).cdata(:,:,2));
             counter = counter+1;
           end
       disp('WARNING: old FS format detected!')

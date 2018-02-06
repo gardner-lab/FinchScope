@@ -53,7 +53,9 @@ end
 
 
 imwrite(uint8(files(:,:,1)),'G.tif');
+if size(size(videodata),2) ==4
 imwrite(uint8(videodata(:,:,:,1)),'RGB.tif');
+end
 
 %imwrite(bitshift(uint16(files(:,:,1)), 8),'G_16.tif');
 
@@ -62,12 +64,18 @@ for i=2:size(files,3) %number of images to be read
     
     K = files(:,:,i);
 %     K = wiener2(K,[5 5]);
+if size(size(videodata),2) ==4
+
     K2 = videodata(:,:,:,i);
+end
     %G  = filter2(fspecial('average',3),files2(:,:,i));
     %GG = medfilt2(G);
 
 imwrite(uint8(K),'G.tif','WriteMode','append');
+if size(size(videodata),2) ==4
+
 imwrite(uint8(K2),'RGB.tif','WriteMode','append');
+end
 end
 
 end
