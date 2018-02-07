@@ -12,7 +12,7 @@
 Servo myservo;  
  
 int pos = 90;    
-const int analogInPin = A8;  
+const int analogInPin = 8;  
 int sensorValue = 0;        // value read from the pot
 int setpoint = 510;
 
@@ -48,5 +48,5 @@ pos = 90;
    myservo.write(pos);
 }
 
-  delay(200);                     
+  delay(20);                     
 }

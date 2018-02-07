@@ -92,28 +92,37 @@ catch
 [mov_data2, n] = FS_Format_test(video.frames,10);
 end
 
-a = 6;
-counter = 1;
-			for iii = startFrame: size(mov_data2,3)
-                mov_data3(:,:,counter) = wiener2(mov_data2(:,:,iii),[a a]);
-                counter = counter+1;
-            end
-test= convn(mov_data3, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
-rTest = test;
+% a = 6;
+% counter = 1;
+% 			for iii = startFrame: size(mov_data2,3)
+%                 mov_data3(:,:,counter) = wiener2(mov_data2(:,:,iii),[a a]);
+%                 counter = counter+1;
+%             end
+mov_data2= convn(mov_data2, single(reshape([1 1 1] / 3, 1, 1, [])), 'same');
+FrameInfo = mean(mov_data2,3);
+colormap(gray); image(FrameInfo);
+X = mat2gray(FrameInfo);
+X = im2uint16(X);
+save_filename_AVG = strcat(save_filename_AVG,'_AVG','.tif');
+imwrite(X,save_filename_AVG,'tif')
 
-test=imresize((test),.25);
+
+
+
+mov_data2=imresize((mov_data2),.25);
 
 h=fspecial('disk',50);
-bground=imfilter(test,h);
+bground=imfilter(mov_data2,h);
 % bground=smooth3(bground,[1 1 5]);
-test=test-bground;
+mov_data2=mov_data2-bground;
 h=fspecial('disk',1);
-test=imfilter(test,h);
+mov_data2=imfilter(mov_data2,h);
 
 
-test=imresize(test,4);
+mov_data2=imresize(mov_data2,4);
 
-FrameInfo = max(test,[],3);
+clear FrameInfo;
+FrameInfo = max(mov_data2,[],3);
 
 
 colormap(gray)
@@ -128,23 +137,14 @@ imwrite(X,save_filename_MAX,'tif')
 
 %% AVG movie
 
-clear FrameInfo; FrameInfo = mean(rTest,3);
-clear rTest;
 
-colormap(gray); image(FrameInfo);
-
-% X = uint16((2^16)*mat2gray(FrameInfo.^2));
-
-X = mat2gray(FrameInfo);
-X = im2uint16(X);
-save_filename_AVG = strcat(save_filename_AVG,'_AVG','.tif');
-imwrite(X,save_filename_AVG,'tif')
 
 %%
 
 
 
-clear FrameInfo; FrameInfo = std(double(test),[],3); image(FrameInfo);
+clear FrameInfo; 
+FrameInfo = std(double(mov_data2),[],3); image(FrameInfo);
 
 
 
