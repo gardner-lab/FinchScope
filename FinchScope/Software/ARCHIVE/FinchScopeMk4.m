@@ -52,7 +52,7 @@ global contrast
 contrast = 65000;
 test = 0;
 handles.COMavailabe = instrhwinfo('serial');
-ActiveComPort = char(handles.COMavailabe.SerialPorts(1))
+ActiveComPort = char(handles.COMavailabe.SerialPorts(6))
 a = arduino(num2str(ActiveComPort));
 a.pinMode(4,'output');
 a.pinMode(13,'output');

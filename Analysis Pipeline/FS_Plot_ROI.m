@@ -12,7 +12,8 @@ colors=eval(['winter(' num2str(length(ROIS.coordinates)) ')']);
 sono_colormap='hot';
 baseline=3;
 n = 1; % How much to interpolate by?
-ave_fs=25*n; % multiply by a variable 'n' if you want to interpolate
+roi_ave.samp_rate = 30;
+ave_fs=roi_ave.samp_rate*n; % multiply by a variable 'n' if you want to interpolate
 save_dir='roi';
 template=[];
 per=2;
@@ -26,6 +27,9 @@ resize=1;
 detrend_traces=0;
 crop_correct=0;
 counteri = 1;
+ring = 1; % subtract ring around ROI ( local backgrounds)
+
+
 
 nparams=length(varargin);
 
@@ -49,10 +53,17 @@ for i=1:2:nparams
 			template=varargin{i+1};
 		case 'fs'
 			fs=varargin{i+1};
+		case 'ring'
+			ring = varargin{i+1};
 	end
 end
 
 
+
+% Warnings
+if ring ==1;
+    disp(' WARNING: subtracting perimiter of ROI...');
+end
 
 mkdir(save_dir);
 % ROIS is a cell array of image indices returned by fb_select_roi
@@ -133,17 +144,24 @@ save_file=[ file '_roi' ];
 	% we'll eat up too much RAM for large movies
 
 	for j=1:roi_n
-        
 		fprintf(1,formatstring,round((j/roi_n)*100));
 
 		for k=1:frames
-
 			tmp=mov_data(ROIS.coordinates{j}(:,2),ROIS.coordinates{j}(:,1),k);
+
+				if ring == 1;
+
+						[yCoordinates, xCoordinates] = GetRing(ROIS.coordinates{j},rows,columns);
+						annul=mov_data(yCoordinates,xCoordinates,k);
+						roi_t(j,k)=mean(tmp(:))-mean(annul(:));
+else
 			roi_t(j,k)=mean(tmp(:));
+
 		end
 	end
-
+    end
 	fprintf(1,'\n');
+
 	dff=zeros(size(roi_t));
 
 roi_ave.analogIO_dat{counteri} = mic_data;
@@ -153,7 +171,7 @@ roi_ave.interp_time{counteri} = ave_time;
                 if G2 == 1;
                     roi_ave.motif{counteri} = motif;
                 end
-                
+
 %------[ Background and Neuropil]--------%
 
 [Bgnd, Npil] = FS_neuropil(mov_data,ROIS);
@@ -190,12 +208,13 @@ roi_ave.interp_raw{j, counteri}=yy2;
 roi_ave.raw_time{j,counteri} = timevec;
 roi_ave.raw_dat{j,counteri} = tmp;
 
+
     end
 				roi_ave.filename{counteri}=mov_listing{i};
                         counteri = counteri+1; % In case we need to skip ROIs due to dropped frames, (instead of using u in the loop)
 
 
-                
+
 end
 end
 
