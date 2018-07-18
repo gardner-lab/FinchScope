@@ -27,7 +27,7 @@ resize=1;
 detrend_traces=0;
 crop_correct=0;
 counteri = 1;
-ring = 1; % subtract ring around ROI ( local backgrounds)
+ring = 0; % subtract ring around ROI ( local backgrounds)
 
 
 
