@@ -35,4 +35,4 @@ The ActiveCom is a low noise active(driven by a motor and sensor) commutator des
 
 
 ## Contact:
-email bliberti [at] bu.edu; 
+email dpleman [at] bu.edu; bliberti [at] bu.edu
