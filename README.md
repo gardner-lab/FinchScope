@@ -2,7 +2,7 @@
 
 
 
-<font size="10"> <img src="im1.png" width="50"/>FinchScope Project</font>
+<font size="10"> <img src="FinchScope/img/im1.png" width="50"/>FinchScope Project</font>
 =======
 
 
@@ -15,9 +15,9 @@ The project was initially developed by [Will Liberti](https://github.com/WALIII)
 
 
 
-![ScreenShot](FreedomScope/FinchScope/img/ACS3.png)
+![ScreenShot](FinchScope/img/ACS3.png)
 
-![ScreenShot](FreedomScope/FinchScope/img/TRACES.png)
+![ScreenShot](FinchScope/img/TRACES.png)
 
 <video src="video.mp4" width="320" height="200" controls preload></video>
 
