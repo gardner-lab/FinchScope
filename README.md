@@ -15,9 +15,9 @@ The project was initially developed by [Will Liberti](https://github.com/WALIII)
 
 
 
-![ScreenShot](ACS3.png)
+![ScreenShot](FreedomScope/FinchScope/img/ACS3.png)
 
-![ScreenShot](TRACES.png)
+![ScreenShot](FreedomScope/FinchScope/img/TRACES.png)
 
 <video src="video.mp4" width="320" height="200" controls preload></video>
 
@@ -35,4 +35,4 @@ The ActiveCom is a low noise active(driven by a motor and sensor) commutator des
 
 
 ## Contact:
-email bliberti [at] bu.edu; 
+email bliberti [at] bu.edu;
