@@ -34,5 +34,12 @@ The FinchScope is a lightweight wireless-capable microscope for biological imagi
 The ActiveCom is a low noise active(driven by a motor and sensor) commutator designed for ABA electrophysiology and optophysiology.
 
 
-## Contact:
-email bliberti [at] bu.edu;
+### Referencing
+If you use any part of this project in your work, please cite out Journal of Neural Engineering Paper:
+[Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." Journal of neural engineering 14.4 (2017): 045001.](http://iopscience.iop.org/1741-2552/14/4/045001/)
+
+## Contributers:
+Will Liberti    wliberti [at] berkeley.edu;
+Nathan Perkins  lnp [at] bu.edu;
+Daniel Leman    dpleman  [at] bu.edu;
+Ian Davison     idavison [at] bu.edu
