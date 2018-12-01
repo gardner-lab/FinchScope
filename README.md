@@ -40,6 +40,9 @@ If you use any part of this project in your work, please cite out Journal of Neu
 
 ## Contributers:
 Will Liberti    wliberti [at] berkeley.edu;
+
 Nathan Perkins  lnp [at] bu.edu;
+
 Daniel Leman    dpleman  [at] bu.edu;
+
 Ian Davison     idavison [at] bu.edu
