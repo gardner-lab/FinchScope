@@ -11,7 +11,7 @@
 ## Overview
 The FinchScope project aims to provide a modular in-vivo  optophysiology rig, with a transparent acquisition and analysis pipeline. The goal is to produce a customizable and scaleable single-photon fluorescent imaging microscope system that takes advantage of developing open-source analysis platforms. You can read more about the project [here.](http://iopscience.iop.org/1741-2552/14/4/045001/)
 
-The project was developed by [Will Liberti](https://github.com/WALIII) in the [Gardner Lab](http://people.bu.edu/timothyg/Home.html), for multi-month imaging of neural activity in songbirds [[1]](https://doi.org/10.1371/journal.pbio.1002158) [[2]](https://www.nature.com/articles/nn.4405). It has since been adapted for rodents. This effort would not have been possible without the critical advice and support at the outset of the project by Daniel Aharoni and Peyman Golshani, of the [UCLA Miniscope project](http://miniscope.org/index.php?title=Main_Page)
+The project was developed by [Will Liberti](https://github.com/WALIII) in the [Gardner Lab](http://people.bu.edu/timothyg/Home.html), for multi-month imaging of neural activity in songbirds [[1]](https://doi.org/10.1371/journal.pbio.1002158) [[2]](https://www.nature.com/articles/nn.4405) [[3]](https://ccneuro.org/2018/proceedings/1133.pdf) and  rodents. This effort would not have been possible without the critical advice and support at the outset of the project by Daniel Aharoni and Peyman Golshani, of the [UCLA Miniscope project](http://miniscope.org/index.php?title=Main_Page)
 
 
 
@@ -31,7 +31,7 @@ The FinchScope is a lightweight wireless-capable microscope for biological imagi
 
 
 ### Active Commutator
-The [Active Commutator](https://github.com/WALIII/FreedomScope/wiki/ActiveComm) is a low cost, low noise, active(driven by a motor and sensor) electrical rotary joint designed for electrophysiology (single and multichannel micro-electrode arrays) and optophysiology ( optogenetics, miniature microscopes, and fiber photometry).
+The [Active Commutator](https://github.com/WALIII/FreedomScope/wiki/Commutators) is a low cost, low noise, active(driven by a motor and sensor) electrical rotary joint designed for electrophysiology (single and multichannel micro-electrode arrays) and optophysiology ( optogenetics, miniature microscopes, and fiber photometry).
 
 
 ### Referencing
