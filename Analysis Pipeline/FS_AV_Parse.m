@@ -81,7 +81,7 @@ end
     clear k V1;
 
 else
-    
+
   disp('moving file- to large for batch processing... use FS_AV_Parse(pwd,large)');
   %LargeDir = strcat(path,'/','LargeFiles');
   movefile(FILE, error_dir)
@@ -103,6 +103,7 @@ for ii = 1: size(v,1)
 end
 
 %
+try
 disp('Performing Gain correction')
 noise = squeeze(est(:,:,3,:)); % blue channel
 noise = (((squeeze(mean(mean(noise(:,1:80,:),1))))));%+(squeeze(mean(mean(noise(1:10,:,:),2)))))/2);
@@ -116,6 +117,10 @@ for ii = 1: size(v,1)
 end
 clear noise;
 clear est;
+catch
+  video.gain = [];
+end
+
 
 
 % Format AUDIO DATA
@@ -134,8 +139,8 @@ fs = 48000;
 
         try
 		[s,f,t]=fb_pretty_sonogram(filtfilt(b,a,mic_data./abs(max(mic_data))),fs,'low',2.5,'zeropad',0);
-      
-        
+
+
 		minpt=1;
 		maxpt=min(find(f>=10e3));
 
