@@ -49,12 +49,20 @@ for i=1:2:nparams
     end
 end
   
-
+% if rm_artifacts ==1;
+%     
 
 % d = files2;
 % files2 = ((d-min(d(:))) ./ (max(d(:)-min(d(:)))))*255;
 
+% % scale data
+% files = normalize(files,'range',[0,1])*255;
+% maxV = max(files(:));
+% minV = min(files(:));
+%files   = (files - min(files(:))) / (max(files(:)) - min(files(:)))*255;
 
+% Normalize data:
+%files = mat2gray(files)*256;
 
 imwrite(uint8(files(:,:,1)),filename);
 if size(size(videodata),2) ==4
