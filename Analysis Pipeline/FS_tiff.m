@@ -18,15 +18,13 @@ function FS_tiff(videodata,varargin)
 
   
 
-  
+  filename = 'G.tiff';
+format_switch = 1;
   nparams=length(varargin);
 
 % if mod(nparams,2)>0
 % 	error('Parameters must be specified as parameter/value pairs');
 % end
-filename = 'G.tiff';
-
-[files, n] = FS_Format(videodata,1);
 for i=1:2:nparams
 	switch lower(varargin{i})
 		case 'colors'
@@ -43,10 +41,17 @@ for i=1:2:nparams
                 files = convn(files, single(reshape([1 1 1] / b, 1, 1, [])), 'same');
         case 'fname'
             filename=varargin{i+1};
-                
-            
-	
+        case 'format'
+            format_switch=varargin{i+1};
+        end
+                     
     end
+
+
+if format_switch == 1;
+[files, n] = FS_Format(videodata,1);
+else 
+    files = videodata;
 end
   
 % if rm_artifacts ==1;
@@ -64,9 +69,9 @@ end
 % Normalize data:
 %files = mat2gray(files)*256;
 
-imwrite(uint8(files(:,:,1)),filename);
+imwrite(uint8(files(:,:,1)),[filename,'.tif']);
 if size(size(videodata),2) ==4
-imwrite(uint8(videodata(:,:,:,1)),'RGB.tif');
+imwrite(uint8(videodata(:,:,:,1)),[filename,'_','RGB.tif']);
 end
 
 %imwrite(bitshift(uint16(files(:,:,1)), 8),'G_16.tif');
@@ -83,10 +88,10 @@ end
     %G  = filter2(fspecial('average',3),files2(:,:,i));
     %GG = medfilt2(G);
 
-imwrite(uint8(K),filename,'WriteMode','append');
+imwrite(uint8(K),[filename,'.tif'],'WriteMode','append');
 if size(size(videodata),2) ==4
 
-imwrite(uint8(K2),'RGB.tif','WriteMode','append');
+imwrite(uint8(K2),[filename,'_','RGB.tif'],'WriteMode','append');
 end
 end
 
