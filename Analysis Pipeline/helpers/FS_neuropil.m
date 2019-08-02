@@ -1,4 +1,4 @@
-function [Bgnd, Npil] = FS_neuropil(out_mov,ROI)
+function [Bgnd, Npil] = FS_neuropil(out_mov,ROI,resize)
 % Extract Neuropil
 
 % d09/24/17
@@ -8,9 +8,9 @@ function [Bgnd, Npil] = FS_neuropil(out_mov,ROI)
 % Make indexes for the ROI coordinates
   for i = 1:size(ROI.coordinates,2);
   if i == 1;
-    X2 = [ROI.coordinates{i}(:,2),ROI.coordinates{i}(:,1)];
+    X2 = [round(ROI.coordinates{i}(:,2)*resize),round(ROI.coordinates{i}(:,1)*resize)];
     else
-    X = [ROI.coordinates{i}(:,2),ROI.coordinates{i}(:,1)];
+    X = [round(ROI.coordinates{i}(:,2)*resize),round(ROI.coordinates{i}(:,1)*resize)];
     X2 = cat(1,X2,X);
   end
   end

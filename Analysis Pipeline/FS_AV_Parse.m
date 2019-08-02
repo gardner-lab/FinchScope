@@ -25,7 +25,7 @@ mat_dir=[pwd,'/mat'];
 gif_dir=[pwd,'/gif'];
 error_dir =[pwd,'/error'];
 plot_spectrogram =0;
-resize_factor = 0.3;
+resize_factor = 1;
 
 if exist(mat_dir,'dir') rmdir(mat_dir,'s'); end
 if exist(gif_dir,'dir') rmdir(gif_dir,'s'); end

@@ -28,7 +28,7 @@ detrend_traces=0;
 crop_correct=0;
 counteri = 1;
 ring = 0; % subtract ring around ROI ( local backgrounds)
-
+resize = 0.3
 
 
 nparams=length(varargin);
@@ -126,6 +126,8 @@ else
 
 roi_n=length(ROIS.coordinates);
 roi_t=zeros(roi_n,frames);
+ring_t=zeros(roi_n,frames);
+
 ave_time=0:1/ave_fs:length(mic_data)/fs;
 [path,file,ext]=fileparts(mov_listing{i});
 save_file=[ file '_roi' ];
@@ -147,14 +149,15 @@ save_file=[ file '_roi' ];
 		fprintf(1,formatstring,round((j/roi_n)*100));
 
 		for k=1:frames
-			tmp=mov_data(ROIS.coordinates{j}(:,2),ROIS.coordinates{j}(:,1),k);
+			tmp=mov_data(round(ROIS.coordinates{j}(:,2)*resize),round(ROIS.coordinates{j}(:,1)*resize),k);
 
 				if ring == 1;
 
-						[yCoordinates, xCoordinates] = GetRing(ROIS.coordinates{j},rows,columns);
+						[yCoordinates, xCoordinates] = GetRing(round(ROIS.coordinates{j}*resize),rows,columns);
 						annul=mov_data(yCoordinates,xCoordinates,k);
-						roi_t(j,k)=mean(tmp(:))-mean(annul(:));
-else
+						roi_t(j,k)=mean(tmp(:));
+                        ring_t(j,k) = mean(annul(:));
+                else    
 			roi_t(j,k)=mean(tmp(:));
 
 		end
@@ -174,7 +177,7 @@ roi_ave.interp_time{counteri} = ave_time;
 
 %------[ Background and Neuropil]--------%
 
-[Bgnd, Npil] = FS_neuropil(mov_data,ROIS);
+[Bgnd, Npil] = FS_neuropil(mov_data,ROIS,resize);
 
 roi_ave.Bgnd{counteri}=interp1(timevec,Bgnd,ave_time,'spline');
 roi_ave.Npil{counteri}=interp1(timevec,Npil,ave_time,'spline');
@@ -185,8 +188,14 @@ clear Bgnd Npil;
 	for j=1:roi_n
 clear tmp; clear dff; clear yy2; clear yy;
 
-
+        if ring ==1;
+%         tmp=roi_t(j,:) - ring_t(j,:); 
+        tmp = roi_t(j,:)-smooth(ring_t(j,:),12)';
+        tmp(:,1:10) = roi_t(j,1:10)-ring_t(j,1:10);
+        else
 		tmp=roi_t(j,:);
+        end
+        
         tmp = tmp(:,(1:size(timevec,2)));
 		if baseline==0
 			norm_fact=mean(tmp,3);
