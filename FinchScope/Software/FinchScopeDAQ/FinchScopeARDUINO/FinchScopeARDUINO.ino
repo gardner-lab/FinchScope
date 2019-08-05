@@ -41,7 +41,6 @@ Output Server for MATLA Giampiero Campa, Copyright 2013 The MathWorks, Inc */
 #endif
 
 void setup() {
-  
   // set PIN13 to PWM to 62khz
   int myEraser = 7;             // this is 111 in binary and is used as an eraser
   TCCR0B &= ~myEraser;   // this operation (AND plus NOT),  set the three bits in TCCR2B to 0
@@ -49,6 +48,7 @@ void setup() {
   TCCR0B |= myPrescaler;  //this operation (OR), replaces the last three bits in TCCR2B with our new value 011 
   /* initialize serial                                       */
   Serial.begin(115200);
+  
 }
 
 
@@ -307,4 +307,3 @@ void loop() {
   } /* end if serial available                               */
   
 } /* end loop statement                                      */
-

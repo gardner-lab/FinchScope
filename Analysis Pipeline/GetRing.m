@@ -3,7 +3,7 @@ function [yCoordinates, xCoordinates] = Get_ring(ROI_dat,row,col)
   G = boundary(ROI_dat);
   G2 = round(G*1);
 
-  scalF = 1.1;
+  scalF = 1.5;
   scalF2 = scalF-1;
 
 
@@ -12,7 +12,6 @@ function [yCoordinates, xCoordinates] = Get_ring(ROI_dat,row,col)
 
   h3 = h-h2;
   % figure(); imagesc(h3)
-
 
 
   [yCoordinates, xCoordinates] = find(h3);
