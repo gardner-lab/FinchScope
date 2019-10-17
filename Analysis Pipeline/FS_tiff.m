@@ -18,7 +18,7 @@ function FS_tiff(videodata,varargin)
 
   
 
-  filename = 'G.tiff';
+  filename = 'G';
 format_switch = 1;
   nparams=length(varargin);
 
