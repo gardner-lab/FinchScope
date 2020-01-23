@@ -14,7 +14,8 @@ baseline=3;
 n = 1; % How much to interpolate by?
 roi_ave.samp_rate = 30;
 ave_fs=roi_ave.samp_rate*n; % multiply by a variable 'n' if you want to interpolate
-save_dir='roi';
+date = datestr(now);
+save_dir=['roi_',date];
 template=[];
 per=2;
 max_row=5;
@@ -28,7 +29,7 @@ detrend_traces=0;
 crop_correct=0;
 counteri = 1;
 ring = 0; % subtract ring around ROI ( local backgrounds)
-resize = 0.3
+resize = 0.3;
 
 
 nparams=length(varargin);
@@ -111,8 +112,8 @@ end
 
 
 
-
-mov_data = double(mov_data2);
+disp(['resizing video by a factor of', num2str(resize)]);
+mov_data = imresize(double(mov_data2),resize);
 
 % Check For Dropped Frames:
 if any(G >.25) %0.05 for 30fps
@@ -156,7 +157,7 @@ save_file=[ file '_roi' ];
 						[yCoordinates, xCoordinates] = GetRing(round(ROIS.coordinates{j}*resize),rows,columns);
 						annul=mov_data(yCoordinates,xCoordinates,k);
 						roi_t(j,k)=mean(tmp(:));
-                        ring_t(j,k) = mean(annul(:));
+                        ring_t(j,k) = median(annul(:));
                 else    
 			roi_t(j,k)=mean(tmp(:));
 
@@ -190,13 +191,15 @@ clear tmp; clear dff; clear yy2; clear yy;
 
         if ring ==1;
 %         tmp=roi_t(j,:) - ring_t(j,:); 
-        tmp = roi_t(j,:)-smooth(ring_t(j,:),12)';
+        tmp = roi_t(j,:)-smooth(ring_t(j,:),5)';
         tmp(:,1:10) = roi_t(j,1:10)-ring_t(j,1:10);
+        tmp = tmp+min(smooth(ring_t(j,:),5)); % add back the min...
         else
 		tmp=roi_t(j,:);
         end
         
         tmp = tmp(:,(1:size(timevec,2)));
+
 		if baseline==0
 			norm_fact=mean(tmp,3);
 		elseif baseline==1

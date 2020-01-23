@@ -3,12 +3,16 @@ function [yCoordinates, xCoordinates] = Get_ring(ROI_dat,row,col)
   G = boundary(ROI_dat);
   G2 = round(G*1);
 
-  scalF = 1.5;
+  scalF = 2.5;
   scalF2 = scalF-1;
+  
+  moat = 2;
+  scalF3 = moat-1;
 
 
   h = poly2mask(ROI_dat(G,1)*scalF-mean(ROI_dat(G,1))*scalF2 ,ROI_dat(G,2)*scalF -mean(ROI_dat(G,2)*scalF2),row,col);
-  h2 = poly2mask(ROI_dat(G,1),ROI_dat(G,2),row,col);
+  h2 = poly2mask(ROI_dat(G,1)*moat-mean(ROI_dat(G,1))*scalF3 ,ROI_dat(G,2)*moat -mean(ROI_dat(G,2)*scalF3),row,col);
+%   h2 = poly2mask(ROI_dat(G,1)+moat,ROI_dat(G,2),row,col);
 
   h3 = h-h2;
   % figure(); imagesc(h3)
