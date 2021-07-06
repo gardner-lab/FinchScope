@@ -34,11 +34,11 @@ The project was developed by [Will Liberti](https://github.com/WALIII) in the [G
 The FinchScope is a lightweight wireless-capable microscope for biological imaging- Designed specifically for monitoring the neural activity (via genetically encoded calcium indicators) of zebra finches while they sing their courtship songs. You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).  Also, we have a [Guide Through a Basic Analysis Pipeline](https://github.com/WALIII/FreedomScope/wiki/Analysis-Guide)
 
 
-### 1P2C Microscope
+### 1P2C Microscope (Under Development)
 The 1P2C Miniscope is a variant of the FinchScope that incorporates a second excitation path for dual color imaging, or for widefield photo- stimulation.  You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).
 
 
-### Widefield Microscope
+### Widefield Microscope (Under Development)
 The WideField miniature microscope weighs 4g and gives a 4x3mm field of view. You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).
 
 
@@ -53,6 +53,9 @@ If you use any part of this project in your work, please cite our Journal of Neu
 
 ### Associated Publications/Presentations
 * [Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." Journal of neural engineering 14.4 (2017): 045001.](http://iopscience.iop.org/1741-2552/14/4/045001/)
+* Yanny, K., Antipa, N., Liberti, W., et al. (2020). Miniscope3D: optimized single-shot miniature 3D fluorescence microscopy. Light: Science & Applications, 9(1), 1-13.
+* Leman, Daniel P., et al. "Large-scale cellular-resolution imaging of neural activity in freely behaving mice." bioRxiv (2021).
+
 
 
 
