@@ -57,12 +57,12 @@ If you use any part of this project in your work, please cite our Journal of Neu
 
 
 ### Associated Publications/Presentations
-* [Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." Journal of neural engineering 14.4 (2017): 045001.](http://iopscience.iop.org/1741-2552/14/4/045001/)
-* Liberti, William A., et al. "Unstable neurons underlie a stable learned behavior." Nature neuroscience 19.12 (2016): 1665-1671.
-* Yanny, K., Antipa, N., Liberti, W., et al. (2020). Miniscope3D: optimized single-shot miniature 3D fluorescence microscopy. Light: Science & Applications, 9(1), 1-13.
-* Leman, Daniel P., et al. "Large-scale cellular-resolution imaging of neural activity in freely behaving mice." bioRxiv (2021).
-* Cohen, Yarden, et al. "Hidden neural states underlie canary song syntax." Nature 582.7813 (2020): 539-544.
-* Leman, Daniel P., et al. "Imaging During Odor-Guided Behavior With a Novel, Wide Field-of-View Miniature Fluorescence Microscope." CHEMICAL SENSES. Vol. 44. No. 7. GREAT CLARENDON ST, OXFORD OX2 6DP, ENGLAND: OXFORD UNIV PRESS, 2019.
+* Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." **Journal of neural engineering** 14.4 (2017): 045001.
+* Liberti, William A., et al. "Unstable neurons underlie a stable learned behavior." **Nature neuroscience** 19.12 (2016): 1665-1671.
+* Yanny, K., Antipa, N., Liberti, W., et al. (2020). Miniscope3D: optimized single-shot miniature 3D fluorescence microscopy. **Light: Science & Applications**, 9(1), 1-13.
+* Leman, Daniel P., et al. "Large-scale cellular-resolution imaging of neural activity in freely behaving mice." **(bioRxiv)** (2021).
+* Cohen, Yarden, et al. "Hidden neural states underlie canary song syntax." **Nature** 582.7813 (2020): 539-544.
+
 
 
 
