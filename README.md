@@ -33,6 +33,11 @@ The project was developed by [Will Liberti](https://github.com/WALIII) in the [G
 
 The FinchScope is a lightweight wireless-capable microscope for biological imaging- Designed specifically for monitoring the neural activity (via genetically encoded calcium indicators) of zebra finches while they sing their courtship songs. You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).  Also, we have a [Guide Through a Basic Analysis Pipeline](https://github.com/WALIII/FreedomScope/wiki/Analysis-Guide)
 
+#### Wireless Finchscope
+The FinchScope is wireless capable and is being used in bats with the Yartsev lab. additional resources related to this project can be found (here.)https://github.com/WALIII/ImBat
+
+![](FinchScope/SupplimentalVideo01.gif)
+
 
 ### 1P2C Microscope (Under Development)
 The 1P2C Miniscope is a variant of the FinchScope that incorporates a second excitation path for dual color imaging, or for widefield photo- stimulation.  You can find the Construction and Assembly Guide for [the Microscope](https://github.com/WALIII/FreedomScope/wiki/Assembly-Guide), As well as a for the [Data Acquisition Box (DAQ)](https://github.com/WALIII/FreedomScope/wiki/DAQ-Guide).
