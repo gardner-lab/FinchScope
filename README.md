@@ -71,13 +71,15 @@ If you use any part of this project in your work, please cite our Journal of Neu
 [Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." Journal of neural engineering 14.4 (2017): 045001.](http://iopscience.iop.org/1741-2552/14/4/045001/)
 
 
-### Associated Publications/Presentations
-* Liberti III, William A., et al. "An open source, wireless capable miniature microscope system." **Journal of neural engineering** 14.4 (2017): 045001.
-* Liberti, William A., et al. "Unstable neurons underlie a stable learned behavior." **Nature neuroscience** 19.12 (2016): 1665-1671.
-* Yanny, K., Antipa, N., Liberti, W., et al. (2020). Miniscope3D: optimized single-shot miniature 3D fluorescence microscopy. **Light: Science & Applications**, 9(1), 1-13.
-* Leman, Daniel P., et al. "Large-scale cellular-resolution imaging of neural activity in freely behaving mice." **(bioRxiv)** (2021).
-* Cohen, Yarden, et al. "Hidden neural states underlie canary song syntax." **Nature** 582.7813 (2020): 539-544.
-
+### Publications that use the FinchScope:
+* Liberti III, William A., et al.  **Journal of neural engineering** 14.4 (2017): 045001.
+* Liberti, William A., et al.  **Nature neuroscience** 19.12 (2016): 1665-1671.
+* Yanny, K., Antipa, N., Liberti, W., et al. (2020). **Light: Science & Applications**, 9(1), 1-13.
+* Leman, Daniel P., et al.  **(bioRxiv)** (2021).
+* Cohen, Yarden, et al.  **Nature** 582.7813 (2020): 539-544.
+* Liberti III, William A., et al.  **Nature** 604.7904 (2022): 98-103.
+* Forli, Angelo, et al. **Nature** 621.7980 (2023): 796-803.
+* Singh Alvarado, Jonnathan, et al. **Nature** 599.7886 (2021): 635-639.
 
 
 
