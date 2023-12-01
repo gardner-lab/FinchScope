@@ -72,10 +72,10 @@ If you use any part of this project in your work, please cite our Journal of Neu
 
 
 ### Publications that use the FinchScope:
-* Liberti III, William A., et al.  **Journal of neural engineering** 14.4 (2017): 045001.
-* Liberti, William A., et al.  **Nature neuroscience** 19.12 (2016): 1665-1671.
+* Liberti III, William A., et al.  **Journal of Neural Engineering** 14.4 (2017): 045001.
+* Liberti, William A., et al.  **Nature Neuroscience** 19.12 (2016): 1665-1671.
 * Yanny, K., Antipa, N., Liberti, W., et al. (2020). **Light: Science & Applications**, 9(1), 1-13.
-* Leman, Daniel P., et al.  **(bioRxiv)** (2021).
+* Leman, Daniel P., et al.  **(BioRxiv)** (2021).
 * Cohen, Yarden, et al.  **Nature** 582.7813 (2020): 539-544.
 * Liberti III, William A., et al.  **Nature** 604.7904 (2022): 98-103.
 * Forli, Angelo, et al. **Nature** 621.7980 (2023): 796-803.
