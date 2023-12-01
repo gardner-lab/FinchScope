@@ -72,24 +72,24 @@ If you use any part of this project in your work, please cite our Journal of Neu
 
 
 ### Publications that use the FinchScope:
-* Liberti III, William A., et al.  **Journal of Neural Engineering** 14.4 (2017): 045001.
-* Liberti, William A., et al.  **Nature Neuroscience** 19.12 (2016): 1665-1671.
+* Liberti, W., et al.  **Nature Neuroscience** 19.12 (2016): 1665-1671.
+* Liberti, W., et al.  **Journal of Neural Engineering** 14.4 (2017): 045001.
 * Yanny, K., Antipa, N., Liberti, W., et al. (2020). **Light: Science & Applications**, 9(1), 1-13.
-* Leman, Daniel P., et al.  **(BioRxiv)** (2021).
-* Cohen, Yarden, et al.  **Nature** 582.7813 (2020): 539-544.
-* Liberti III, William A., et al.  **Nature** 604.7904 (2022): 98-103.
-* Forli, Angelo, et al. **Nature** 621.7980 (2023): 796-803.
-* Singh Alvarado, Jonnathan, et al. **Nature** 599.7886 (2021): 635-639.
-
+* Cohen, Y, et al.  **Nature** 582.7813 (2020): 539-544.
+* Leman, D., et al.  **(BioRxiv)** (2021).
+* Singh Alvarado, J., et al. **Nature** 599.7886 (2021): 635-639.
+* Liberti, W., et al.  **Nature** 604.7904 (2022): 98-103.
+* Forli, A., et al. **Nature** 621.7980 (2023): 796-803.
 
 
 
 ## Contributors:
-* [Will Liberti](wliberti@berkeley.edu) ( U.C. Berkeley)
-* [Nathan Perkins](lnp@bu.edu) ( Apple )
-* [Daniel Leman](dpleman@bu.edu) ( Brandeis)
-* [Jasmine Clevenger](jrclev@bu.edu) ( B.U.)
-* [Will Yen](yenw24@gmail.com) (B.U.)
+* [Will Liberti](wliberti@berkeley.edu) (U.C. Berkeley, LBNL, Morhphosis Neurotech)
+* [Nathan Perkins](lnp@bu.edu) (Apple)
+* [Daniel Leman](dpleman@bu.edu) (Brandeis)
+* [Jasmine Clevenger](jrclev@bu.edu) (Bosotn U.)
+* [Will Yen](yenw24@gmail.com) (Boston U.)
+
 
 
 ##  Major Contributing Labs
