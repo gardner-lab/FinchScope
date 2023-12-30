@@ -84,7 +84,7 @@ If you use any part of this project in your work, please cite our Journal of Neu
 
 
 ## Contributors:
-* [Will Liberti](wliberti@berkeley.edu) (U.C. Berkeley, LBNL, Morhphosis Neurotech)
+* [Will Liberti](wliberti@berkeley.edu) (U.C. Berkeley, LBNL, Morphosis Neurotech)
 * [Nathan Perkins](lnp@bu.edu) (Apple)
 * [Daniel Leman](dpleman@bu.edu) (Brandeis)
 * [Jasmine Clevenger](jrclev@bu.edu) (Bosotn U.)
